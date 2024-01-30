@@ -11,9 +11,9 @@ import javax.persistence.Embeddable;
 public class Status implements ValueObject<Status> {
 
     private String current;
-    private static final String IN_PROGRESS = "In Progress";
-    private static final String PENDING = "Pending";
-    private static final String COMPLETED = "Completed";
+    public static final String IN_PROGRESS = "In Progress";
+    public static final String PENDING = "Pending";
+    public static final String COMPLETED = "Completed";
 
     public Status() {
         this.current = IN_PROGRESS;
