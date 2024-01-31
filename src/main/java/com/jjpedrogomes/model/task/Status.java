@@ -3,6 +3,7 @@ package com.jjpedrogomes.model.task;
 import com.jjpedrogomes.model.shared.ValueObject;
 
 import javax.persistence.Embeddable;
+import java.time.LocalDate;
 
 /**
  * Represents a task status
@@ -14,6 +15,14 @@ public class Status implements ValueObject<Status> {
     public static final String IN_PROGRESS = "In Progress";
     public static final String PENDING = "Pending";
     public static final String COMPLETED = "Completed";
+
+    public Status(LocalDate dueDate) {
+        if (dueDate.isBefore(LocalDate.now())) {
+            this.current = PENDING;
+        } else {
+            this.current = IN_PROGRESS;
+        }
+    }
 
     public Status() {
         this.current = IN_PROGRESS;

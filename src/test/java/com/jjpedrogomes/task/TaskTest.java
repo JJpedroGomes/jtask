@@ -13,6 +13,7 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class TaskTest {
 
     //Builds a new task with conclusionDate = LocalDate.now() and status COMPLETED
@@ -30,15 +31,76 @@ class TaskTest {
     //Builds a new task with status PENDING
     private Task buildPendingTask() {
         Task task = new Task("Test Task", null, LocalDate.now().minusDays(1));
-        task.setTaskCompleted();
-        task.setTaskInProgress();
         return task;
     }
 
     @Nested
-    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-    class set_task_completed {
+    class set_task_due_date {
 
+        @Test
+        void to_date_after_today() {
+            // Arrange
+            Task task = buildPendingTask();
+            LocalDate localDatePlusOne = LocalDate.now().plusDays(1);
+            // Act
+            task.setDueDate(localDatePlusOne);
+            // Assert
+            assertThat(task.getDueDate()).isEqualTo(localDatePlusOne);
+            assertThat(task.getStatus()).isEqualTo(Status.IN_PROGRESS);
+        }
+    }
+
+    @Nested
+    class set_task_in_progress {
+
+        @Test
+        void if_is_already_in_progress() {
+            // Arrange
+            Task task = buildInProgressTask();
+            // Act
+            task.setTaskInProgress();
+            // Assert
+            assertThat(task.getStatus()).isEqualTo(Status.IN_PROGRESS);
+            assertThat(task.getConclusionDate()).isNull();
+        }
+
+        @Test
+        void if_is_already_pending() {
+            // Arrange
+            Task task = buildPendingTask();
+            // Act
+            task.setTaskInProgress();
+            // Assert
+            assertThat(task.getStatus()).isEqualTo(Status.PENDING);
+            assertThat(task.getConclusionDate()).isNull();
+        }
+
+        @Test
+        void if_is_already_completed_to_in_progress() {
+            // Arrange
+            Task task = buildCompletedTask();
+            // Act
+            task.setTaskInProgress();
+            // Assert
+            assertThat(task.getStatus()).isEqualTo(Status.IN_PROGRESS);
+            assertThat(task.getConclusionDate()).isNull();
+        }
+
+        @Test
+        void if_is_completed_with_due_date_pending() {
+            // Arrange
+            Task task = buildPendingTask();
+            task.setTaskCompleted();
+            // Act
+            task.setTaskInProgress();
+            // Assert
+            assertThat(task.getStatus()).isEqualTo(Status.PENDING);
+            assertThat(task.getConclusionDate()).isNull();
+        }
+    }
+
+    @Nested
+    class set_task_completed {
 
         //Should not update the current conclusionDate and status should keep COMPLETED
         @Test

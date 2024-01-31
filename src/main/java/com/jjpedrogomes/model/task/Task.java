@@ -37,7 +37,7 @@ public class Task implements Entity<Task> {
         this.description = description;
         this.creationDate = LocalDate.now();
         this.dueDate = dueDate;
-        this.status = new Status();
+        this.status = (dueDate == null ? new Status() : new Status(dueDate));
     }
 
     public void setTaskCompleted() {
@@ -46,22 +46,27 @@ public class Task implements Entity<Task> {
         this.conclusionDate = LocalDate.now();
     }
 
+    public LocalDate getConclusionDate() {
+        return conclusionDate;
+    }
+
     public void setTaskInProgress() {
         this.conclusionDate = null;
-        if (this.status.equals(Status.IN_PROGRESS) || this.status.equals(Status.PENDING)) return;
-        if (dueDate.isBefore(LocalDate.now())){
-            this.status.setStatusPending();
+        //if (this.status.equals(Status.IN_PROGRESS) || this.status.equals(Status.PENDING)) return;
+        if (dueDate == null || dueDate.isAfter(LocalDate.now()) || dueDate.isEqual(LocalDate.now())){
+            this.status.setStatusInProgress();
             return;
         }
-        if (dueDate == null || dueDate.isAfter(LocalDate.now())) this.status.setStatusInProgress();
+        if (dueDate.isBefore(LocalDate.now())) this.status.setStatusPending();
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+        setTaskInProgress();
     }
 
     public LocalDate getDueDate() {
         return dueDate;
-    }
-
-    public LocalDate getConclusionDate() {
-        return conclusionDate;
     }
 
     public String getStatus() {
