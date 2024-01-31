@@ -32,23 +32,45 @@ public class Task implements Entity<Task> {
     private Status status;
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public Task(String title, String description, LocalDate dueDate, LocalDate conclusionDate) {
+    public Task(String title, String description, LocalDate dueDate) {
         this.title = title;
         this.description = description;
         this.creationDate = LocalDate.now();
         this.dueDate = dueDate;
-        this.conclusionDate = conclusionDate;
-        this.status = new Status();
+        this.status = (dueDate == null ? new Status() : new Status(dueDate));
     }
 
     public void setTaskCompleted() {
+        if (this.status.getCurrentStatus().equals(Status.COMPLETED)) return;
         this.status.setStatusToCompleted();
         this.conclusionDate = LocalDate.now();
     }
 
+    public LocalDate getConclusionDate() {
+        return conclusionDate;
+    }
+
     public void setTaskInProgress() {
+        this.conclusionDate = null;
+        //if (this.status.equals(Status.IN_PROGRESS) || this.status.equals(Status.PENDING)) return;
+        if (dueDate == null || dueDate.isAfter(LocalDate.now()) || dueDate.isEqual(LocalDate.now())){
+            this.status.setStatusInProgress();
+            return;
+        }
         if (dueDate.isBefore(LocalDate.now())) this.status.setStatusPending();
-        if (dueDate == null || dueDate.isAfter(LocalDate.now())) this.status.setStatusInProgress();
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+        setTaskInProgress();
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public String getStatus() {
+        return status.getCurrentStatus();
     }
 
     @Override
