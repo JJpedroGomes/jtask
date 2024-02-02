@@ -1,8 +1,6 @@
 package com.jjpedrogomes.controller;
 
-import com.jjpedrogomes.model.usecase.CreateTaskUseCase;
-import com.jjpedrogomes.model.usecase.DeleteTaskUseCase;
-import com.jjpedrogomes.model.usecase.UpdateTaskUseCase;
+import com.jjpedrogomes.model.usecase.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,7 +30,15 @@ public class TaskController extends HttpServlet {
         } else if (action.equals("DeleteTask")) {
             DeleteTaskUseCase useCase = new DeleteTaskUseCase();
             useCase.execute(request,response);
+        } else if (action.equals("ConcludeTask")) {
+            ConcludeTaskUseCase useCase = new ConcludeTaskUseCase();
+            useCase.execute(request,response);
+        } else if (action.equals("setInProgressTaskUseCase")) {
+            SetInProgressTaskUseCase useCase = new SetInProgressTaskUseCase();
+            useCase.execute(request,response);
         }
+
+        //Todo - implement Dispatcher strategy
     }
 
     //Todo - implement getMethods with filters
