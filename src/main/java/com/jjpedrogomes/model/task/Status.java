@@ -16,6 +16,13 @@ public class Status implements ValueObject<Status> {
     public static final String PENDING = "Pending";
     public static final String COMPLETED = "Completed";
 
+    /**
+     * Constructs a new Status instance based on the provided due date.
+     * Initializes the status of the task based on whether the due date is in the past.
+     * If the due date is in the past, the status is set to PENDING.
+     * Otherwise, the status is set to IN_PROGRESS.
+     * @param dueDate The due date for completing the associated task.
+     */
     public Status(LocalDate dueDate) {
         if (dueDate.isBefore(LocalDate.now())) {
             this.current = PENDING;
