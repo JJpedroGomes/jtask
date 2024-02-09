@@ -32,6 +32,20 @@ public class Task implements Entity<Task> {
     private Status status;
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+
+    /**
+     * Constructs an instance of the Task class with the provided parameters.
+     * @param title represents the main goal of the created task
+     * @param description represents the goal with more details; this field can be null
+     * @param dueDate represents the due date of the created task; this field can be null
+     *        If null, the task is considered not to have a due date.
+     *        Otherwise, it represents the date by which the task should be completed.
+     *        Tasks without a due date are considered ongoing tasks.
+     * @implNote The creationDate field is automatically set to the current date when the task is created.
+     *           The status field is determined based on the due date:
+     *           - If the due date is in the past, the task status is set to PENDING.
+     *           - Otherwise, the task status is IN_PROGRESS.
+     */
     public Task(String title, String description, LocalDate dueDate) {
         this.title = title;
         this.description = description;
@@ -40,6 +54,11 @@ public class Task implements Entity<Task> {
         this.status = (dueDate == null ? new Status() : new Status(dueDate));
     }
 
+    /**
+     * Marks the task as completed.
+     * If the task is already marked as completed, no action is taken.
+     * Otherwise, sets the status of the task to completed and records the conclusion date as the current date.
+     */
     public void setTaskCompleted() {
         if (this.status.getCurrentStatus().equals(Status.COMPLETED)) return;
         this.status.setStatusToCompleted();
@@ -50,16 +69,29 @@ public class Task implements Entity<Task> {
         return conclusionDate;
     }
 
+    /**
+     * Marks the task as in progress.
+     * Resets the conclusion date to null.
+     * If the task has a due date, and it's already past the current date,
+     * sets the task status to pending; otherwise, sets it to in progress.
+     */
     public void setTaskInProgress() {
         this.conclusionDate = null;
-        //if (this.status.equals(Status.IN_PROGRESS) || this.status.equals(Status.PENDING)) return;
-        if (dueDate == null || dueDate.isAfter(LocalDate.now()) || dueDate.isEqual(LocalDate.now())){
+        if (dueDate != null && dueDate.isBefore(LocalDate.now())) {
+            this.status.setStatusPending();
+        } else {
             this.status.setStatusInProgress();
-            return;
         }
-        if (dueDate.isBefore(LocalDate.now())) this.status.setStatusPending();
     }
 
+    /**
+     * Sets the due date of the task and updates its status accordingly.
+     * After setting the due date, the task status is updated:
+     * - If the due date is in the past, the task status is set to pending.
+     * - Otherwise, the task status is set to in progress.
+     * If the task was previously marked as completed, this method reverts its completion status.
+     * @param dueDate The due date to be set for the task.
+     */
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
         setTaskInProgress();
