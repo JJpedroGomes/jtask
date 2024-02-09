@@ -37,6 +37,11 @@ class TaskTest {
     @Nested
     class set_task_due_date {
 
+        /**
+         * Test case for the "setDueDate" method of the Task class.
+         * Verifies that setting a due date to a date after today updates the task due date
+         * and sets the task status to IN_PROGRESS.
+         */
         @Test
         void to_date_after_today() {
             // Arrange
@@ -48,11 +53,33 @@ class TaskTest {
             assertThat(task.getDueDate()).isEqualTo(localDatePlusOne);
             assertThat(task.getStatus()).isEqualTo(Status.IN_PROGRESS);
         }
+
+        /**
+         * Test case for the "setDueDate" method of the Task class.
+         * Verifies that setting a due date to a date in the past, must maintain the status PENDING
+         * and updates the due date.
+         */
+        @Test
+        void to_date_in_the_past() {
+            // Arrange
+            Task task = buildPendingTask();
+            LocalDate localDateMinusFive = LocalDate.now().minusDays(5);
+            // Act
+            task.setDueDate(localDateMinusFive);
+            // Assert
+            assertThat(task.getDueDate()).isEqualTo(localDateMinusFive);
+            assertThat(task.getStatus()).isEqualTo(Status.PENDING);
+        }
     }
 
     @Nested
     class set_task_in_progress {
 
+        /**
+         * This test case verifies the behavior when the task is already in progress.
+         * The test asserts that the task status remains as IN_PROGRESS.
+         * It also asserts that the conclusion date remains null, indicating that the task is still in progress without a conclusion date.
+         */
         @Test
         void if_is_already_in_progress() {
             // Arrange
@@ -64,6 +91,11 @@ class TaskTest {
             assertThat(task.getConclusionDate()).isNull();
         }
 
+        /**
+         * This test case verifies the behavior when the task is pending.
+         * The test asserts that the task status remains as PENDING.
+         * It also asserts that the conclusion date remains null, indicating that the task is still in progress without a conclusion date.
+         */
         @Test
         void if_is_already_pending() {
             // Arrange
@@ -75,6 +107,11 @@ class TaskTest {
             assertThat(task.getConclusionDate()).isNull();
         }
 
+        /**
+         * This test case verifies the behavior when the task is completed and then set to in progress.
+         * The test asserts that the task status updates to IN_PROGRESS after calling setTaskInProgress().
+         * It also asserts that the conclusion date remains null, indicating that the task is now in progress without a conclusion date.
+         */
         @Test
         void if_is_already_completed_to_in_progress() {
             // Arrange
@@ -86,6 +123,11 @@ class TaskTest {
             assertThat(task.getConclusionDate()).isNull();
         }
 
+        /**
+         * This test case verifies the behavior when the task is completed but has a pending due date.
+         * The test asserts that the task status remains PENDING after calling setTaskInProgress().
+         * It also asserts that the conclusion date remains null, indicating that the task status remains unchanged as pending.
+         */
         @Test
         void if_is_completed_with_due_date_pending() {
             // Arrange
@@ -102,7 +144,13 @@ class TaskTest {
     @Nested
     class set_task_completed {
 
-        //Should not update the current conclusionDate and status should keep COMPLETED
+
+        /**
+         * This test case verifies the behavior when the task is completed and the method setTaskCompleted is called.
+         * The LocalDate.now() method is stubbed to return a future date (one day ahead of the current date).
+         * The test asserts that the task status remains COMPLETED after calling setTaskCompleted().
+         * It also asserts that the conclusion date is not modified, maintaining the first conclusion data applied
+         */
         @Test
         void if_is_already_completed() {
             // Arrange
@@ -119,7 +167,12 @@ class TaskTest {
             }
         }
 
-        //Should update the current conclusionDate and status should turn COMPLETED
+        /**
+         * This test case verifies the behavior when the task is in progress or pending
+         * and the method setTaskCompleted is called.
+         * The test asserts that the status of the tasks is updated to COMPLETED after calling setTaskCompleted().
+         * It also asserts that the conclusion date is set to the current Local Date.
+         */
         @Test
         void if_is_in_progress_or_pending() {
             // Arrange
