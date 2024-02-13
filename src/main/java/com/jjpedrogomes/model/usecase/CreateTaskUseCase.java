@@ -31,6 +31,7 @@ public class CreateTaskUseCase implements UseCase {
             transaction.commit();
         } catch (Exception exception) {
             if (transaction != null && transaction.isActive()) {
+                exception.printStackTrace();
                 transaction.rollback();
             }
         } finally {
