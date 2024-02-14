@@ -1,6 +1,8 @@
 package com.jjpedrogomes.controller;
 
 import com.jjpedrogomes.model.usecase.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,10 +17,13 @@ import java.io.IOException;
 )
 public class TaskController extends HttpServlet {
 
+    private static final Logger logger = LogManager.getLogger(TaskController.class);
+
     //Todo - implement use cases logics
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        logger.info("Entering method doPost() in TaskController Servlet");
         String action = request.getParameter("action");
 
         if (action.equals("CreateTask")) {

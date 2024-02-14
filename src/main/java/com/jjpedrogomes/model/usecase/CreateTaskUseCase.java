@@ -1,9 +1,12 @@
 package com.jjpedrogomes.model.usecase;
 
+import com.jjpedrogomes.controller.TaskController;
 import com.jjpedrogomes.model.shared.UseCase;
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.repository.JpaUtil;
 import com.jjpedrogomes.repository.TaskDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -12,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 
 public class CreateTaskUseCase implements UseCase {
+
+    private static final Logger logger = LogManager.getLogger(CreateTaskUseCase.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
@@ -23,15 +28,17 @@ public class CreateTaskUseCase implements UseCase {
         EntityManager entityManager = JpaUtil.getEntityManager();
         TaskDao taskDao = new TaskDao(entityManager);
 
+        logger.info("Creating task...");
         EntityTransaction transaction = null;
         try {
             transaction = entityManager.getTransaction();
             transaction.begin();
             taskDao.save(task);
             transaction.commit();
+            logger.info("Task created successfully.");
         } catch (Exception exception) {
             if (transaction != null && transaction.isActive()) {
-                exception.printStackTrace();
+                logger.error("Error occurred: ", exception);
                 transaction.rollback();
             }
         } finally {
