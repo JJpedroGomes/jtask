@@ -15,7 +15,8 @@ import java.time.format.DateTimeFormatter;
 public class Task implements Entity<Task> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "task_sequence")
+    @SequenceGenerator(name = "task_sequence", sequenceName = "task_sequence", allocationSize = 1)
     private Long id;
     @Column(nullable = false)
     private String title;
@@ -28,8 +29,10 @@ public class Task implements Entity<Task> {
     @Column(name = "conclusion_date", columnDefinition = "DATE")
     private LocalDate conclusionDate;
     @Embedded
-    @AttributeOverride(name = "current", column = @Column(name = "status"))
+    @AttributeOverride(name = "current", column = @Column(name = "status", nullable = false))
     private Status status;
+
+    @Transient
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 
