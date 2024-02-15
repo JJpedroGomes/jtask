@@ -1,14 +1,18 @@
 package com.jjpedrogomes.repository;
 
 import com.jjpedrogomes.model.task.Task;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.util.List;
 import java.util.Optional;
 
 public class TaskDao implements Dao<Task> {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
+    private static final Logger logger = LogManager.getLogger(TaskDao.class);
 
     public TaskDao(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -16,7 +20,19 @@ public class TaskDao implements Dao<Task> {
 
     @Override
     public void save(Task task) {
-        this.entityManager.persist(task);
+        EntityTransaction transaction = null;
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            this.entityManager.persist(task);
+            transaction.commit();
+            logger.info("Task created successfully.");
+        } catch (Exception exception) {
+            if (transaction != null && transaction.isActive()) {
+                logger.error("Error occurred: ", exception);
+                transaction.rollback();
+            }
+        }
     }
 
     @Override
