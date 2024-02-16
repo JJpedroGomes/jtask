@@ -24,7 +24,7 @@ class TaskTest {
     }
 
     //Builds a new task with status IN_PROGRESS
-    private Task buildInProgressTask() {
+    protected static Task buildInProgressTask() {
         return new Task("Test Task", null, null);
     }
 
