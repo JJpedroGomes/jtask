@@ -47,7 +47,7 @@ public class TaskController extends HttpServlet {
             ConcludeTaskUseCase useCase = new ConcludeTaskUseCase();
             useCase.execute(request,response);
         } else if (action.equals("setInProgressTaskUseCase")) {
-            SetInProgressTaskUseCase useCase = new SetInProgressTaskUseCase();
+            SetInProgressTaskUseCase useCase = new SetInProgressTaskUseCase(taskDao);
             useCase.execute(request,response);
         }
 
