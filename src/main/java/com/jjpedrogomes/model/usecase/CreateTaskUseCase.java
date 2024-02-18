@@ -19,6 +19,12 @@ public class CreateTaskUseCase implements UseCase {
         this.taskDao = taskDao;
     }
 
+    /**
+     * Executes the use case to create a new task.
+     *
+     * @param request  The HttpServletRequest containing task information.
+     * @param response The HttpServletResponse for providing feedback.
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String title = request.getParameter("title");

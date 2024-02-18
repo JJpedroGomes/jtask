@@ -9,15 +9,20 @@ import javax.persistence.EntityTransaction;
 import java.util.List;
 import java.util.Optional;
 
+// This class represents a Data Access Object (DAO) responsible for managing Task entities in the database.
 public class TaskDao implements Dao<Task> {
 
     private final EntityManager entityManager;
     private static final Logger logger = LogManager.getLogger(TaskDao.class);
-
     public TaskDao(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
+    /**
+     * Saves a task to the database.
+     *
+     * @param task The task to be saved.
+     */
     @Override
     public void save(Task task) {
         EntityTransaction transaction = null;

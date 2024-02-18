@@ -27,13 +27,19 @@ class TaskDaoIntegrationTest {
 
     @BeforeEach
     void setUp() {
+        // Initializes mocks before each test method runs
         MockitoAnnotations.initMocks(this);
+        // Creates a new task for testing
         this.task = buildInProgressTask();
     }
 
     @Nested
     class task_dao_save {
 
+        /**
+         * Test case for saving a new task.
+         * Verifies that the save operation is performed correctly by mocking EntityManager and EntityTransaction.
+         */
         @Test
         void new_task() {
             // Arrange
@@ -52,6 +58,10 @@ class TaskDaoIntegrationTest {
             inOrder.verify(transactionMock).commit();
         }
 
+        /**
+         * Test case for saving a task when the task object is null.
+         * Verifies that the save operation fails gracefully and the transaction is rolled back.
+         */
         @Test
         void test_save_with_null_task() {
             // Arrange
@@ -68,8 +78,4 @@ class TaskDaoIntegrationTest {
             verify(transactionMock).rollback();
         }
     }
-
-
-
-
 }
