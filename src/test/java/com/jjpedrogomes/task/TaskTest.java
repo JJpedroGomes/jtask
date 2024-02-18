@@ -24,14 +24,13 @@ class TaskTest {
     }
 
     //Builds a new task with status IN_PROGRESS
-    private Task buildInProgressTask() {
+    protected static Task buildInProgressTask() {
         return new Task("Test Task", null, null);
     }
 
     //Builds a new task with status PENDING
     private Task buildPendingTask() {
-        Task task = new Task("Test Task", null, LocalDate.now().minusDays(1));
-        return task;
+        return new Task("Test Task", null, LocalDate.now().minusDays(1));
     }
 
     @Nested

@@ -1,6 +1,8 @@
 package com.jjpedrogomes.controller;
 
 import com.jjpedrogomes.model.usecase.*;
+import com.jjpedrogomes.repository.JpaUtil;
+import com.jjpedrogomes.repository.TaskDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,6 +20,12 @@ import java.io.IOException;
 public class TaskController extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger(TaskController.class);
+    private TaskDao taskDao;
+
+    @Override
+    public void init() throws ServletException {
+        this.taskDao = new TaskDao(JpaUtil.getEntityManager());
+    }
 
     //Todo - implement use cases logics
     @Override
@@ -27,7 +35,7 @@ public class TaskController extends HttpServlet {
         String action = request.getParameter("action");
 
         if (action.equals("CreateTask")) {
-            CreateTaskUseCase useCase = new CreateTaskUseCase();
+            CreateTaskUseCase useCase = new CreateTaskUseCase(taskDao);
             useCase.execute(request,response);
         } else if (action.equals("UpdateTask")) {
             UpdateTaskUseCase useCase = new UpdateTaskUseCase();
@@ -39,7 +47,7 @@ public class TaskController extends HttpServlet {
             ConcludeTaskUseCase useCase = new ConcludeTaskUseCase();
             useCase.execute(request,response);
         } else if (action.equals("setInProgressTaskUseCase")) {
-            SetInProgressTaskUseCase useCase = new SetInProgressTaskUseCase();
+            SetInProgressTaskUseCase useCase = new SetInProgressTaskUseCase(taskDao);
             useCase.execute(request,response);
         }
 
