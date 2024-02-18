@@ -16,7 +16,7 @@ public interface Dao<T> {
     void save(T t);
 
     // Updates an existing entity in the database based on the provided parameters.
-    void update(T t, String[] params);
+    void update(T t);
 
     // Deletes an entity from the database.
     void delete(T t);

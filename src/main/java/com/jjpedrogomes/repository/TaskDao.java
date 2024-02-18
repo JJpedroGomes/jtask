@@ -41,18 +41,38 @@ public class TaskDao implements Dao<Task> {
     }
 
     @Override
+    public void update(Task task) {
+        EntityTransaction transaction = null;
+        try {
+            if (!entityManager.contains(task)) {
+                throw new IllegalArgumentException("Task is not managed by the entity manager");
+            }
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            this.entityManager.merge(task);
+            transaction.commit();
+        } catch (Exception exception) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            logger.error("Error occurred while updating task", exception);
+        }
+    }
+
+    @Override
     public Optional<Task> get(long id) {
-        return Optional.ofNullable(entityManager.find(Task.class, id));
+        try {
+            Task task = this.entityManager.find(Task.class, id);
+            return Optional.ofNullable(task);
+        } catch (Exception exception) {
+            logger.error("Error while retrieving task with id: " + id, exception);
+            return Optional.empty();
+        }
     }
 
     @Override
     public List<Task> getAll() {
         return null;
-    }
-
-    @Override
-    public void update(Task task, String[] params) {
-
     }
 
     @Override
