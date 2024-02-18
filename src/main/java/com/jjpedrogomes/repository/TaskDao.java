@@ -57,6 +57,7 @@ public class TaskDao implements Dao<Task> {
             transaction.begin();
             this.entityManager.merge(task);
             transaction.commit();
+            logger.info("Task updated successfully.");
         } catch (Exception exception) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
