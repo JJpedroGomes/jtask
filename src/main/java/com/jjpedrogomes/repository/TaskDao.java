@@ -40,6 +40,12 @@ public class TaskDao implements Dao<Task> {
         }
     }
 
+    /**
+     * Updates the given Task entity in the database.
+     *
+     * @param task The Task entity to be updated.
+     * @throws IllegalArgumentException if the given task is not managed by the entity manager.
+     */
     @Override
     public void update(Task task) {
         EntityTransaction transaction = null;
