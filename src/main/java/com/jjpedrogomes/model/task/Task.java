@@ -108,6 +108,14 @@ public class Task implements Entity<Task> {
         return status.getCurrentStatus();
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public boolean sameIdentityAs(final Task other) {
         return other != null && id.equals(other.id);
