@@ -10,12 +10,18 @@ import org.mockito.MockitoAnnotations;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
+import java.util.Arrays;
+import java.util.List;
 
-import static com.jjpedrogomes.task.TaskTest.buildInProgressTask;
+import static com.jjpedrogomes.task.TaskTest.*;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.Mockito.*;
 
+
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class TaskDaoIntegrationTest {
+class TaskDaoTest {
 
     @InjectMocks
     private TaskDao taskDao;
@@ -59,11 +65,11 @@ class TaskDaoIntegrationTest {
         }
 
         /**
-         * Test case for saving a task when the task object is null.
+         * Test case for trying to save a task, but an error occurs.
          * Verifies that the save operation fails gracefully and the transaction is rolled back.
          */
         @Test
-        void test_save_with_null_task() {
+        void with_error() {
             // Arrange
             when(entityManagerMock.getTransaction()).thenReturn(transactionMock);
             when(transactionMock.isActive()).thenReturn(true);
@@ -76,6 +82,49 @@ class TaskDaoIntegrationTest {
             verify(transactionMock).begin();
             verify(entityManagerMock).persist(task);
             verify(transactionMock).rollback();
+        }
+    }
+
+    @Nested
+    class task_dao_get {
+
+        /**
+         * Test case for getting a task list
+         * Verifies that the list is returned correctly.
+         */
+        @Test
+        void non_empty_list() {
+            // Arrange
+            Task task1 = buildInProgressTask();
+            Task task2 = buildCompletedTask();
+            Task task3 = buildPendingTask();
+            List<Task> taskList = Arrays.asList(task1, task2, task3);
+            TypedQuery<Task> queryMock = mock(TypedQuery.class);
+            when(entityManagerMock.createQuery(anyString(), eq(Task.class))).thenReturn(queryMock);
+            when(queryMock.getResultList()).thenReturn(taskList);
+            // Act
+            List<Task> returnedTaskList = taskDao.getAll();
+            // Assert
+            assertThat(returnedTaskList)
+                    .hasSize(3)
+                    .containsExactlyInAnyOrder(task1, task2, task3);
+            verify(queryMock, times(1)).getResultList();
+        }
+
+        /**
+         * Test case for trying to get a list of tasks, but is empty.
+         * Verifies that an empty list is returned.
+         */
+        @Test
+        void empty_list() {
+            // Arrange
+            TypedQuery<Task> queryMock = mock(TypedQuery.class);
+            when(entityManagerMock.createQuery(anyString(), eq(Task.class))).thenThrow(new PersistenceException("Simulated Error"));
+            // Act
+            List<Task> returnedTaskList = taskDao.getAll();
+            // Assert
+            assertThat(returnedTaskList).isEmpty();
+            verify(entityManagerMock, times(1)).createQuery(anyString(), eq(Task.class));
         }
     }
 }
