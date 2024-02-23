@@ -1,6 +1,5 @@
 package com.jjpedrogomes.model.usecase;
 
-import com.jjpedrogomes.model.shared.UseCase;
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.repository.TaskDao;
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
-public class SetInProgressTaskUseCase implements UseCase {
+public class SetInProgressTaskUseCase {
 
     private static final Logger logger = LogManager.getLogger(CreateTaskUseCase.class);
     private final TaskDao taskDao;
@@ -19,7 +18,6 @@ public class SetInProgressTaskUseCase implements UseCase {
         this.taskDao = taskDao;
     }
 
-    @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String idParam = request.getParameter("id");
         try {
