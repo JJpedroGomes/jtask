@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,11 +78,25 @@ public class TaskDao implements Dao<Task> {
         }
     }
 
+    /**
+     * @return List of all tasks
+     * @throws IllegalStateException if the task list is empty.
+     */
     @Override
     public List<Task> getAll() {
-        return null;
+        String query = "SELECT t from Task t";
+        try {
+            logger.info("Selecting all Tasks");
+            List<Task> list = this.entityManager.createQuery(query, Task.class).getResultList();
+            if (list.isEmpty()) throw new IllegalStateException("Task List is current empty");
+            return list;
+        } catch (Exception exception) {
+            logger.error("Error while retrieving all tasks", exception);
+            return Collections.emptyList();
+        }
     }
 
+    //Todo basic logic
     @Override
     public void delete(Task task) {
         task = entityManager.merge(task);

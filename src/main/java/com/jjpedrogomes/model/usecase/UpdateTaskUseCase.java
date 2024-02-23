@@ -1,13 +1,10 @@
 package com.jjpedrogomes.model.usecase;
 
-import com.jjpedrogomes.model.shared.UseCase;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class UpdateTaskUseCase implements UseCase {
+public class UpdateTaskUseCase {
 
-    @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
     }
