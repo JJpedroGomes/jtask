@@ -51,14 +51,17 @@ public class TaskController extends HttpServlet {
 
         switch (action) {
             case "CreateTask":
+                logger.info("CreateTask action provided");
                 CreateTaskUseCase createTaskUseCase = new CreateTaskUseCase(taskDao);
                 createTaskUseCase.execute(request, response);
                 break;
             case "UpdateTask":
-                UpdateTaskUseCase updateTaskUseCase = new UpdateTaskUseCase();
+                logger.info("UpdateTask action provided");
+                UpdateTaskUseCase updateTaskUseCase = new UpdateTaskUseCase(taskDao);
                 updateTaskUseCase.execute(request, response);
                 break;
             case "DeleteTask":
+                logger.info("DeleteTask action provided");
                 DeleteTaskUseCase deleteTaskUseCase = new DeleteTaskUseCase();
                 deleteTaskUseCase.execute(request, response);
                 break;
