@@ -17,6 +17,7 @@ import java.util.List;
 
 import static com.jjpedrogomes.task.TaskTest.*;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 
@@ -125,6 +126,73 @@ class TaskDaoTest {
             // Assert
             assertThat(returnedTaskList).isEmpty();
             verify(entityManagerMock, times(1)).createQuery(anyString(), eq(Task.class));
+        }
+    }
+
+    @Nested
+    class task_dao_update {
+
+        /**
+         * Test case for updating a task that is not managed by jpa
+         * Verifies that update is not performed
+         */
+        @Test
+        void task_not_managed_by_entity_manager() {
+            // Arrange
+            when(entityManagerMock.contains(any(Task.class))).thenReturn(false);
+            when(entityManagerMock.getTransaction()).thenReturn(transactionMock);
+            // Act and Assert
+            IllegalArgumentException exception = assertThrows(
+                    IllegalArgumentException.class,
+                    () -> taskDao.update(task),
+                    "Task is not managed by the entity manager"
+            );
+            // Assert
+            assertThat(exception.getMessage()).contains("Task is not managed by the entity manager");
+            verify(entityManagerMock).contains(task);
+            verify(entityManagerMock, never()).getTransaction();
+            verify(transactionMock, never()).begin();
+            verify(transactionMock, never()).commit();
+            verify(transactionMock, never()).rollback();
+        }
+
+        /**
+         * Test case for updating a task successfully
+         * Verifies that the transaction behaves correctly
+         */
+        @Test
+        void task_successfully() {
+            // Arrange
+            when(entityManagerMock.contains(any(Task.class))).thenReturn(true);
+            when(entityManagerMock.getTransaction()).thenReturn(transactionMock);
+            // Act
+            taskDao.update(task);
+            // Assert
+            InOrder inOrder = inOrder(entityManagerMock, transactionMock);
+            inOrder.verify(entityManagerMock).getTransaction();
+            inOrder.verify(transactionMock).begin();
+            inOrder.verify(transactionMock).commit();
+        }
+
+        /**
+         * Test case for updating a task with error
+         * Verifies that the transaction rollback occurs
+         */
+        @Test
+        void with_error() {
+            // Arrange
+            when(entityManagerMock.contains(any(Task.class))).thenReturn(true);
+            when(entityManagerMock.getTransaction()).thenReturn(transactionMock);
+            when(transactionMock.isActive()).thenReturn(true);
+            // Stubbing behavior
+            doThrow(new RuntimeException("Simulated Error")).when(transactionMock).commit();
+            // Act
+            RuntimeException exception = assertThrows(
+                    RuntimeException.class,
+                    () -> taskDao.update(task));
+            // Assert
+            verify(transactionMock).rollback();
+            assertThat(exception.getMessage()).contains("Simulated Error");
         }
     }
 }

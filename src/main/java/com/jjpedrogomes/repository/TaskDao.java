@@ -56,7 +56,6 @@ public class TaskDao implements Dao<Task> {
             }
             transaction = entityManager.getTransaction();
             transaction.begin();
-            this.entityManager.merge(task);
             transaction.commit();
             logger.info("Task updated successfully.");
         } catch (Exception exception) {
@@ -64,6 +63,7 @@ public class TaskDao implements Dao<Task> {
                 transaction.rollback();
             }
             logger.error("Error occurred while updating task", exception);
+            throw exception;
         }
     }
 
