@@ -1,7 +1,7 @@
 package com.jjpedrogomes.task;
 
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.model.usecase.CreateTaskUseCase;
+import com.jjpedrogomes.model.action.CreateTaskAction;
 import com.jjpedrogomes.repository.TaskDao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -20,10 +20,10 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class CreateTaskUseCaseTest {
+public class CreateTaskActionTest {
 
     @InjectMocks
-    private CreateTaskUseCase useCase;
+    private CreateTaskAction useCase;
     @Mock
     private HttpServletRequest request;
     @Mock

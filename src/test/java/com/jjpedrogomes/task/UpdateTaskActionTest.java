@@ -1,7 +1,7 @@
 package com.jjpedrogomes.task;
 
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.model.usecase.UpdateTaskUseCase;
+import com.jjpedrogomes.model.action.UpdateTaskAction;
 import com.jjpedrogomes.repository.TaskDao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -24,10 +24,10 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class UpdateTaskUseCaseTest {
+class UpdateTaskActionTest {
 
     @InjectMocks
-    private UpdateTaskUseCase useCase;
+    private UpdateTaskAction useCase;
     @Mock
     private TaskDao taskDao;
     @Mock
