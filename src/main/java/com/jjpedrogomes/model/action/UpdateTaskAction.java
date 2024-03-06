@@ -1,4 +1,4 @@
-package com.jjpedrogomes.model.usecase;
+package com.jjpedrogomes.model.action;
 
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.repository.TaskDao;
@@ -11,12 +11,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
-public class UpdateTaskUseCase {
+public class UpdateTaskAction implements Action {
 
     private final TaskDao taskDao;
-    private static final Logger logger = LogManager.getLogger(UpdateTaskUseCase.class);
+    private static final Logger logger = LogManager.getLogger(UpdateTaskAction.class);
 
-    public UpdateTaskUseCase(TaskDao taskDao) {
+    public UpdateTaskAction(TaskDao taskDao) {
         this.taskDao = taskDao;
     }
 
@@ -26,6 +26,7 @@ public class UpdateTaskUseCase {
      * @param request The HttpServletRequest containing task information.
      * @param response The HttpServletResponse for providing feedback.
      */
+    @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String idParam = request.getParameter("id");
         String title = request.getParameter("title");

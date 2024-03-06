@@ -1,4 +1,4 @@
-package com.jjpedrogomes.model.usecase;
+package com.jjpedrogomes.model.action;
 
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.repository.TaskDao;
@@ -10,14 +10,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-public class CreateTaskUseCase {
+public class CreateTaskAction implements Action{
 
-    private static final Logger logger = LogManager.getLogger(CreateTaskUseCase.class);
+    private static final Logger logger = LogManager.getLogger(CreateTaskAction.class);
     private final TaskDao taskDao;
 
-    public CreateTaskUseCase(TaskDao taskDao) {
+    public CreateTaskAction(TaskDao taskDao) {
         this.taskDao = taskDao;
     }
+
 
     /**
      * Executes the use case to create a new task.
@@ -25,6 +26,7 @@ public class CreateTaskUseCase {
      * @param request  The HttpServletRequest containing task information.
      * @param response The HttpServletResponse for providing feedback.
      */
+    @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String title = request.getParameter("title");
         validateTitle(title);

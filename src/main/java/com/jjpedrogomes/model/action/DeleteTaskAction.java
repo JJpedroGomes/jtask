@@ -1,10 +1,11 @@
-package com.jjpedrogomes.model.usecase;
+package com.jjpedrogomes.model.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DeleteTaskUseCase {
+public class DeleteTaskAction implements Action{
 
+    @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
     }

@@ -1,4 +1,4 @@
-package com.jjpedrogomes.model.usecase;
+package com.jjpedrogomes.model.action;
 
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.repository.TaskDao;
@@ -9,15 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
-public class SetInProgressTaskUseCase {
+public class SetInProgressTaskAction implements Action{
 
-    private static final Logger logger = LogManager.getLogger(CreateTaskUseCase.class);
+    private static final Logger logger = LogManager.getLogger(CreateTaskAction.class);
     private final TaskDao taskDao;
 
-    public SetInProgressTaskUseCase(TaskDao  taskDao) {
+    public SetInProgressTaskAction(TaskDao  taskDao) {
         this.taskDao = taskDao;
     }
 
+    @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String idParam = request.getParameter("id");
         try {
