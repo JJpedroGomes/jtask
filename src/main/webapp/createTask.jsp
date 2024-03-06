@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Create Task</h1>
-<form action="task" method="post">
+<form action="main" method="post">
     <input type="hidden" name="action" value="CreateTask">
     <label for="title">Title:</label><br>
     <input type="text" id="title" name="title" required><br>

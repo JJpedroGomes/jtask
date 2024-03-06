@@ -1,7 +1,7 @@
 package com.jjpedrogomes.controller;
 
+import com.jjpedrogomes.model.action.Action;
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.model.usecase.*;
 import com.jjpedrogomes.repository.JpaUtil;
 import com.jjpedrogomes.repository.TaskDao;
 import org.apache.logging.log4j.LogManager;
@@ -14,11 +14,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @WebServlet(
         name = "TaskController",
-        urlPatterns = "/"
+        urlPatterns = "/main"
 )
 public class TaskController extends HttpServlet {
 
@@ -49,36 +51,18 @@ public class TaskController extends HttpServlet {
             return;
         }
 
-        switch (action) {
-            case "CreateTask":
-                logger.info("CreateTask action provided");
-                CreateTaskUseCase createTaskUseCase = new CreateTaskUseCase(taskDao);
-                createTaskUseCase.execute(request, response);
-                break;
-            case "UpdateTask":
-                logger.info("UpdateTask action provided");
-                UpdateTaskUseCase updateTaskUseCase = new UpdateTaskUseCase(taskDao);
-                updateTaskUseCase.execute(request, response);
-                break;
-            case "DeleteTask":
-                logger.info("DeleteTask action provided");
-                DeleteTaskUseCase deleteTaskUseCase = new DeleteTaskUseCase();
-                deleteTaskUseCase.execute(request, response);
-                break;
-            case "ConcludeTask":
-                ConcludeTaskUseCase concludeTaskUseCase = new ConcludeTaskUseCase();
-                concludeTaskUseCase.execute(request, response);
-                break;
-            case "setInProgressTaskUseCase":
-                SetInProgressTaskUseCase setInProgressTaskUseCase = new SetInProgressTaskUseCase(taskDao);
-                setInProgressTaskUseCase.execute(request, response);
-                break;
-            default:
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write("Invalid action");
-                break;
+        StringBuilder builder = new StringBuilder();
+        String ACTION_PATH = "com.jjpedrogomes.model.action.";
+        String className = builder.append(ACTION_PATH).append(action).append("Action").toString();
+        try {
+            Constructor<?> constructor = Class.forName(className).getConstructor(TaskDao.class);
+            Action actionClass = (Action) constructor.newInstance(taskDao);
+            actionClass.execute(request, response);
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            logger.error("Action not found", e);
+            throw new ServletException(e);
         }
-
         //Todo - implement Dispatcher strategy
     }
 
@@ -98,7 +82,7 @@ public class TaskController extends HttpServlet {
             case "LIST":
                 List<Task> taskList = taskDao.getAll();
                 request.setAttribute("taskList", taskList);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/index.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/board.jsp");
                 dispatcher.forward(request,response);
                 logger.info("Returning all tasks");
                 break;

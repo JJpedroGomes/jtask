@@ -19,7 +19,7 @@
                         <img src="" alt="">
                     </div>
                     <figcaption>
-                        <h2 class="account-name">João Pedro</h2>
+                        <h2 class="account-name">Logged user name</h2>
                     </figcaption>
                 </figure>
             </div>
