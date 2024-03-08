@@ -59,6 +59,7 @@
                         <header class="dashboard-row-header">
                             <h4>BackLog<span>(7)</span></h4>
                         </header>
+                        <c:set var="taskList" value="${requestScope.taskList}" scope="session"/>
                         <div class="dashboard-row-content">
                             <ul class="list">
                                 <c:if test="${not empty taskList}">
@@ -77,6 +78,16 @@
                                 </c:if>
                             </ul>
                         </div>
+                        <form action="main" method="post">
+                            <input type="hidden" name="action" value="CreateTask">
+                            <label for="title">Title:</label><br>
+                            <input type="text" id="title" name="title" required><br>
+                            <label for="description">Description:</label><br>
+                            <textarea id="description" name="description" rows="4" cols="50" required></textarea><br>
+                            <label for="dueDate">Due Date:</label><br>
+                            <input type="date" id="dueDate" name="dueDate"><br><br>
+                            <input type="submit" value="Create Task">
+                        </form>
                     </div>
                 </div>
             </div>

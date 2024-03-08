@@ -1,7 +1,7 @@
 package com.jjpedrogomes.task;
 
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.repository.TaskDao;
+import com.jjpedrogomes.model.task.TaskDao;
 import org.junit.jupiter.api.*;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
