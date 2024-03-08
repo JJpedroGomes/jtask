@@ -1,4 +1,4 @@
-package com.jjpedrogomes.repository;
+package com.jjpedrogomes.model.util;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

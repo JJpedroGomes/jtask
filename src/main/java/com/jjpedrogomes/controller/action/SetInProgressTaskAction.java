@@ -1,7 +1,8 @@
-package com.jjpedrogomes.model.action;
+package com.jjpedrogomes.controller.action;
 
+import com.jjpedrogomes.controller.shared.Action;
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.repository.TaskDao;
+import com.jjpedrogomes.model.task.TaskDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
-public class SetInProgressTaskAction implements Action{
+public class SetInProgressTaskAction implements Action {
 
     private static final Logger logger = LogManager.getLogger(CreateTaskAction.class);
     private final TaskDao taskDao;

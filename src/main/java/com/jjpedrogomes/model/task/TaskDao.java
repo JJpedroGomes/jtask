@@ -1,6 +1,6 @@
-package com.jjpedrogomes.repository;
+package com.jjpedrogomes.model.task;
 
-import com.jjpedrogomes.model.task.Task;
+import com.jjpedrogomes.model.shared.Dao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

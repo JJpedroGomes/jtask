@@ -1,9 +1,9 @@
-package com.jjpedrogomes.controller;
+package com.jjpedrogomes.controller.main;
 
-import com.jjpedrogomes.model.action.Action;
+import com.jjpedrogomes.controller.shared.Action;
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.repository.JpaUtil;
-import com.jjpedrogomes.repository.TaskDao;
+import com.jjpedrogomes.model.util.JpaUtil;
+import com.jjpedrogomes.model.task.TaskDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,7 +52,7 @@ public class TaskController extends HttpServlet {
         }
 
         StringBuilder builder = new StringBuilder();
-        String ACTION_PATH = "com.jjpedrogomes.model.action.";
+        String ACTION_PATH = "com.jjpedrogomes.controller.action.";
         String className = builder.append(ACTION_PATH).append(action).append("Action").toString();
         try {
             Constructor<?> constructor = Class.forName(className).getConstructor(TaskDao.class);
@@ -63,15 +63,16 @@ public class TaskController extends HttpServlet {
             logger.error("Action not found", e);
             throw new ServletException(e);
         }
-        //Todo - implement Dispatcher strategy
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/board.jsp");
+        dispatcher.forward(request, response);
     }
 
     //Todo - implement getMethods with filters
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.info("Entering method doGet() in TaskController Servlet");
         String action = request.getParameter("action");
+        logger.info("action provided:" + action);
 
         if (action == null) {
             action = "LIST";
