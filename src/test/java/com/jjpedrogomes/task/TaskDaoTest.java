@@ -2,6 +2,7 @@ package com.jjpedrogomes.task;
 
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.model.task.TaskDao;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.*;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
@@ -193,6 +194,36 @@ class TaskDaoTest {
             // Assert
             verify(transactionMock).rollback();
             assertThat(exception.getMessage()).contains("Simulated Error");
+        }
+    }
+
+    @Nested
+    class task_dao_delete {
+
+        @Test
+        void task_successfully() {
+            // Arrange
+            when(entityManagerMock.merge(any(Task.class))).thenReturn(task);
+            when(entityManagerMock.getTransaction()).thenReturn(transactionMock);
+            // Act
+            taskDao.delete(task);
+            // Assert
+            InOrder inOrder = inOrder(entityManagerMock, transactionMock);
+            inOrder.verify(entityManagerMock).merge(any(Task.class));
+            inOrder.verify(entityManagerMock).remove(task);
+        }
+
+        @Test
+        void task_with_error() {
+            // Arrange
+            when(entityManagerMock.getTransaction()).thenReturn(transactionMock);
+            doThrow(new RuntimeException("Simulated Error")).when(entityManagerMock).merge(any(Task.class));
+            // Act & Assert
+            RuntimeException exception = assertThrows(
+                    RuntimeException.class,
+                    () -> taskDao.delete(task));
+            verify(entityManagerMock, never()).remove(task);
+            AssertionsForClassTypes.assertThat(exception.getMessage()).contains("Simulated Error");
         }
     }
 }
