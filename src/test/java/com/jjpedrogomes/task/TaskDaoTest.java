@@ -204,6 +204,7 @@ class TaskDaoTest {
         void task_successfully() {
             // Arrange
             when(entityManagerMock.merge(any(Task.class))).thenReturn(task);
+            when(entityManagerMock.getTransaction()).thenReturn(transactionMock);
             // Act
             taskDao.delete(task);
             // Assert
@@ -215,6 +216,7 @@ class TaskDaoTest {
         @Test
         void task_with_error() {
             // Arrange
+            when(entityManagerMock.getTransaction()).thenReturn(transactionMock);
             doThrow(new RuntimeException("Simulated Error")).when(entityManagerMock).merge(any(Task.class));
             // Act & Assert
             RuntimeException exception = assertThrows(
