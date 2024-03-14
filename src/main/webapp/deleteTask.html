@@ -5,7 +5,8 @@
     </head>
     <body>
         <main>
-            <form action="/jtask/main">
+            <form action="/jtask/main" method="post">
+                <input type="hidden" name="action" value="DeleteTask"><br>
                 <label for="id">Id</label>
                 <input type="text" id="id" name="id">
                 <button type="submit">Submit</button>

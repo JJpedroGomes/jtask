@@ -103,8 +103,11 @@ public class TaskDao implements Dao<Task> {
     @Override
     public void delete(Task task) {
         try {
+            EntityTransaction transaction = entityManager.getTransaction();
+            transaction.begin();
             task = entityManager.merge(task);
             this.entityManager.remove(task);
+            transaction.commit();
         } catch (Exception exception) {
             logger.error("Error while deleting the task", exception);
             throw exception;
