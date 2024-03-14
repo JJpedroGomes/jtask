@@ -96,10 +96,18 @@ public class TaskDao implements Dao<Task> {
         }
     }
 
-    //Todo basic logic
+    /**
+     * Delete the given task from the database
+     * @param task
+     */
     @Override
     public void delete(Task task) {
-        task = entityManager.merge(task);
-        this.entityManager.remove(task);
+        try {
+            task = entityManager.merge(task);
+            this.entityManager.remove(task);
+        } catch (Exception exception) {
+            logger.error("Error while deleting the task", exception);
+            throw exception;
+        }
     }
 }
