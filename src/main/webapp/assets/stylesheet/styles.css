@@ -1,0 +1,54 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    margin:0 ;
+    padding: 0;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: #F9C784;
+}
+
+.menu-left {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    background-color: lightblue;
+    width: 10vw;
+    overflow: hidden;
+    transition: width 0.2s linear;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.logo img {
+    width: 3vw;
+    height: auto;
+}
+
+/* Todo: Change logo */
+.logo span {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.5vw;
+}
+
+a{
+    position: relative;
+    display: table;
+    padding: 1vw;
+}
+
