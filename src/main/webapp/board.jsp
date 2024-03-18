@@ -8,18 +8,21 @@
         <title>My Board</title>
     </head>
     <body>
-        <main>
-            <!-- Start: side navigation bar-->
-            <section>
-                <nav class="menu-left">
+        <!--Start: side navigation bar -->
+        <section class="sidebar_container">
+            <div class="column_wrapper">
+                <div class="sidebar">
                     <ul>
-                        <li>
+                        <!--Start: navigation bar logo -->
+                        <li class="logo_container">
                             <!--Todo Change logo-->
-                            <a href="#" class="logo">
+                            <div class="logo">
                                 <img src="assets/img/logo.png" alt="">
                                 <span>Jtask</span>
-                            </a>
+                            </div>
                         </li>
+                        <!--End: navigation bar logo -->
+                        <!--Start:  navigation bar main links-->
                         <li>
                             <a href="#">
                                 <i class="fas fa-home"></i>
@@ -44,23 +47,28 @@
                                 <span>Coming Soon</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-user-circle"></i>
-                                <span>User name</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-sign-out-alt"></i>
-                                <span>Log Out</span>
-                            </a>
-                        </li>
+                        <!--End:  navigation bar main links-->
+                        <!--Start:  navigation bar bottom links-->
+                        <div class="bottom_links_container">
+                            <li>
+                                <a href="#">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span>User name</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Log Out</span>
+                                </a>
+                            </li>
+                        </div>
+                        <!--End:  navigation bar bottom links-->
                     </ul>
-                </nav>
-            </section>
-            <!--End: side navigation bar -->
-        </main>
+                </div>
+            </div>
+        </section>
+        <!--End: side navigation bar -->
         <footer></footer>
     </body>
 </html>
