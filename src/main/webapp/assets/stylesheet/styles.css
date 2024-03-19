@@ -127,7 +127,7 @@ body {
 .lane_wrapper {
     display: flex;
     gap: 16px;
-    padding: 24px 50px;
+    padding: 35px 50px;
     align-items: flex-start;
     justify-content: start;
     overflow: scroll;
