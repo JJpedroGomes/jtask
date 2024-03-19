@@ -32,7 +32,7 @@
                         <li>
                             <a href="#">
                                 <i class="fas fa-plus-circle"></i>
-                                <span>New Task</span>
+                                <span>Add Task</span>
                             </a>
                         </li>
                         <li>
@@ -44,7 +44,7 @@
                         <li>
                             <a href="#">
                                 <i class="fas fa-calendar"></i>
-                                <span>Coming Soon</span>
+                                <span>Upcoming</span>
                             </a>
                         </li>
                         <!--End:  navigation bar main links-->
@@ -69,6 +69,33 @@
             </div>
         </section>
         <!--End: side navigation bar -->
+
+        <section>
+            <div class="board_container">
+                <form id="todo_form">
+                    <input type="text" placeholder="Add task..." id="todo_input" required>
+                    <button type="submit"><i class="fas fa-plus"></i></button>
+                </form>
+
+                <div class="lane_wrapper">
+                    <div class="lane">
+                        <h3 class="lane_heading">Todo</h3>
+                        <p class="task" draggable="true">Get groceries</p>
+                        <p class="task" draggable="true">Feed dogs</p>
+                        <p class="task" draggable="true">Go to the doctor</p>
+                    </div>
+                    <div class="lane">
+                        <h3 class="lane_heading">Doing</h3>
+                        <p class="task" draggable="true">coding jtask project</p>
+                    </div>
+                    <div class="lane">
+                        <h3 class="lane_heading">Done</h3>
+                        <p class="task" draggable="true">Math class</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <footer></footer>
     </body>
 </html>
