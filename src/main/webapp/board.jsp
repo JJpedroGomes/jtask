@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheet/styles.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheet/all.css">
+        <script src="${pageContext.request.contextPath}/js/drag.js" defer></script>
         <title>My Board</title>
     </head>
     <body>
