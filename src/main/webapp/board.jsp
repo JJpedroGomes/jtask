@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheet/styles.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheet/all.css">
         <script src="${pageContext.request.contextPath}/js/drag.js" defer></script>
+        <script src="${pageContext.request.contextPath}/js/todo.js" defer></script>
         <title>My Board</title>
     </head>
     <body>
@@ -79,19 +80,17 @@
                 </form>
 
                 <div class="lane_wrapper">
-                    <div class="lane">
+                    <div class="lane" id="todo_lane">
                         <h3 class="lane_heading">Todo</h3>
-                        <p class="task" draggable="true">Get groceries</p>
-                        <p class="task" draggable="true">Feed dogs</p>
-                        <p class="task" draggable="true">Go to the doctor</p>
+                        <!--TODO: Load Tasks from Database-->
                     </div>
                     <div class="lane">
                         <h3 class="lane_heading">Doing</h3>
-                        <p class="task" draggable="true">coding jtask project</p>
+                        <!--TODO: Load Tasks from Database-->
                     </div>
                     <div class="lane">
                         <h3 class="lane_heading">Done</h3>
-                        <p class="task" draggable="true">Math class</p>
+                        <!--TODO: Load Tasks from Database-->
                     </div>
                 </div>
             </div>
