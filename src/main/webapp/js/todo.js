@@ -1,10 +1,22 @@
-const form = document.getElementById("todo_form");
-const input = document.getElementById("todo_input");
+const form = document.getElementById("modal_form");
+const taskName = document.getElementById("task_title");
+const taskDescription = document.getElementById("task_description");
+const taskDueDate = document.getElementById("task_due_date");
 const lane = document.getElementById("todo_lane");
+
+// Open modal
+document.getElementById("modal_button").addEventListener("click", () => {
+    document.querySelector(".modal_background").style.display = "flex";
+});
+
+//Close modal
+document.querySelector(".close-btn").addEventListener("click", () => {
+    document.querySelector(".modal_background").style.display = "none";
+});
 
 form.addEventListener("submit", (event) => {
     event.preventDefault(); //prevent screen reload after submit
-    const value = input.value;
+    const value = taskName.value;
 
     if (!value) return;
 
@@ -21,5 +33,8 @@ form.addEventListener("submit", (event) => {
     });
 
     lane.appendChild(newTask);
-    input.value = ""; //Resets the input attribute
+    taskName.value = ""; //Resets the input attribute
+    taskDescription.value = "";
+    taskDueDate.value = "";
+    document.querySelector(".modal_background").style.display = "none";
 });

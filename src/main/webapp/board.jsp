@@ -33,12 +33,6 @@
                         </li>
                         <li>
                             <a href="#">
-                                <i class="fas fa-plus-circle"></i>
-                                <span>Add Task</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
                                 <i class="fas fa-calendar-day"></i>
                                 <span>Today</span>
                             </a>
@@ -72,13 +66,34 @@
         </section>
         <!--End: side navigation bar -->
 
+        <!--Start: Board -->
         <section>
             <div class="board_container">
-                <form id="todo_form">
-                    <input type="text" placeholder="Add task..." id="todo_input" required>
-                    <button type="submit"><i class="fas fa-plus"></i></button>
-                </form>
+                <!--Start: New task modal form section -->
+                <a href="#" id="modal_button">Add task</a>
+                <div class="modal_background">
+                    <form id="modal_form">
+                    <div class="modal_container">
+                        <div class="close-btn">&times;</div>
+                        <div class="modal_form_element">
+                            <input type="text" id="task_title" name="taskTitle" placeholder="Task name">
+                        </div>
+                        <div class="modal_form_element">
+                            <input type="text" id="task_description" name="taskDescription" placeholder="Description">
+                        </div>
+                        <div class="modal_form_element">
+                            <label for="task_due_date">Due Date:</label>
+                            <input type="date" id="task_due_date" name="taskDueDate">
+                        </div>
+                        <div class="modal_form_element">
+                            <button type="submit">Add task</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                <!--End: New task modal form section -->
 
+                <!--Start: Lanes section -->
                 <div class="lane_wrapper">
                     <div class="lane" id="todo_lane">
                         <h3 class="lane_heading">Todo</h3>
@@ -93,9 +108,10 @@
                         <!--TODO: Load Tasks from Database-->
                     </div>
                 </div>
+                <!--End: Lanes section -->
             </div>
         </section>
-
+        <!--End: Board -->
         <footer></footer>
     </body>
 </html>
