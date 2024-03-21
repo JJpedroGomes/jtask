@@ -1,0 +1,173 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    margin:0 ;
+    padding: 0;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    list-style: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+    display: none;
+}
+
+/* Side navigation bar styles */
+body {
+    display: flex;
+    background-color: #5D6770;
+}
+
+.sidebar_container .column_wrapper {
+    display: flex;
+    position: relative;
+    width: 15vw;
+    height: 100vh;
+}
+
+.sidebar_container .column_wrapper .sidebar {
+    width: 100%;
+    height: 100%;
+    padding: 30px 0px;
+    background-color: #7286A0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+
+.sidebar_container .column_wrapper .sidebar ul li {
+    padding: 15px;
+    border-bottom: 1px solid #7286A0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.sidebar_container .column_wrapper .sidebar ul .logo_container{
+    border: none;
+    pointer-events: none;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li .logo img {
+    width: 3vw;
+    height: auto;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li .logo span {
+    color: #FFFFFF;
+    font-size: 24px;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li a {
+    color: #FFFFFF;
+    display: block;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li a .fas{
+    width: 25px;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li:hover {
+    background-color: #5d6770;
+}
+
+.sidebar_container .column_wrapper .sidebar ul .bottom_links_container {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+/* Board form styles */
+.board_container {
+    width: 85vw;
+    height: 100vh;
+    overflow: scroll;
+}
+
+.board_container #todo_form {
+    padding: 40px 50px 0;
+}
+
+.board_container #todo_form input {
+    padding: 12px;
+    margin-right: 14px;
+    width: 275px;
+    border-radius: 4px;
+    border: none;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
+    outline: none;
+    font-size: 16px;
+}
+
+.board_container #todo_form button {
+    padding: 12px 32px;
+    border-radius: 4px;
+    border: none;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    height: 49px;
+}
+
+/* Board lanes styles */
+.lane_wrapper {
+    display: flex;
+    gap: 16px;
+    padding: 35px 50px;
+    align-items: flex-start;
+    justify-content: start;
+    overflow: scroll;
+    height: 100%;
+}
+
+.lane_wrapper .lane {
+    background: #F4F4F4;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
+    padding: 16px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex-shrink: 0;
+    min-height: 120px;
+    width: 275px;
+}
+
+.lane_wrapper .lane .lane_heading {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.lane_wrapper .lane .task {
+    background: white;
+    color: black;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: move;
+}
+
+.lane_wrapper .lane .task.is_dragging {
+    scale: 1.05;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+    background: #7286A0;
+    color: white;
+}
+
+
