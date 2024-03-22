@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheet/all.css">
         <script src="${pageContext.request.contextPath}/js/drag.js" defer></script>
         <script src="${pageContext.request.contextPath}/js/todo.js" defer></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <title>My Board</title>
     </head>
     <body>

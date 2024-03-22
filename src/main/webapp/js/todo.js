@@ -14,27 +14,53 @@ document.querySelector(".close-btn").addEventListener("click", () => {
     document.querySelector(".modal_background").style.display = "none";
 });
 
+function addTaskToLane() {
+    const newTask = document.createElement("p");
+    newTask.classList.add("task");
+    newTask.setAttribute("draggable", "true");
+    newTask.innerText = taskName.value;
+
+    lane.appendChild(newTask);
+
+    newTask.addEventListener("dragstart", () => {
+        newTask.classList.add("is_dragging");
+    });
+    newTask.addEventListener("dragend", () => {
+        newTask.classList.remove("is_dragging");
+    });
+    resetFormInputs();
+    document.querySelector(".modal_background").style.display = "none";
+};
+
+function resetFormInputs() {
+    taskName.value = ""; //Resets the input attribute
+    taskDescription.value = "";
+    taskDueDate.value = "";
+}
+
 form.addEventListener("submit", (event) => {
     event.preventDefault(); //prevent screen reload after submit
     const value = taskName.value;
 
     if (!value) return;
 
-    const newTask = document.createElement("p");
-    newTask.classList.add("task");
-    newTask.setAttribute("draggable", "true");
-    newTask.innerText = value;
+    const formData = {
+        action: "CreateTask",
+        title: value,
+        description: taskDescription.value,
+        dueDate: taskDueDate.value
+    };
 
-    newTask.addEventListener("dragstart", () => {
-        newTask.classList.add("is_dragging");
+    $.ajax({
+        type: "POST",
+        url: "main",
+        data: formData,
+        success: function (response) {
+            addTaskToLane();
+        },
+        error: function (xhr, status, error) {
+            console.error("Error:", error);
+            alert("Error occurred trying to add task");
+        }
     });
-    newTask.addEventListener("dragend", () => {
-       newTask.classList.remove("is_dragging");
-    });
-
-    lane.appendChild(newTask);
-    taskName.value = ""; //Resets the input attribute
-    taskDescription.value = "";
-    taskDueDate.value = "";
-    document.querySelector(".modal_background").style.display = "none";
 });
