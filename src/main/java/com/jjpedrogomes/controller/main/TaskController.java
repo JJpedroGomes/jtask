@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -38,7 +39,7 @@ public class TaskController extends HttpServlet {
         }
     }
 
-    //Todo - implement use cases logics
+    //Todo - implement use cases logics, quebrar esse codigo aqui em menores pedacos
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -63,8 +64,8 @@ public class TaskController extends HttpServlet {
             logger.error("Action not found", e);
             throw new ServletException(e);
         }
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/board.jsp");
-        dispatcher.forward(request, response);
+//        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/board-temp.jsp");
+//        dispatcher.forward(request, response);
     }
 
     //Todo - implement getMethods with filters
@@ -82,7 +83,9 @@ public class TaskController extends HttpServlet {
         switch (action) {
             case "LIST":
                 List<Task> taskList = taskDao.getAll();
-                request.setAttribute("taskList", taskList);
+                HttpSession session = request.getSession(true);
+                session.setAttribute("taskList", taskList);
+                
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/board.jsp");
                 dispatcher.forward(request,response);
                 logger.info("Returning all tasks");

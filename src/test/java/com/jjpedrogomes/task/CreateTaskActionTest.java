@@ -12,6 +12,7 @@ import org.mockito.Mock;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -28,6 +29,8 @@ public class CreateTaskActionTest {
     private HttpServletRequest request;
     @Mock
     private HttpServletResponse response;
+    @Mock
+    private HttpSession httpSession;
     @Mock
     private TaskDao taskDao;
 
@@ -50,6 +53,7 @@ public class CreateTaskActionTest {
         when(request.getParameter("title")).thenReturn(titleParam);
         when(request.getParameter("description")).thenReturn(descriptionParam);
         when(request.getParameter("dueDate")).thenReturn(dueDateParam);
+        when(request.getSession()).thenReturn(httpSession);
         // Act
         useCase.execute(request, response);
         // Assert

@@ -1,25 +1,67 @@
-const form = document.getElementById("todo_form");
-const input = document.getElementById("todo_input");
+const form = document.getElementById("modal_form");
+const taskName = document.getElementById("task_title");
+const taskDescription = document.getElementById("task_description");
+const taskDueDate = document.getElementById("task_due_date");
 const lane = document.getElementById("todo_lane");
 
-form.addEventListener("submit", (event) => {
-    event.preventDefault(); //prevent screen reload after submit
-    const value = input.value;
+// Open modal
+document.getElementById("modal_button").addEventListener("click", () => {
+    document.querySelector(".modal_background").style.display = "flex";
+});
 
-    if (!value) return;
+//Close modal
+document.querySelector(".close-btn").addEventListener("click", () => {
+    resetFormInputs();
+    document.querySelector(".modal_background").style.display = "none";
+});
 
+function addTaskToLane() {
     const newTask = document.createElement("p");
     newTask.classList.add("task");
     newTask.setAttribute("draggable", "true");
-    newTask.innerText = value;
+    newTask.innerText = taskName.value;
+
+    lane.appendChild(newTask);
 
     newTask.addEventListener("dragstart", () => {
         newTask.classList.add("is_dragging");
     });
     newTask.addEventListener("dragend", () => {
-       newTask.classList.remove("is_dragging");
+        newTask.classList.remove("is_dragging");
     });
+    resetFormInputs();
+    document.querySelector(".modal_background").style.display = "none";
+};
 
-    lane.appendChild(newTask);
-    input.value = ""; //Resets the input attribute
+function resetFormInputs() {
+    taskName.value = ""; //Resets the input attribute
+    taskDescription.value = "";
+    taskDueDate.value = "";
+}
+
+form.addEventListener("submit", (event) => {
+    event.preventDefault(); //prevent screen reload after submit
+    const value = taskName.value;
+
+    if (!value) return;
+
+    const formData = {
+        action: "CreateTask",
+        title: value,
+        description: taskDescription.value,
+        dueDate: taskDueDate.value
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "main",
+        data: formData,
+        success: function (response) {
+            addTaskToLane();
+        },
+        error: function (xhr, status, error) {
+            console.error("Error:", error);
+            alert("Error occurred trying to add task");
+        }
+    });
 });
