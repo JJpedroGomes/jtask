@@ -169,31 +169,16 @@ body {
     cursor: pointer;
 }
 
-.board_container #todo_form {
-    padding: 40px 50px 0;
+.board_container #modal_button {
+    display: block;
+    height: 100px;
+    padding: 50px 50px;
+    color: #FFFFFF;
+    font-size: 22px;
 }
 
-.board_container #todo_form input {
-    padding: 12px;
-    margin-right: 14px;
-    width: 275px;
-    border-radius: 4px;
-    border: none;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
-    outline: none;
-    font-size: 16px;
-}
-
-.board_container #todo_form button {
-    padding: 12px 32px;
-    border-radius: 4px;
-    border: none;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
-    color: black;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-    height: 49px;
+.board_container #modal_button .fas {
+    width: 30px;
 }
 
 /* Board lanes styles */

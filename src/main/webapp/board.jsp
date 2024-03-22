@@ -70,25 +70,28 @@
         <section>
             <div class="board_container">
                 <!--Start: New task modal form section -->
-                <a href="#" id="modal_button">Add task</a>
+                <a href="#" id="modal_button">
+                    <i class="fas fa-plus-circle"></i>Add task
+                </a>
                 <div class="modal_background">
                     <form id="modal_form">
-                    <div class="modal_container">
-                        <div class="close-btn">&times;</div>
-                        <div class="modal_form_element">
-                            <input type="text" id="task_title" name="taskTitle" placeholder="Task name">
+                        <div class="modal_container">
+                            <div class="close-btn">&times;</div>
+                            <div class="modal_form_element">
+                                <input type="text" id="task_title" name="title" placeholder="Task name" required>
+                            </div>
+                            <div class="modal_form_element">
+                                <input type="text" id="task_description" name="description"
+                                       placeholder="Description">
+                            </div>
+                            <div class="modal_form_element">
+                                <label for="task_due_date">Due Date:</label>
+                                <input type="date" id="task_due_date" name="dueDate">
+                            </div>
+                            <div class="modal_form_element">
+                                <button type="submit">Add task</button>
+                            </div>
                         </div>
-                        <div class="modal_form_element">
-                            <input type="text" id="task_description" name="taskDescription" placeholder="Description">
-                        </div>
-                        <div class="modal_form_element">
-                            <label for="task_due_date">Due Date:</label>
-                            <input type="date" id="task_due_date" name="taskDueDate">
-                        </div>
-                        <div class="modal_form_element">
-                            <button type="submit">Add task</button>
-                        </div>
-                    </div>
                     </form>
                 </div>
                 <!--End: New task modal form section -->
