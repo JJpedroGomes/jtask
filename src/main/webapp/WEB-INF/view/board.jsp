@@ -1,4 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="com.jjpedrogomes.model.task.Task" %>
+<%@ page import="java.util.List" %>
 <html>
     <head>
         <meta charset="utf-8">
@@ -20,7 +23,7 @@
                         <li class="logo_container">
                             <!--Todo Change logo-->
                             <div class="logo">
-                                <img src="assets/img/logo.png" alt="">
+                                <img src="../../assets/img/logo.png" alt="">
                                 <span>Jtask</span>
                             </div>
                         </li>
@@ -98,10 +101,15 @@
                 <!--End: New task modal form section -->
 
                 <!--Start: Lanes section -->
+                <c:set var="taskList" value="${sessionScope.taskList}" scope="session"/>
                 <div class="lane_wrapper">
                     <div class="lane" id="todo_lane">
                         <h3 class="lane_heading">Todo</h3>
-                        <!--TODO: Load Tasks from Database-->
+                        <c:if test="${not empty taskList}">
+                            <c:forEach items="${taskList}" var="task">
+                                <p class="task" draggable="true">${task.title}</p>
+                            </c:forEach>
+                        </c:if>
                     </div>
                     <div class="lane">
                         <h3 class="lane_heading">Doing</h3>

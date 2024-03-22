@@ -11,6 +11,7 @@ document.getElementById("modal_button").addEventListener("click", () => {
 
 //Close modal
 document.querySelector(".close-btn").addEventListener("click", () => {
+    resetFormInputs();
     document.querySelector(".modal_background").style.display = "none";
 });
 

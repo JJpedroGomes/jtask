@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -49,9 +50,11 @@ public class CreateTaskAction implements Action {
 
     private void addToList(HttpServletRequest request, Task task) {
         try {
-            List<Task> taskList = (List<Task>) request.getSession().getAttribute("taskList");
-            if (taskList == null) {
-                taskList = new ArrayList<Task>();
+            HttpSession session = request.getSession();
+            List<Task> taskList = null;
+            Object sessionAttribute = session.getAttribute("taskList");
+            if (sessionAttribute instanceof List<?>) {
+                taskList = (List<Task>) sessionAttribute;
             }
             taskList.add(task);
             logger.info("Adding Task to List");
