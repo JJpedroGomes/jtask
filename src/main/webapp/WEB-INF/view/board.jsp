@@ -23,7 +23,7 @@
                         <li class="logo_container">
                             <!--Todo Change logo-->
                             <div class="logo">
-                                <img src="../../assets/img/logo.png" alt="">
+                                <img src="${pageContext.request.contextPath}/assets/img/logo.png" alt="">
                                 <span>Jtask</span>
                             </div>
                         </li>
