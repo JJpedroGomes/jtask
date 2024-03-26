@@ -26,6 +26,7 @@ public class CreateTaskAction implements Action {
 
     /**
      * Executes the use case to create a new task.
+     * and add it to the task list from the session request
      *
      * @param request  The HttpServletRequest containing task information.
      * @param response The HttpServletResponse for providing feedback.
@@ -33,55 +34,48 @@ public class CreateTaskAction implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String title = request.getParameter("title");
-        validateTitle(title);
         String description = request.getParameter("description");
-        String dueDateParam = request.getParameter("dueDate");
+        String dueDate = request.getParameter("dueDate");
 
-        LocalDate dueDate = null;
-        if (dueDateParam != null) {
-            dueDate = parseDueDate(dueDateParam);
-        }
-        Task task = new Task(title, description, dueDate);
         logger.info("Creating task...");
+        Task task = createTask(title, description, dueDate);
         taskDao.save(task);
-        addToList(request, task);
+        addTaskToSession(request, task);
         response.setStatus(HttpServletResponse.SC_CREATED);
     }
 
-    private void addToList(HttpServletRequest request, Task task) {
-        try {
-            HttpSession session = request.getSession();
-            List<Task> taskList = null;
-            Object sessionAttribute = session.getAttribute("taskList");
-            if (sessionAttribute instanceof List<?>) {
-                taskList = (List<Task>) sessionAttribute;
+    private Task createTask(String title, String description, String dueDateParam) {
+        LocalDate dueDate = null;
+        if (title != null) {
+            try {
+                dueDate = LocalDate.parse(dueDateParam);
+            } catch (DateTimeParseException exception) {
+                logger.error("Due data is not valid format", exception);
+                throw exception;
             }
-            taskList.add(task);
-            logger.info("Adding Task to List");
-
-            request.getSession().setAttribute("taskList", taskList);
-            request.setAttribute("taskList", taskList);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    private void validateTitle(String title) {
-        if (title == null) {
+            return new Task(title, description, dueDate);
+        } else {
             IllegalArgumentException exception = new IllegalArgumentException();
             logger.error("Task title cannot be null", exception);
             throw exception;
         }
     }
 
-    private LocalDate parseDueDate(String dueDateParam) {
+    private void addTaskToSession(HttpServletRequest request, Task task) {
         try {
-            return LocalDate.parse(dueDateParam);
-        } catch (DateTimeParseException exception) {
-            logger.error("Due data is not valid format", exception);
-            throw exception;
+            HttpSession session = request.getSession();
+            List<Task> taskList = null;
+            Object sessionList = session.getAttribute("taskList");
+            if (sessionList instanceof List) {
+                taskList = new ArrayList<Task>((ArrayList<Task>)sessionList);
+            } else {
+                taskList = new ArrayList<Task>();
+            }
+            taskList.add(task);
+            logger.info("Adding Task to List session");
+            session.setAttribute("taskList", taskList);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }
