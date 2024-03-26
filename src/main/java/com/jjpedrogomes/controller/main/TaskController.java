@@ -39,33 +39,23 @@ public class TaskController extends HttpServlet {
         }
     }
 
-    //Todo - implement use cases logics, quebrar esse codigo aqui em menores pedacos
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException {
         logger.info("Entering method doPost() in TaskController Servlet");
         String action = request.getParameter("action");
 
-        if (action == null) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("No action provided");
-            return;
-        }
-
-        StringBuilder builder = new StringBuilder();
-        String ACTION_PATH = "com.jjpedrogomes.controller.action.";
-        String className = builder.append(ACTION_PATH).append(action).append("Action").toString();
+        String qualifiedClassName = getQualifiedClassName(action, response);
         try {
-            Constructor<?> constructor = Class.forName(className).getConstructor(TaskDao.class);
+            Constructor<?> constructor = Class.forName(qualifiedClassName).getConstructor(TaskDao.class);
             Action actionClass = (Action) constructor.newInstance(taskDao);
             actionClass.execute(request, response);
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException
+                 | InvocationTargetException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            logger.error("Action not found", e);
+            logger.error("Action:" + action + "not found", e);
             throw new ServletException(e);
         }
-//        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/board-temp.jsp");
-//        dispatcher.forward(request, response);
     }
 
     //Todo - implement getMethods with filters
@@ -83,13 +73,25 @@ public class TaskController extends HttpServlet {
         switch (action) {
             case "LIST":
                 List<Task> taskList = taskDao.getAll();
+
                 HttpSession session = request.getSession(true);
                 session.setAttribute("taskList", taskList);
-                
+
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/board.jsp");
                 dispatcher.forward(request,response);
                 logger.info("Returning all tasks");
                 break;
         }
+    }
+
+    private String getQualifiedClassName(String action, HttpServletResponse response) throws ServletException {
+        if (action == null) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            logger.error("No action provided");
+            throw new ServletException();
+        }
+        StringBuilder builder = new StringBuilder();
+        String ACTION_PATH = "com.jjpedrogomes.controller.action.";
+        return builder.append(ACTION_PATH).append(action).append("Action").toString();
     }
 }
