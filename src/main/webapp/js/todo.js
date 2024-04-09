@@ -3,16 +3,17 @@ const taskName = document.getElementById("task_title");
 const taskDescription = document.getElementById("task_description");
 const taskDueDate = document.getElementById("task_due_date");
 const lane = document.getElementById("todo_lane");
+const modal = document.querySelector(".modal_background");
 
 // Open modal
 document.getElementById("modal_button").addEventListener("click", () => {
-    document.querySelector(".modal_background").style.display = "flex";
+    modal.style.display = "flex";
 });
 
 //Close modal
 document.querySelector(".close-btn").addEventListener("click", () => {
     resetFormInputs();
-    document.querySelector(".modal_background").style.display = "none";
+    modal.style.display = "none";
 });
 
 function addTaskToLane() {
@@ -30,7 +31,7 @@ function addTaskToLane() {
         newTask.classList.remove("is_dragging");
     });
     resetFormInputs();
-    document.querySelector(".modal_background").style.display = "none";
+    modal.style.display = "none";
 };
 
 function resetFormInputs() {
@@ -65,3 +66,15 @@ form.addEventListener("submit", (event) => {
         }
     });
 });
+
+// Toda vez que uma tarefa é clicada apenas a primeira aparece nos detalhes  do modal
+function showDetails(title, description, dueDate, conclusionDate) {
+    modal.style.display = "flex";
+    document.querySelector(".modal_container").className = "modal_container_details";
+    document.getElementById("description_details").classList.remove("modal_form_element");
+    document.getElementById("modal_submit_btn").innerHTML = "Save";
+
+    taskName.value = title;
+    taskDescription.value = description;
+    taskDueDate.value = dueDate;
+}
