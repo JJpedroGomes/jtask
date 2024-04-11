@@ -1,5 +1,6 @@
 package com.jjpedrogomes.controller.action;
 
+import com.google.gson.Gson;
 import com.jjpedrogomes.controller.shared.Action;
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.model.task.TaskDao;
@@ -9,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -41,7 +44,20 @@ public class CreateTaskAction implements Action {
         Task task = createTask(title, description, dueDate);
         taskDao.save(task);
         addTaskToSession(request, task);
+
         response.setStatus(HttpServletResponse.SC_CREATED);
+        Gson gson = new Gson();
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        String json = gson.toJson(task);
+        try (PrintWriter writer = response.getWriter()) {
+            writer.println(json);
+            writer.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Task createTask(String title, String description, String dueDateParam) {
