@@ -74,7 +74,7 @@
         <section>
             <div class="board_container">
                 <!--Start: New task modal form section -->
-                <a href="#" id="modal_button">
+                <a id="modal_button">
                     <i class="fas fa-plus-circle"></i>Add task
                 </a>
                 <div class="modal_background">

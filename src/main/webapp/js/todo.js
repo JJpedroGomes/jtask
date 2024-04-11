@@ -3,20 +3,22 @@ const taskName = document.getElementById("task_title");
 const taskDescription = document.getElementById("task_description");
 const taskDueDate = document.getElementById("task_due_date");
 const lane = document.getElementById("todo_lane");
-const modal = document.querySelector(".modal_background");
+const btnSubmit = document.getElementById("modal_submit_btn");
 
 // Open modal
 document.getElementById("modal_button").addEventListener("click", () => {
-    modal.style.display = "flex";
+    document.querySelector(".modal_background").style.display = "flex";
+    form.removeEventListener("submit", addUpdateTaskEventListener);
+    form.addEventListener("submit", addCreateTaskEventListener);
 });
 
 //Close modal
 document.querySelector(".close-btn").addEventListener("click", () => {
     resetFormInputs();
-    modal.style.display = "none";
+    document.querySelector(".modal_background").style.display = "none";
 });
 
-function addTaskToLane() {
+function addTaskToLane(task) {
     const newTask = document.createElement("p");
     newTask.classList.add("task");
     newTask.setAttribute("draggable", "true");
@@ -24,6 +26,10 @@ function addTaskToLane() {
 
     lane.appendChild(newTask);
 
+    newTask.addEventListener("click", () => {
+        showDetails(task.title, task.description, task.dueDate, task.conclusionDate || null);
+    });
+    console.log("Calling...");
     newTask.addEventListener("dragstart", () => {
         newTask.classList.add("is_dragging");
     });
@@ -31,17 +37,18 @@ function addTaskToLane() {
         newTask.classList.remove("is_dragging");
     });
     resetFormInputs();
-    modal.style.display = "none";
+    document.querySelector(".modal_background").style.display = "none";
 };
 
 function resetFormInputs() {
     taskName.value = ""; //Resets the input attribute
     taskDescription.value = "";
     taskDueDate.value = "";
+    btnSubmit.innerText = "Add Task";
 }
 
-form.addEventListener("submit", (event) => {
-    event.preventDefault(); //prevent screen reload after submit
+function addCreateTaskEventListener(event) {
+    event.preventDefault();
     const value = taskName.value;
 
     if (!value) return;
@@ -58,23 +65,30 @@ form.addEventListener("submit", (event) => {
         url: "main",
         data: formData,
         success: function (response) {
-            addTaskToLane();
+            addTaskToLane(response);
         },
         error: function (xhr, status, error) {
             console.error("Error:", error);
             alert("Error occurred trying to add task");
         }
     });
-});
+}
 
-// Toda vez que uma tarefa é clicada apenas a primeira aparece nos detalhes  do modal
 function showDetails(title, description, dueDate, conclusionDate) {
-    modal.style.display = "flex";
-    document.querySelector(".modal_container").className = "modal_container_details";
-    document.getElementById("description_details").classList.remove("modal_form_element");
-    document.getElementById("modal_submit_btn").innerHTML = "Save";
-
+    document.querySelector(".modal_background").style.display = "flex";
     taskName.value = title;
     taskDescription.value = description;
     taskDueDate.value = dueDate;
+    btnSubmit.innerText = "Save";
+
+    form.removeEventListener("submit", addCreateTaskEventListener);
+    form.addEventListener("submit", addUpdateTaskEventListener);
 }
+
+//Todo: Chamar controller para update da task
+function addUpdateTaskEventListener(event) {
+    event.preventDefault();
+    console.log("teste");
+}
+
+//Todo: Estilizar o novo modal para detalhes
