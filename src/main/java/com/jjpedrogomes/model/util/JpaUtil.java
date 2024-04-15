@@ -20,4 +20,8 @@ public class JpaUtil {
     public static EntityManager getEntityManager() {
        return FACTORY.createEntityManager();
     }
+
+    public static void closeFactory() {
+        FACTORY.close();
+    }
 }
