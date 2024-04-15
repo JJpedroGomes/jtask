@@ -124,6 +124,10 @@ public class Task implements Entity<Task> {
         this.description = description;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public boolean sameIdentityAs(final Task other) {
         return other != null && id.equals(other.id);
