@@ -85,11 +85,10 @@
                                 <input type="text" id="task_title" name="title" placeholder="Task name" required>
                             </div>
                             <div class="modal_form_element" id="description_details">
-                                <input type="text" id="task_description" name="description"
-                                       placeholder="Description">
+                                <textarea id="task_description" name="description" placeholder="Description"></textarea>
                             </div>
                             <div class="modal_form_element">
-                                <label for="task_due_date">Due Date:</label>
+                                <label class="date_label" for="task_due_date">Due Date:</label>
                                 <input type="date" id="task_due_date" name="dueDate">
                             </div>
                             <div class="modal_form_element">
@@ -107,7 +106,12 @@
                         <h3 class="lane_heading">Todo</h3>
                         <c:if test="${not empty taskList}">
                             <c:forEach items="${taskList}" var="task">
-                                <p class="task" draggable="true" onclick="showDetails('${task.title}', '${task.description}', '${task.dueDate}', '${task.conclusionDate}')">
+                                <p class="task" id="task-${task.id}" draggable="true"
+                                   data-task-id="${task.id}"
+                                   data-task-title="${task.title}"
+                                   data-task-description="${task.description}"
+                                   data-task-dueDate="${task.dueDate}"
+                                   data-task-conclusionDate="${task.conclusionDate}">
                                         ${task.title}
                                 </p>
                             </c:forEach>
