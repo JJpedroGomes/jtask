@@ -75,7 +75,6 @@ function addTaskToLane(task) {
     newTask.addEventListener("click", () => {
         showDetails(task.id, task.title, task.description, formatDate(task.dueDate), task.conclusionDate || null);
     });
-    console.log("Calling...");
     newTask.addEventListener("dragstart", () => {
         newTask.classList.add("is_dragging");
     });
@@ -95,7 +94,6 @@ window.addEventListener('load', function() {
             const taskDueDate = taskElement.dataset.taskDuedate;
             const taskConclusionDate = taskElement.dataset.taskConclusiondate;
 
-            console.log("adicionando show details event listener");
             // taskClickHandler(taskId, taskTitle, taskDescription, taskDueDate, taskConclusionDate);
             showDetails(taskId, taskTitle, taskDescription, taskDueDate, taskConclusionDate);
         });
@@ -113,11 +111,9 @@ function showDetails(id, title, description, dueDate, conclusionDate) {
     form.removeEventListener("submit", handleUpdateTask); // Remove the event listener for updating tasks
 
     form.addEventListener("submit", handleUpdateTaskOnce); // Add a new event listener for updating tasks only once
-    console.log("adicionando event Listener de atualizacao");
     function handleUpdateTaskOnce(event) {
         handleUpdateTask(event, id);
         form.removeEventListener("submit", handleUpdateTaskOnce); // Remove the event listener after use
-        console.log("removendo event Listener atualizacao");
     }
 }
 
@@ -174,7 +170,6 @@ function updateTaskElement(response) {
     taskElement.dataset.taskTitle = response.title;
     taskElement.dataset.taskDescription = response.description;
     taskElement.dataset.taskDuedate = formatDate(response.dueDate);
-    console.log(taskElement.dataset.taskDuedate);
     if (response.conclusionDate != null) {
         taskElement.dataset.taskDuedate = formatDate(response.conclusionDate);
     }
