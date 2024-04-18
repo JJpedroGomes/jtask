@@ -1,12 +1,12 @@
-package com.jjpedrogomes.controller.main;
+package com.jjpedrogomes.controller;
 
-import com.jjpedrogomes.controller.shared.Action;
+import com.jjpedrogomes.controller.action.Action;
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.model.util.JpaUtil;
 import com.jjpedrogomes.model.task.TaskDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,23 +26,27 @@ import java.util.List;
 public class TaskController extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger(TaskController.class);
-    private TaskDao taskDao;
+//    private TaskDao taskDao;
 
-    @Override
-    public void init() throws ServletException {
-        logger.info("Servlet init");
-        try {
-            this.taskDao = new TaskDao(JpaUtil.getEntityManager());
-        } catch (Exception exception) {
-            logger.error("Error occurred trying to init the servlet");
-            throw new ServletException(exception);
-        }
-    }
+//    @Override
+//    public void init() throws ServletException {
+//        logger.info("Servlet init");
+//        try {
+//            this.taskDao = new TaskDao(JpaUtil.getEntityManager());
+//        } catch (Exception exception) {
+//            logger.error("Error occurred trying to init the servlet");
+//            throw new ServletException(exception);
+//        }
+//    }
+
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
         logger.info("Entering method doPost() in TaskController Servlet");
+
+        EntityManager entityManager = (EntityManager) request.getAttribute("entityManager");
+        TaskDao taskDao = new TaskDao(entityManager);
         String action = request.getParameter("action");
 
         String qualifiedClassName = getQualifiedClassName(action, response);
@@ -62,6 +66,9 @@ public class TaskController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.info("Entering method doGet() in TaskController Servlet");
+
+        EntityManager entityManager = (EntityManager) request.getAttribute("entityManager");
+        TaskDao taskDao = new TaskDao(entityManager);
         String action = request.getParameter("action");
         logger.info("action provided:" + action);
 
