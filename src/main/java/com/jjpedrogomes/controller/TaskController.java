@@ -26,19 +26,6 @@ import java.util.List;
 public class TaskController extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger(TaskController.class);
-//    private TaskDao taskDao;
-
-//    @Override
-//    public void init() throws ServletException {
-//        logger.info("Servlet init");
-//        try {
-//            this.taskDao = new TaskDao(JpaUtil.getEntityManager());
-//        } catch (Exception exception) {
-//            logger.error("Error occurred trying to init the servlet");
-//            throw new ServletException(exception);
-//        }
-//    }
-
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)

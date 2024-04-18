@@ -1,7 +1,7 @@
 package com.jjpedrogomes.task;
 
 import com.jjpedrogomes.controller.action.CreateTaskAction;
-import com.jjpedrogomes.controller.main.TaskController;
+import com.jjpedrogomes.controller.TaskController;
 import com.jjpedrogomes.model.task.TaskDao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.time.LocalDate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
