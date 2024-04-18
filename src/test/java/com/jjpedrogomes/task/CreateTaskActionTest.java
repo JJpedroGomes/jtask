@@ -15,11 +15,13 @@ import org.mockito.Mock;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.jjpedrogomes.task.TaskTest.buildInProgressTask;
@@ -66,6 +68,7 @@ public class CreateTaskActionTest {
         when(request.getParameter("description")).thenReturn(descriptionParam);
         when(request.getParameter("dueDate")).thenReturn(dueDateParam);
         when(request.getSession()).thenReturn(httpSession);
+        when(response.getWriter()).thenReturn(mock(PrintWriter.class));
         // Act
         useCase.execute(request, response);
         // Assert
@@ -152,5 +155,23 @@ public class CreateTaskActionTest {
                 () -> {
             method.invoke(createTaskAction, request, task);
         });
+    }
+
+    @Test
+    void add_task_to_session_but_received_list_is_empty() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        // Arrange
+        Task task = buildInProgressTask();
+        CreateTaskAction createTaskAction = new CreateTaskAction(taskDao);
+        Method method = CreateTaskAction.class.getDeclaredMethod("addTaskToSession", HttpServletRequest.class,
+                Task.class);
+        method.setAccessible(true);
+        when(request.getSession()).thenReturn(httpSession);
+        when(httpSession.getAttribute("taskList")).thenReturn(Collections.emptyList());
+        // Act
+        method.invoke(createTaskAction, request, task);
+        // Assert
+        verify(httpSession).setAttribute(eq("taskList"), taskListCaptor.capture());
+        List<Task> capturedTaskList = taskListCaptor.getValue();
+        assertThat(capturedTaskList).containsExactly(task);
     }
 }
