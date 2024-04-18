@@ -1,6 +1,5 @@
 package com.jjpedrogomes.controller.action;
 
-import com.google.gson.Gson;
 import com.jjpedrogomes.controller.util.GsonUtil;
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.model.task.TaskDao;
@@ -10,8 +9,6 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -71,7 +68,7 @@ public class CreateTaskAction implements Action {
             HttpSession session = request.getSession();
             List<Task> taskList = null;
             Object sessionList = session.getAttribute("taskList");
-            if (sessionList instanceof List) {
+            if (sessionList instanceof List && !((List) sessionList).isEmpty()) {
                 taskList = new ArrayList<Task>((ArrayList<Task>)sessionList);
             } else {
                 taskList = new ArrayList<Task>();
