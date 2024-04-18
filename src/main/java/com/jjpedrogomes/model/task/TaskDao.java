@@ -26,45 +26,14 @@ public class TaskDao implements Dao<Task> {
      */
     @Override
     public void save(Task task) {
-        EntityTransaction transaction = null;
-        try {
-            transaction = entityManager.getTransaction();
-            transaction.begin();
-            this.entityManager.persist(task);
-            transaction.commit();
-            logger.info("Task created successfully.");
-        } catch (Exception exception) {
-            if (transaction != null && transaction.isActive()) {
-                logger.error("Error occurred: ", exception);
-                transaction.rollback();
-            }
-        }
+        entityManager.persist(task);
+        logger.info("Task created successfully.");
     }
 
-    /**
-     * Updates the given Task entity in the database.
-     *
-     * @param task The Task entity to be updated.
-     * @throws IllegalArgumentException if the given task is not managed by the entity manager.
-     */
     @Override
     public void update(Task task) {
-        EntityTransaction transaction = null;
-        try {
-            if (!entityManager.contains(task)) {
-                throw new IllegalArgumentException("Task is not managed by the entity manager");
-            }
-            transaction = entityManager.getTransaction();
-            transaction.begin();
-            transaction.commit();
-            logger.info("Task updated successfully.");
-        } catch (Exception exception) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
-            logger.error("Error occurred while updating task", exception);
-            throw exception;
-        }
+        entityManager.merge(task);
+        logger.info("Task updated successfully.");
     }
 
     @Override
