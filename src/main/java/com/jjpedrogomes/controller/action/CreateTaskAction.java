@@ -1,7 +1,7 @@
 package com.jjpedrogomes.controller.action;
 
 import com.google.gson.Gson;
-import com.jjpedrogomes.controller.shared.Action;
+import com.jjpedrogomes.controller.util.GsonUtil;
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.model.task.TaskDao;
 import org.apache.logging.log4j.LogManager;
@@ -45,19 +45,8 @@ public class CreateTaskAction implements Action {
         taskDao.save(task);
         addTaskToSession(request, task);
 
+        GsonUtil.convertObjectToJson(response, task);
         response.setStatus(HttpServletResponse.SC_CREATED);
-        Gson gson = new Gson();
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
-        String json = gson.toJson(task);
-        try (PrintWriter writer = response.getWriter()) {
-            writer.println(json);
-            writer.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private Task createTask(String title, String description, String dueDateParam) {
