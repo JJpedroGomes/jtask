@@ -66,15 +66,16 @@ function handleCreateTask(event) {
 // Function to add a task DOM element to the lane
 function addTaskToLane(task) {
     const newTask = document.createElement("p");
+    newTask.id = `task-${task.id}`;
     newTask.classList.add("task");
     newTask.setAttribute("draggable", "true");
     newTask.innerText = taskName.value;
 
     lane.appendChild(newTask);
 
-    newTask.addEventListener("click", () => {
-        showDetails(task.id, task.title, task.description, formatDate(task.dueDate), task.conclusionDate || null);
-    });
+    newTask.dataset.taskId = task.id;
+    addAndUpdateDatasets(newTask, task);
+    addTaskClickListener(newTask);
     newTask.addEventListener("dragstart", () => {
         newTask.classList.add("is_dragging");
     });
@@ -87,18 +88,21 @@ function addTaskToLane(task) {
 
 window.addEventListener('load', function() {
     document.querySelectorAll('.task').forEach(function(taskElement) {
-        taskElement.addEventListener('click', function() {
-            const taskId = taskElement.dataset.taskId;
-            const taskTitle = taskElement.dataset.taskTitle;
-            const taskDescription = taskElement.dataset.taskDescription;
-            const taskDueDate = taskElement.dataset.taskDuedate;
-            const taskConclusionDate = taskElement.dataset.taskConclusiondate;
-
-            // taskClickHandler(taskId, taskTitle, taskDescription, taskDueDate, taskConclusionDate);
-            showDetails(taskId, taskTitle, taskDescription, taskDueDate, taskConclusionDate);
-        });
+        addTaskClickListener(taskElement);
     });
 });
+
+function addTaskClickListener(taskElement) {
+    taskElement.addEventListener('click', function() {
+        const taskId = taskElement.dataset.taskId;
+        const taskTitle = taskElement.dataset.taskTitle;
+        const taskDescription = taskElement.dataset.taskDescription;
+        const taskDueDate = taskElement.dataset.taskDuedate;
+        const taskConclusionDate = taskElement.dataset.taskConclusiondate;
+
+        showDetails(taskId, taskTitle, taskDescription, taskDueDate, taskConclusionDate);
+    });
+}
 
 // Function to show task details in the modal for updating
 function showDetails(id, title, description, dueDate, conclusionDate) {
@@ -108,12 +112,12 @@ function showDetails(id, title, description, dueDate, conclusionDate) {
 
     openModalDetails(title, description, dueDate);
     form.removeEventListener("submit", handleCreateTask);
-    form.removeEventListener("submit", handleUpdateTask); // Remove the event listener for updating tasks
+    form.removeEventListener("submit", handleUpdateTask);
 
-    form.addEventListener("submit", handleUpdateTaskOnce); // Add a new event listener for updating tasks only once
+    form.addEventListener("submit", handleUpdateTaskOnce);
     function handleUpdateTaskOnce(event) {
         handleUpdateTask(event, id);
-        form.removeEventListener("submit", handleUpdateTaskOnce); // Remove the event listener after use
+        form.removeEventListener("submit", handleUpdateTaskOnce);
     }
 }
 
@@ -158,8 +162,7 @@ function openModalDetails(title, description, dueDate) {
 }
 
 // Function to update a taskElement
-function updateTaskElement(response) {
-    const taskElement = document.getElementById(`task-${response.id}`);
+function updateTaskElement(response, taskElement) {
     if (!taskElement) {
         console.error("Task element not found in DOM");
         return;
@@ -167,11 +170,15 @@ function updateTaskElement(response) {
     taskElement.textContent = response.title;
     taskElement.removeEventListener('click', showDetails);
 
-    taskElement.dataset.taskTitle = response.title;
-    taskElement.dataset.taskDescription = response.description;
-    taskElement.dataset.taskDuedate = formatDate(response.dueDate);
-    if (response.conclusionDate != null) {
-        taskElement.dataset.taskDuedate = formatDate(response.conclusionDate);
+    addAndUpdateDatasets(taskElement, response);
+}
+
+function addAndUpdateDatasets(taskElement, task) {
+    taskElement.dataset.taskTitle = task.title;
+    taskElement.dataset.taskDescription = task.description;
+    taskElement.dataset.taskDuedate = formatDate(task.dueDate);
+    if (task.conclusionDate != null) {
+        taskElement.dataset.taskDuedate = formatDate(task.conclusionDate);
     }
 }
 
@@ -181,7 +188,6 @@ function formatDate(dateObj) {
     const formattedDay = day.toString().padStart(2, '0');
     return `${year}-${formattedMonth}-${formattedDay}`;
 }
-
 
 //Todo: Refatorar os outros metodos do servlet para a nova configuracao de entityManager
 
