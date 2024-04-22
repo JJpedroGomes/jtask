@@ -49,6 +49,7 @@
         <configuration>
           <systemPropertyVariables>
             <log4j.configurationFile>log4j2-test.xml</log4j.configurationFile>
+            <env_persistence_unit>test</env_persistence_unit>
           </systemPropertyVariables>
         </configuration>
       </plugin>
@@ -116,6 +117,13 @@
       <groupId>org.powermock</groupId>
       <artifactId>powermock-api-mockito2</artifactId>
       <version>2.0.9</version> <!-- Versão pode variar -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.4.200</version>
       <scope>test</scope>
     </dependency>
 
