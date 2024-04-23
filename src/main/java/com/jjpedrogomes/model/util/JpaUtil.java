@@ -6,11 +6,22 @@ import javax.persistence.Persistence;
 
 public class JpaUtil {
 
-    /**
-     * Creates a static instance of the entity manager factory.
-     */
-    private static final EntityManagerFactory FACTORY = Persistence
-            .createEntityManagerFactory("default");
+    private static final EntityManagerFactory FACTORY;
+
+    static {
+        String persistenceUnitName = determinePersistenceUnitName();
+        FACTORY = Persistence.createEntityManagerFactory(persistenceUnitName);
+    }
+
+    private static String determinePersistenceUnitName() {
+        String envPersistenceUnit = System.getProperty("env_persistence_unit");
+        if (envPersistenceUnit != null && !envPersistenceUnit.isEmpty()) {
+            return envPersistenceUnit;
+        } else {
+            // Default persistence unit name for WildFly
+            return "default";
+        }
+    }
 
     /**
      * Returns a new EntityManager instance.
