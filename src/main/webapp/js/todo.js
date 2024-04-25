@@ -189,6 +189,4 @@ function formatDate(dateObj) {
     return `${year}-${formattedMonth}-${formattedDay}`;
 }
 
-//Todo: Refatorar os outros metodos do servlet para a nova configuracao de entityManager
-
 //Todo: Refatorar os testes unitarios 

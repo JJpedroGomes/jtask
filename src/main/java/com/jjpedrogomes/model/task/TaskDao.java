@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +56,7 @@ public class TaskDao implements Dao<Task> {
         try {
             logger.info("Selecting all Tasks");
             List<Task> list = this.entityManager.createQuery(query, Task.class).getResultList();
-            if (list.isEmpty()) throw new IllegalStateException("Task List is current empty");
+            if (list.isEmpty()) logger.info("Task List is current empty");
             return list;
         } catch (Exception exception) {
             logger.error("Error while retrieving all tasks", exception);
@@ -65,6 +64,7 @@ public class TaskDao implements Dao<Task> {
         }
     }
 
+    //Todo: Refactor this as the filter
     /**
      * Delete the given task from the database
      * @param task
@@ -72,11 +72,8 @@ public class TaskDao implements Dao<Task> {
     @Override
     public void delete(Task task) {
         try {
-            EntityTransaction transaction = entityManager.getTransaction();
-            transaction.begin();
             task = entityManager.merge(task);
             this.entityManager.remove(task);
-            transaction.commit();
         } catch (Exception exception) {
             logger.error("Error while deleting the task", exception);
             throw exception;

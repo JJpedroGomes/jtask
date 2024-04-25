@@ -1,3 +1,5 @@
+package com.jjpedrogomes.controller;
+
 import com.jjpedrogomes.controller.filter.EntityManagerFilter;
 import com.jjpedrogomes.model.util.JpaUtil;
 import org.junit.jupiter.api.*;
