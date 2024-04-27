@@ -50,7 +50,9 @@ class EntityManagerUnitTest {
         @Test
         void successful() throws ServletException, IOException {
             // Arrange
+            when(requestMock.getMethod()).thenReturn("POST");
             when(entityManager.getTransaction()).thenReturn(transactionMock);
+            when(entityManager.getTransaction().isActive()).thenReturn(Boolean.TRUE);
             // Act
             entityManagerFilter.doFilter(requestMock, responseMock, filterChainMock);
             // Assert
@@ -66,6 +68,7 @@ class EntityManagerUnitTest {
             // Arrange
             when(entityManager.getTransaction()).thenReturn(transactionMock);
             when(transactionMock.isActive()).thenReturn(true);
+            when(requestMock.getMethod()).thenReturn("POST");
             // Arrange behavior for filterChainMock to throw an exception
             doThrow(new RuntimeException("Simulated Error")).when(filterChainMock).doFilter(requestMock, responseMock);
             // Act
@@ -75,6 +78,19 @@ class EntityManagerUnitTest {
             // Assert
             verify(transactionMock).rollback();
             verify(entityManager).close();
+        }
+
+        @Test
+        void not_beginning_transaction() throws ServletException, IOException {
+            // Arrange
+            when(requestMock.getMethod()).thenReturn("GET");
+            when(entityManager.getTransaction()).thenReturn(transactionMock);
+            when(entityManager.getTransaction().isActive()).thenReturn(Boolean.FALSE);
+            // Act
+            entityManagerFilter.doFilter(requestMock, responseMock, filterChainMock);
+            // Assert
+            verify(transactionMock, never()).begin();
+            verify(transactionMock, never()).commit();
         }
     }
 }
