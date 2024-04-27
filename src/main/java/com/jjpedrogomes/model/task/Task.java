@@ -113,6 +113,7 @@ public class Task implements Entity<Task> {
     }
 
     public void setTitle(String title) {
+        if (title.isEmpty()) return;
         this.title = title;
     }
 
