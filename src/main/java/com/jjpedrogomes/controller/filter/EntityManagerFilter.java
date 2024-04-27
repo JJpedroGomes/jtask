@@ -5,8 +5,10 @@ import com.jjpedrogomes.model.util.JpaUtil;
 import javax.persistence.EntityManager;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+//Todo: Adapt for just transaction requests
 @WebFilter(urlPatterns = {"/*"})
 public class EntityManagerFilter implements Filter {
 
@@ -19,10 +21,19 @@ public class EntityManagerFilter implements Filter {
                          FilterChain chain) throws IOException, ServletException {
         EntityManager entityManager = JpaUtil.getEntityManager();
         try {
-            entityManager.getTransaction().begin();
+            HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+            String method = ((HttpServletRequest) request).getMethod();
+
+            if (!method.equals("GET")) {
+                entityManager.getTransaction().begin();
+            }
+
             request.setAttribute("entityManager", entityManager);
             chain.doFilter(request, response);
-            entityManager.getTransaction().commit();
+
+            if (entityManager.getTransaction().isActive()){
+                entityManager.getTransaction().commit();
+            }
         } catch (Exception exception) {
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
