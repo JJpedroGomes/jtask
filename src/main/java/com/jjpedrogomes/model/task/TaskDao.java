@@ -30,9 +30,10 @@ public class TaskDao implements Dao<Task> {
     }
 
     @Override
-    public void update(Task task) {
-        entityManager.merge(task);
+    public Task update(Task task) {
+        Task taskAfterMerge = entityManager.merge(task);
         logger.info("Task updated successfully.");
+        return taskAfterMerge;
     }
 
     @Override
