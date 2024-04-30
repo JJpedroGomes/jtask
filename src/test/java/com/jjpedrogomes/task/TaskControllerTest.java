@@ -2,6 +2,7 @@ package com.jjpedrogomes.task;
 
 import com.jjpedrogomes.controller.action.CreateTaskAction;
 import com.jjpedrogomes.controller.TaskController;
+import com.jjpedrogomes.controller.action.UpdateTaskAction;
 import com.jjpedrogomes.model.task.TaskDao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -10,10 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
@@ -32,6 +35,10 @@ class TaskControllerTest {
     @Mock
     private HttpSession httpSession;
     @Mock
+    private EntityManager entityManager;
+    @Mock
+    private PrintWriter writer;
+    @Mock
     TaskDao taskDao;
     @InjectMocks
     private TaskController taskController;
@@ -44,10 +51,12 @@ class TaskControllerTest {
     void doPost_with_createTask_action() throws Exception {
         // Arrange
         String fullQualifiedName = "com.jjpedrogomes.controller.action.CreateTaskAction";
+        when(request.getAttribute("entityManager")).thenReturn(entityManager);
         when(request.getParameter("action")).thenReturn("CreateTask");
         when(request.getParameter("title")).thenReturn("any");
         when(request.getParameter("dueDate")).thenReturn("2007-12-03");
         when(request.getSession()).thenReturn(httpSession);
+        when(response.getWriter()).thenReturn(writer);
         Method method = TaskController.class.getDeclaredMethod("getQualifiedClassName", String.class, HttpServletResponse.class);
         method.setAccessible(true);
         // Act
@@ -58,6 +67,30 @@ class TaskControllerTest {
         // Assert
         assertThat(actionFullQualifiedName).isEqualTo(fullQualifiedName);
         assertThat(instance).isInstanceOf(CreateTaskAction.class);
+        verify(response, never()).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    @Test
+    void doPost_with_updateTask_action() throws Exception {
+        // Arrange
+        String fullQualifiedName = "com.jjpedrogomes.controller.action.UpdateTaskAction";
+        when(request.getAttribute("entityManager")).thenReturn(entityManager);
+        when(request.getParameter("action")).thenReturn("UpdateTask");
+        when(request.getParameter("title")).thenReturn("any");
+        when(request.getParameter("dueDate")).thenReturn("2007-12-03");
+        when(request.getParameter("id")).thenReturn("1");
+        when(request.getSession()).thenReturn(httpSession);
+        when(response.getWriter()).thenReturn(writer);
+        Method method = TaskController.class.getDeclaredMethod("getQualifiedClassName", String.class, HttpServletResponse.class);
+        method.setAccessible(true);
+        // Act
+        String actionFullQualifiedName = (String) method.invoke(taskController, "UpdateTask", response);
+        Constructor<?> constructor = Class.forName(actionFullQualifiedName).getConstructor(TaskDao.class);
+        UpdateTaskAction instance = (UpdateTaskAction) constructor.newInstance(taskDao);
+        taskController.doPost(request, response);
+        // Assert
+        assertThat(actionFullQualifiedName).isEqualTo(fullQualifiedName);
+        assertThat(instance).isInstanceOf(UpdateTaskAction.class);
         verify(response, never()).setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 
