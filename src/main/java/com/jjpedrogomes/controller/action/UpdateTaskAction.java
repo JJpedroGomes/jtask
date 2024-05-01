@@ -1,6 +1,6 @@
 package com.jjpedrogomes.controller.action;
 
-import com.jjpedrogomes.controller.shared.Action;
+import com.jjpedrogomes.controller.util.GsonUtil;
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.model.task.TaskDao;
 import org.apache.logging.log4j.LogManager;
@@ -50,6 +50,8 @@ public class UpdateTaskAction implements Action {
             updateTaskDueDate(task, dueDate);
             logger.info("Updating task...");
             taskDao.update(task);
+
+            GsonUtil.convertObjectToJson(response, task);
         });
     }
 

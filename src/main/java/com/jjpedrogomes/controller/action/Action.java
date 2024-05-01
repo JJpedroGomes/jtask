@@ -1,4 +1,4 @@
-package com.jjpedrogomes.controller.shared;
+package com.jjpedrogomes.controller.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

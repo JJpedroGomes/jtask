@@ -1,6 +1,6 @@
 package com.jjpedrogomes.controller.action;
 
-import com.jjpedrogomes.controller.shared.Action;
+import com.jjpedrogomes.controller.util.GsonUtil;
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.model.task.TaskDao;
 import org.apache.logging.log4j.LogManager;
@@ -41,6 +41,8 @@ public class CreateTaskAction implements Action {
         Task task = createTask(title, description, dueDate);
         taskDao.save(task);
         addTaskToSession(request, task);
+
+        GsonUtil.convertObjectToJson(response, task);
         response.setStatus(HttpServletResponse.SC_CREATED);
     }
 
@@ -66,7 +68,7 @@ public class CreateTaskAction implements Action {
             HttpSession session = request.getSession();
             List<Task> taskList = null;
             Object sessionList = session.getAttribute("taskList");
-            if (sessionList instanceof List) {
+            if (sessionList instanceof List && !((List) sessionList).isEmpty()) {
                 taskList = new ArrayList<Task>((ArrayList<Task>)sessionList);
             } else {
                 taskList = new ArrayList<Task>();

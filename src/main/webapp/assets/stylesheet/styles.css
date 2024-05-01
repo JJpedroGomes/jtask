@@ -96,21 +96,23 @@ body {
     overflow: scroll;
 }
 
+
+/* Default modal for creating task */
+
 .board_container .modal_background {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.7);
     position: absolute;
     top: 0;
-    display: flex;
     display: none;
 }
 
 .board_container .modal_background .modal_container {
     width: 500px;
-    height: 300px;
+    height: 400px;
     position: fixed;
-    top: 40%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #FFFFFF;
@@ -137,8 +139,7 @@ body {
     padding: 0 15px;
 }
 
-.board_container .modal_background .modal_container .modal_form_element input[type="text"],
-.board_container .modal_background .modal_container .modal_form_element label {
+.board_container .modal_background .modal_container .modal_form_element input[type="text"] {
     display: block;
     width: 100%;
     padding: 10px;
@@ -147,11 +148,42 @@ body {
     font-size: 25px;
 }
 
+.board_container .modal_background .modal_container .modal_form_element textarea {
+    width: 100%;
+    max-width: 100%;
+    height: 150px;
+    min-height: 100px;
+    overflow-y: auto;
+    resize: none;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.board_container .modal_background .modal_container .modal_form_element date_label {
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border: none;
+    font-size: 20px;
+}
+
 .board_container .modal_background .modal_container .modal_form_element input[type="date"] {
-    padding: 8px 12px; /* Ajuste conforme necessário */
+    width: 150px;
+    height: 30px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 14px;
+    color: #333333;
+}
+
+.board_container .modal_background .modal_container .modal_form_element input[type="date"] {
+    padding: 8px 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 16px; /* Ajuste conforme necessário */
+    font-size: 16px;
     outline: none;
 }
 
@@ -175,6 +207,7 @@ body {
     padding: 50px 50px;
     color: #FFFFFF;
     font-size: 22px;
+    cursor: pointer;
 }
 
 .board_container #modal_button .fas {
@@ -218,7 +251,7 @@ body {
     padding: 12px;
     border-radius: 4px;
     font-size: 16px;
-    cursor: move;
+    cursor: pointer;
 }
 
 .lane_wrapper .lane .task.is_dragging {

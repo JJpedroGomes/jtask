@@ -12,6 +12,8 @@ import org.mockito.Mock;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
@@ -34,6 +36,8 @@ class UpdateTaskActionTest {
     private HttpServletRequest request;
     @Mock
     private HttpServletResponse response;
+    @Mock
+    private PrintWriter writer;
     private Task task;
 
     @BeforeEach
@@ -47,7 +51,7 @@ class UpdateTaskActionTest {
      * Verifies that the managed task now has the corresponding attributes.
      */
     @Test
-    void update_existing_task_with_all_params() {
+    void update_existing_task_with_all_params() throws IOException {
         // Arrange
         String idParam = "1";
         String titleParam = "New title";
@@ -59,6 +63,7 @@ class UpdateTaskActionTest {
         when(request.getParameter("description")).thenReturn(descriptionParam);
         when(request.getParameter("dueDate")).thenReturn(dueDateParam);
         when(taskDao.get(any(Long.class))).thenReturn(Optional.ofNullable(task));
+        when(response.getWriter()).thenReturn(writer);
         // Act
         useCase.execute(request, response);
         // Assert
@@ -104,7 +109,7 @@ class UpdateTaskActionTest {
      * Verifies that only the title has been updated.
      */
     @Test
-    void update_with_null_arguments() {
+    void update_with_null_arguments() throws IOException {
         // Arrange
         String idParam = "1";
         String titleParam = "New title";
@@ -113,6 +118,7 @@ class UpdateTaskActionTest {
         when(request.getParameter("description")).thenReturn(null);
         when(request.getParameter("dueDate")).thenReturn(null);
         when(taskDao.get(any(Long.class))).thenReturn(Optional.ofNullable(task));
+        when(response.getWriter()).thenReturn(writer);
         // Act
         useCase.execute(request, response);
         // Assert

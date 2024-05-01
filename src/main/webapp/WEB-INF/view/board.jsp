@@ -74,7 +74,7 @@
         <section>
             <div class="board_container">
                 <!--Start: New task modal form section -->
-                <a href="#" id="modal_button">
+                <a id="modal_button">
                     <i class="fas fa-plus-circle"></i>Add task
                 </a>
                 <div class="modal_background">
@@ -84,16 +84,15 @@
                             <div class="modal_form_element">
                                 <input type="text" id="task_title" name="title" placeholder="Task name" required>
                             </div>
-                            <div class="modal_form_element">
-                                <input type="text" id="task_description" name="description"
-                                       placeholder="Description">
+                            <div class="modal_form_element" id="description_details">
+                                <textarea id="task_description" name="description" placeholder="Description"></textarea>
                             </div>
                             <div class="modal_form_element">
-                                <label for="task_due_date">Due Date:</label>
+                                <label class="date_label" for="task_due_date">Due Date:</label>
                                 <input type="date" id="task_due_date" name="dueDate">
                             </div>
                             <div class="modal_form_element">
-                                <button type="submit">Add task</button>
+                                <button type="submit" id="modal_submit_btn">Add task</button>
                             </div>
                         </div>
                     </form>
@@ -107,7 +106,14 @@
                         <h3 class="lane_heading">Todo</h3>
                         <c:if test="${not empty taskList}">
                             <c:forEach items="${taskList}" var="task">
-                                <p class="task" draggable="true">${task.title}</p>
+                                <p class="task" id="task-${task.id}" draggable="true"
+                                   data-task-id="${task.id}"
+                                   data-task-title="${task.title}"
+                                   data-task-description="${task.description}"
+                                   data-task-dueDate="${task.dueDate}"
+                                   data-task-conclusionDate="${task.conclusionDate}">
+                                        ${task.title}
+                                </p>
                             </c:forEach>
                         </c:if>
                     </div>

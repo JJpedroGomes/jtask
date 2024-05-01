@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -26,45 +25,15 @@ public class TaskDao implements Dao<Task> {
      */
     @Override
     public void save(Task task) {
-        EntityTransaction transaction = null;
-        try {
-            transaction = entityManager.getTransaction();
-            transaction.begin();
-            this.entityManager.persist(task);
-            transaction.commit();
-            logger.info("Task created successfully.");
-        } catch (Exception exception) {
-            if (transaction != null && transaction.isActive()) {
-                logger.error("Error occurred: ", exception);
-                transaction.rollback();
-            }
-        }
+        entityManager.persist(task);
+        logger.info("Task created successfully.");
     }
 
-    /**
-     * Updates the given Task entity in the database.
-     *
-     * @param task The Task entity to be updated.
-     * @throws IllegalArgumentException if the given task is not managed by the entity manager.
-     */
     @Override
-    public void update(Task task) {
-        EntityTransaction transaction = null;
-        try {
-            if (!entityManager.contains(task)) {
-                throw new IllegalArgumentException("Task is not managed by the entity manager");
-            }
-            transaction = entityManager.getTransaction();
-            transaction.begin();
-            transaction.commit();
-            logger.info("Task updated successfully.");
-        } catch (Exception exception) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
-            logger.error("Error occurred while updating task", exception);
-            throw exception;
-        }
+    public Task update(Task task) {
+        Task taskAfterMerge = entityManager.merge(task);
+        logger.info("Task updated successfully.");
+        return taskAfterMerge;
     }
 
     @Override
@@ -88,7 +57,7 @@ public class TaskDao implements Dao<Task> {
         try {
             logger.info("Selecting all Tasks");
             List<Task> list = this.entityManager.createQuery(query, Task.class).getResultList();
-            if (list.isEmpty()) throw new IllegalStateException("Task List is current empty");
+            if (list.isEmpty()) logger.info("Task List is current empty");
             return list;
         } catch (Exception exception) {
             logger.error("Error while retrieving all tasks", exception);
@@ -102,15 +71,9 @@ public class TaskDao implements Dao<Task> {
      */
     @Override
     public void delete(Task task) {
-        try {
-            EntityTransaction transaction = entityManager.getTransaction();
-            transaction.begin();
-            task = entityManager.merge(task);
-            this.entityManager.remove(task);
-            transaction.commit();
-        } catch (Exception exception) {
-            logger.error("Error while deleting the task", exception);
-            throw exception;
-        }
+        task = entityManager.merge(task);
+        this.entityManager.remove(task);
+        logger.info("Task deleted successfully.");
     }
+
 }

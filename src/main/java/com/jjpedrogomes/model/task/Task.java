@@ -113,6 +113,7 @@ public class Task implements Entity<Task> {
     }
 
     public void setTitle(String title) {
+        if (title.isEmpty()) return;
         this.title = title;
     }
 
@@ -122,6 +123,10 @@ public class Task implements Entity<Task> {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override
