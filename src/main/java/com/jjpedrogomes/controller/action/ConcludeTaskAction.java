@@ -1,11 +1,9 @@
-package com.jjpedrogomes.model.usecase;
-
-import com.jjpedrogomes.model.shared.UseCase;
+package com.jjpedrogomes.controller.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ConcludeTaskUseCase implements UseCase {
+public class ConcludeTaskAction implements Action {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {

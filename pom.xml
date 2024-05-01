@@ -42,6 +42,22 @@
         <version>3.4.0</version>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <forkCount>1</forkCount>
+          <reuseForks>false</reuseForks>
+          <parallel>classes</parallel>
+          <threadCount>1</threadCount>
+          <systemPropertyVariables>
+            <log4j.configurationFile>log4j2-test.xml</log4j.configurationFile>
+            <env_persistence_unit>test</env_persistence_unit>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 
@@ -101,6 +117,20 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-api-mockito2</artifactId>
+      <version>2.0.9</version> <!-- Versão pode variar -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.4.200</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- Web -->
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -115,6 +145,18 @@
       <version>9.0.79</version>
     </dependency>
 
+    <dependency>
+      <groupId>jstl</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>taglibs</groupId>
+      <artifactId>standard</artifactId>
+      <version>1.1.2</version>
+    </dependency>
+
     <!-- Logging -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -126,6 +168,13 @@
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
       <version>2.19.0</version>
+    </dependency>
+
+    <!-- Web -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.9.1</version>
     </dependency>
 
 

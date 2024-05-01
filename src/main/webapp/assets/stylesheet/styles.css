@@ -1,0 +1,264 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    margin:0 ;
+    padding: 0;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    list-style: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+    display: none;
+}
+
+/* Side navigation bar styles */
+body {
+    display: flex;
+    background-color: #5D6770;
+}
+
+.sidebar_container .column_wrapper {
+    display: flex;
+    position: relative;
+    width: 15vw;
+    height: 100vh;
+}
+
+.sidebar_container .column_wrapper .sidebar {
+    width: 100%;
+    height: 100%;
+    padding: 30px 0px;
+    background-color: #7286A0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+
+.sidebar_container .column_wrapper .sidebar ul li {
+    padding: 15px;
+    border-bottom: 1px solid #7286A0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.sidebar_container .column_wrapper .sidebar ul .logo_container{
+    border: none;
+    pointer-events: none;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li .logo img {
+    width: 3vw;
+    height: auto;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li .logo span {
+    color: #FFFFFF;
+    font-size: 24px;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li a {
+    color: #FFFFFF;
+    display: block;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li a .fas{
+    width: 25px;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li:hover {
+    background-color: #5d6770;
+}
+
+.sidebar_container .column_wrapper .sidebar ul .bottom_links_container {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+/* Board form styles */
+.board_container {
+    width: 85vw;
+    height: 100vh;
+    overflow: scroll;
+}
+
+
+/* Default modal for creating task */
+
+.board_container .modal_background {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    position: absolute;
+    top: 0;
+    display: none;
+}
+
+.board_container .modal_background .modal_container {
+    width: 500px;
+    height: 400px;
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFFFFF;
+    box-shadow: 0px 5px 15px rgba(255,255,255,0.15);
+    border-radius: 10px;
+}
+
+.board_container .modal_background .modal_container .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 20px;
+    height: 20px;
+    background: #888;
+    color: #eee;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.board_container .modal_background .modal_container .modal_form_element {
+    margin: 15px 0;
+    padding: 0 15px;
+}
+
+.board_container .modal_background .modal_container .modal_form_element input[type="text"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border: none;
+    font-size: 25px;
+}
+
+.board_container .modal_background .modal_container .modal_form_element textarea {
+    width: 100%;
+    max-width: 100%;
+    height: 150px;
+    min-height: 100px;
+    overflow-y: auto;
+    resize: none;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.board_container .modal_background .modal_container .modal_form_element date_label {
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border: none;
+    font-size: 20px;
+}
+
+.board_container .modal_background .modal_container .modal_form_element input[type="date"] {
+    width: 150px;
+    height: 30px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 14px;
+    color: #333333;
+}
+
+.board_container .modal_background .modal_container .modal_form_element input[type="date"] {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+}
+
+.board_container .modal_background .modal_container .modal_form_element button{
+    position: absolute;
+    bottom: 38px;
+    right: 30px;
+    width: 75px;
+    height: 42px;
+    border-radius: 25px;
+    outline: none;
+    background: #7286A0;
+    color: #FFFFFF;
+    border: none;
+    cursor: pointer;
+}
+
+.board_container #modal_button {
+    display: block;
+    height: 100px;
+    padding: 50px 50px;
+    color: #FFFFFF;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.board_container #modal_button .fas {
+    width: 30px;
+}
+
+/* Board lanes styles */
+.lane_wrapper {
+    display: flex;
+    gap: 16px;
+    padding: 35px 50px;
+    align-items: flex-start;
+    justify-content: start;
+    overflow: scroll;
+    height: 100%;
+}
+
+.lane_wrapper .lane {
+    background: #F4F4F4;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
+    padding: 16px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex-shrink: 0;
+    min-height: 120px;
+    width: 275px;
+}
+
+.lane_wrapper .lane .lane_heading {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.lane_wrapper .lane .task {
+    background: white;
+    color: black;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.lane_wrapper .lane .task.is_dragging {
+    scale: 1.05;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+    background: #7286A0;
+    color: white;
+}
+
+

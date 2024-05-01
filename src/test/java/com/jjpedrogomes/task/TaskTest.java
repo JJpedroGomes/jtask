@@ -17,21 +17,20 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class TaskTest {
 
     //Builds a new task with conclusionDate = LocalDate.now() and status COMPLETED
-    private Task buildCompletedTask() {
+    static Task buildCompletedTask() {
         Task task = new Task("Test Task", null, null);
         task.setTaskCompleted();
         return task;
     }
 
     //Builds a new task with status IN_PROGRESS
-    private Task buildInProgressTask() {
+    static Task buildInProgressTask() {
         return new Task("Test Task", null, null);
     }
 
     //Builds a new task with status PENDING
-    private Task buildPendingTask() {
-        Task task = new Task("Test Task", null, LocalDate.now().minusDays(1));
-        return task;
+    static Task buildPendingTask() {
+        return new Task("Test Task", null, LocalDate.now().minusDays(1));
     }
 
     @Nested

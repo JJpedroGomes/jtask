@@ -108,6 +108,27 @@ public class Task implements Entity<Task> {
         return status.getCurrentStatus();
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        if (title.isEmpty()) return;
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public boolean sameIdentityAs(final Task other) {
         return other != null && id.equals(other.id);
