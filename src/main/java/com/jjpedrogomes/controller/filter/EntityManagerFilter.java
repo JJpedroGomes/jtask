@@ -21,7 +21,6 @@ public class EntityManagerFilter implements Filter {
                          FilterChain chain) throws IOException, ServletException {
         EntityManager entityManager = JpaUtil.getEntityManager();
         try {
-            HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             String method = ((HttpServletRequest) request).getMethod();
 
             if (!method.equals("GET")) {
