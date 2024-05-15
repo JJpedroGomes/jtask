@@ -113,16 +113,14 @@ function showDetails(id, title, description, dueDate, conclusionDate) {
     openModalDetails(title, description, dueDate);
     form.removeEventListener("submit", handleCreateTask);
     form.removeEventListener("submit", handleUpdateTask);
-
-    form.addEventListener("submit", handleUpdateTaskOnce);
-    function handleUpdateTaskOnce(event) {
-        handleUpdateTask(event, id);
-        form.removeEventListener("submit", handleUpdateTaskOnce);
-    }
+    form.addEventListener("submit", handleUpdateTask);
+    form.id = id;
 }
 
 // Function to update a task
-function handleUpdateTask(event, taskId) {
+function handleUpdateTask(event) {
+    const taskId = event.currentTarget.id;
+
     event.preventDefault();
     const taskElement = document.getElementById(`task-${taskId}`);
 
@@ -188,5 +186,3 @@ function formatDate(dateObj) {
     const formattedDay = day.toString().padStart(2, '0');
     return `${year}-${formattedMonth}-${formattedDay}`;
 }
-
-//Todo: Refatorar os testes unitarios 
