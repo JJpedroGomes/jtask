@@ -5,7 +5,7 @@ const taskDueDate = document.getElementById("task_due_date");
 const lane = document.getElementById("todo_lane");
 const btnSubmit = document.getElementById("modal_submit_btn");
 const modalBackground = document.querySelector(".modal_background");
-
+const modalContainer = document.querySelector(".modal_container");
 
 // Event Listeners
 document.getElementById("modal_button").addEventListener("click", openModalForCreate);
@@ -34,6 +34,16 @@ function resetFormInputs() {
     taskDueDate.value = "";
     btnSubmit.innerText = "Add Task";
 }
+
+// Close details modal when clicked outside 
+modalBackground.addEventListener("click", function(event) {
+    console.log(modalContainer);
+    const currentModalDisplay = window.getComputedStyle(modalBackground).display;
+    if (currentModalDisplay === "flex" && !modalContainer.contains(event.target)) {
+        closeModal();
+        console.log("clicked outside");
+    }
+});
 
 // Function to create a task and add it to the lane
 function handleCreateTask(event) {
