@@ -80,7 +80,10 @@
                 <div class="modal_background">
                     <form id="modal_form">
                         <div class="modal_container">
-                            <div class="close-btn">&times;</div>
+                            <!-- <div class="close-btn">&times;</div> -->
+                            <di class="extra_options">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </di>
                             <div class="modal_form_element">
                                 <input type="text" id="task_title" name="title" placeholder="Task name" required>
                             </div>

@@ -9,7 +9,7 @@ const modalContainer = document.querySelector(".modal_container");
 
 // Event Listeners
 document.getElementById("modal_button").addEventListener("click", openModalForCreate);
-document.querySelector(".close-btn").addEventListener("click", closeModal);
+// document.querySelector(".close-btn").addEventListener("click", closeModal);
 
 // Function to open modal for creating a task
 function openModalForCreate() {

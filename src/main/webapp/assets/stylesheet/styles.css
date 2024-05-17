@@ -120,7 +120,7 @@ body {
     border-radius: 10px;
 }
 
-.board_container .modal_background .modal_container .close-btn {
+/* .board_container .modal_background .modal_container .close-btn {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -131,6 +131,15 @@ body {
     text-align: center;
     line-height: 20px;
     border-radius: 20px;
+    cursor: pointer;
+} */
+
+.board_container .modal_background .modal_container .extra_options {
+    position: absolute;
+    width: 20px;
+    padding: 5px;
+    top: 30px;
+    right: 25px;
     cursor: pointer;
 }
 
