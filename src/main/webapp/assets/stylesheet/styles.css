@@ -106,55 +106,69 @@ body {
     position: absolute;
     top: 0;
     display: none;
+    align-items: center;
+    justify-content: center;
+}    
+
+.board_container .modal_background .modal_wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .board_container .modal_background .modal_container {
     width: 500px;
-    height: 400px;
-    position: fixed;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    /* height: 400px; */
     background-color: #FFFFFF;
-    box-shadow: 0px 5px 15px rgba(255,255,255,0.15);
     border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -275px;
+    margin-left: -200px;
 }
 
-/* .board_container .modal_background .modal_container .close-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 20px;
-    height: 20px;
-    background: #888;
-    color: #eee;
-    text-align: center;
-    line-height: 20px;
-    border-radius: 20px;
-    cursor: pointer;
-} */
-
-.board_container .modal_background .modal_container .extra_options {
-    position: absolute;
-    width: 20px;
+.board_container .modal_background .modal_extra_options {
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    border-left: 1px solid #ccc;
     padding: 5px;
-    top: 30px;
-    right: 25px;
-    cursor: pointer;
+    border-radius: 0 10px 10px 0;
 }
 
-.board_container .modal_background .modal_container .modal_form_element {
-    margin: 15px 0;
-    padding: 0 15px;
+
+.board_container .modal_background .modal_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-right: 20px;
+    padding-left: 10px;
 }
 
-.board_container .modal_background .modal_container .modal_form_element input[type="text"] {
+.board_container .modal_background .modal_header .modal_header_content input[type="text"] {
     display: block;
     width: 100%;
     padding: 10px;
     outline: none;
     border: none;
     font-size: 25px;
+}
+
+
+.board_container .modal_background .modal_container .modal_form_element {
+    margin: 15px 0;
+    padding: 0 15px;
 }
 
 .board_container .modal_background .modal_container .modal_form_element textarea {
@@ -179,27 +193,18 @@ body {
 }
 
 .board_container .modal_background .modal_container .modal_form_element input[type="date"] {
-    width: 150px;
-    height: 30px;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    padding: 5px;
-    font-size: 14px;
-    color: #333333;
-}
-
-.board_container .modal_background .modal_container .modal_form_element input[type="date"] {
     padding: 8px 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
     outline: none;
+    height: 40px;
 }
 
 .board_container .modal_background .modal_container .modal_form_element button{
-    position: absolute;
-    bottom: 38px;
-    right: 30px;
+    /* position: absolute; */
+    /* bottom: 38px; */
+    /* right: 30px; */
     width: 75px;
     height: 42px;
     border-radius: 25px;
