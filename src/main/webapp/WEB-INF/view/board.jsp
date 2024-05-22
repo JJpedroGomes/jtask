@@ -86,7 +86,7 @@
                                         <input type="text" id="task_title" name="title" placeholder="Task name" required>
                                     </div>
                                     <div class="dropdown">
-                                        <i onclick="openDropDown()" class="fas fa-ellipsis-v"></i>
+                                        <i onclick="openDropDown()" class="fas fa-ellipsis-v" id="openDropDownBtn"></i>
                                         <div id="myDropdown" class="dropdown_options">
                                             <a href="#">
                                                 <i class="fas fa-trash"></i>

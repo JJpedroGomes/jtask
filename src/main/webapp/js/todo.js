@@ -6,6 +6,8 @@ const lane = document.getElementById("todo_lane");
 const btnSubmit = document.getElementById("modal_submit_btn");
 const modalBackground = document.querySelector(".modal_background");
 const modalContainer = document.querySelector(".modal_container");
+const myDropdown = document.getElementById("myDropdown");
+const openDropDownBtn = document.getElementById("openDropDownBtn");
 
 // Event Listeners
 document.getElementById("modal_button").addEventListener("click", openModalForCreate);
@@ -37,11 +39,17 @@ function resetFormInputs() {
 
 // Close details modal when clicked outside 
 modalBackground.addEventListener("click", function(event) {
-    console.log(modalContainer);
+    const currentDropDownDisplay = window.getComputedStyle(myDropdown).display;
+    if (currentDropDownDisplay === "flex" && !openDropDownBtn.classList.contains("firstOpen")) {
+            myDropdown.style.display = "none";
+            return;
+    } else {
+        openDropDownBtn.classList.remove("firstOpen");
+    }
+
     const currentModalDisplay = window.getComputedStyle(modalBackground).display;
     if (currentModalDisplay === "flex" && !modalContainer.contains(event.target)) {
         closeModal();
-        console.log("clicked outside");
     }
 });
 
@@ -198,5 +206,6 @@ function formatDate(dateObj) {
 }
 
 function openDropDown() {
-    document.getElementById("myDropdown").classList.toggle("show");
+    myDropdown.style.display = "flex";
+    openDropDownBtn.classList.toggle("firstOpen");
 }
