@@ -85,7 +85,15 @@
                                     <div class="modal_header_content">
                                         <input type="text" id="task_title" name="title" placeholder="Task name" required>
                                     </div>
-                                    <i class="fas fa-ellipsis-v"></i>
+                                    <div class="dropdown">
+                                        <i onclick="openDropDown()" class="fas fa-ellipsis-v"></i>
+                                        <div id="myDropdown" class="dropdown_options">
+                                            <a href="#">
+                                                <i class="fas fa-trash"></i>
+                                                <span>Delete</span>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="modal_form_element" id="description_details">
                                     <textarea id="task_description" name="description" placeholder="Description"></textarea>

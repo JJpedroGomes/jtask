@@ -196,3 +196,7 @@ function formatDate(dateObj) {
     const formattedDay = day.toString().padStart(2, '0');
     return `${year}-${formattedMonth}-${formattedDay}`;
 }
+
+function openDropDown() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}

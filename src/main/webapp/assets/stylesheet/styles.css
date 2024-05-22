@@ -165,6 +165,48 @@ body {
     font-size: 25px;
 }
 
+/* Drop down inside modal datails */
+
+.board_container .modal_background .modal_header .dropdown {
+    position: relative;
+    display: inline-block;
+
+}
+
+.board_container .modal_background .modal_header .dropdown .fas{
+    cursor: pointer;
+}
+
+.dropdown_options {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    z-index: 1;
+}
+
+.show {
+    display: block;
+}
+
+.dropdown_options a {
+    color: black;
+    padding: 12px 44px;
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dropdown_options a:hover {
+    background-color: #ddd;
+}
+
+.dropdown_options a i {
+    margin-top: 4px;
+}
+
 
 .board_container .modal_background .modal_container .modal_form_element {
     margin: 15px 0;
