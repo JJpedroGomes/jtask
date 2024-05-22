@@ -16,6 +16,7 @@ document.getElementById("modal_button").addEventListener("click", openModalForCr
 // Function to open modal for creating a task
 function openModalForCreate() {
     modalBackground.style.display = "flex";
+    openDropDownBtn.style.display = "none";
     form.removeEventListener("submit", handleUpdateTask);
     form.addEventListener("submit", handleCreateTask);
     resetFormInputs();
@@ -171,6 +172,7 @@ function handleUpdateTask(event) {
 // Function to open modal with task details
 function openModalDetails(title, description, dueDate) {
     modalBackground.style.display = "flex";
+    openDropDownBtn.style.display = "flex";
     taskName.value = title;
     taskDescription.value = description;
     taskDueDate.value = dueDate;
