@@ -8,6 +8,7 @@ const modalBackground = document.querySelector(".modal_background");
 const modalContainer = document.querySelector(".modal_container");
 const myDropdown = document.getElementById("myDropdown");
 const openDropDownBtn = document.getElementById("openDropDownBtn");
+const myDropdownDelete = document.getElementById("myDropdownDelete");
 
 // Event Listeners
 document.getElementById("modal_button").addEventListener("click", openModalForCreate);
@@ -132,7 +133,12 @@ function showDetails(id, title, description, dueDate, conclusionDate) {
     openModalDetails(title, description, dueDate);
     form.removeEventListener("submit", handleCreateTask);
     form.removeEventListener("submit", handleUpdateTask);
+    
     form.addEventListener("submit", handleUpdateTask);
+    myDropdownDelete.addEventListener("click", function(event){
+		handleDeleteTask(event, id);
+	});
+	
     form.id = id;
 }
 
@@ -167,6 +173,26 @@ function handleUpdateTask(event) {
             alert("Error occurred trying to save task");
         }
     });
+}
+
+
+function handleDeleteTask(event, id) {
+	const formData = {
+		action: "DeleteTask",
+		id: id,
+	};
+	
+	$.ajax({
+		type: "POST",
+		url: "main",
+		data: formData,
+		success: function(response) {
+			console.log(response);
+		},
+		error: function(error) {
+			console.log(error);
+		}
+	});
 }
 
 // Function to open modal with task details

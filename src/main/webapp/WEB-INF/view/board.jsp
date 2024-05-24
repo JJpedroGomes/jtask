@@ -88,7 +88,7 @@
                                     <div class="dropdown">
                                         <i onclick="openDropDown()" class="fas fa-ellipsis-v" id="openDropDownBtn"></i>
                                         <div id="myDropdown" class="dropdown_options">
-                                            <a href="#">
+                                            <a id="myDropdownDelete" href="#">
                                                 <i class="fas fa-trash"></i>
                                                 <span>Delete</span>
                                             </a>
