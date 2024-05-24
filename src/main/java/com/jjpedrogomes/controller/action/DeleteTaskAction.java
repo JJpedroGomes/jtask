@@ -35,6 +35,5 @@ public class DeleteTaskAction implements Action {
             throw exception;
         }
         taskDao.get(id).ifPresent(taskDao::delete);
-        logger.info("task deleted successfully");
     }
 }
