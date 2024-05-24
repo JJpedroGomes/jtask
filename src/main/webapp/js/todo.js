@@ -135,6 +135,8 @@ function showDetails(id, title, description, dueDate, conclusionDate) {
     form.removeEventListener("submit", handleUpdateTask);
     
     form.addEventListener("submit", handleUpdateTask);
+    
+    //Todo: isso aqui ta acumulando eventos que quando clica manda um monte de id 
     myDropdownDelete.addEventListener("click", function(event){
 		handleDeleteTask(event, id);
 	});
@@ -169,30 +171,9 @@ function handleUpdateTask(event) {
             closeModal();
         },
         error: function (xhr, status, error) {
-            console.error("Error:", error);
-            alert("Error occurred trying to save task");
+            alert("Error occurred trying to update task");
         }
     });
-}
-
-
-function handleDeleteTask(event, id) {
-	const formData = {
-		action: "DeleteTask",
-		id: id,
-	};
-	
-	$.ajax({
-		type: "POST",
-		url: "main",
-		data: formData,
-		success: function(response) {
-			console.log(response);
-		},
-		error: function(error) {
-			console.log(error);
-		}
-	});
 }
 
 // Function to open modal with task details
@@ -208,7 +189,6 @@ function openModalDetails(title, description, dueDate) {
 // Function to update a taskElement
 function updateTaskElement(response, taskElement) {
     if (!taskElement) {
-        console.error("Task element not found in DOM");
         return;
     }
     taskElement.textContent = response.title;
@@ -237,3 +217,34 @@ function openDropDown() {
     myDropdown.style.display = "flex";
     openDropDownBtn.classList.toggle("firstOpen");
 }
+
+function handleDeleteTask(event, id) {
+	const formData = {
+		action: "DeleteTask",
+		id: id,
+	};
+	
+	$.ajax({
+		type: "POST",
+		url: "main",
+		data: formData,
+		success: function(response) {
+			removeTaskElement(response);
+			closeModal();
+		},
+		error: function() {
+			alert("Error occurred trying to delete task");
+		}
+	});
+}
+
+
+function removeTaskElement(response) {
+	const elementToRemove = document.getElementById("task-" + response.id);
+	if (!elementToRemove) {
+		console.error("Task element not found in DOM");
+    	return;
+    }
+    elementToRemove.remove();
+}
+
