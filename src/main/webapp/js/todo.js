@@ -9,10 +9,10 @@ const modalContainer = document.querySelector(".modal_container");
 const myDropdown = document.getElementById("myDropdown");
 const openDropDownBtn = document.getElementById("openDropDownBtn");
 const myDropdownDelete = document.getElementById("myDropdownDelete");
+let currentTaskId = null;
 
 // Event Listeners
 document.getElementById("modal_button").addEventListener("click", openModalForCreate);
-// document.querySelector(".close-btn").addEventListener("click", closeModal);
 
 // Function to open modal for creating a task
 function openModalForCreate() {
@@ -135,12 +135,8 @@ function showDetails(id, title, description, dueDate, conclusionDate) {
     form.removeEventListener("submit", handleUpdateTask);
     
     form.addEventListener("submit", handleUpdateTask);
-    
-    //Todo: isso aqui ta acumulando eventos que quando clica manda um monte de id 
-    myDropdownDelete.addEventListener("click", function(event){
-		handleDeleteTask(event, id);
-	});
-	
+  
+	currentTaskId = id;
     form.id = id;
 }
 
@@ -218,7 +214,11 @@ function openDropDown() {
     openDropDownBtn.classList.toggle("firstOpen");
 }
 
-function handleDeleteTask(event, id) {
+myDropdownDelete.addEventListener("click", handleDeleteTask);
+
+function handleDeleteTask(event) {
+	const id = currentTaskId;
+	
 	const formData = {
 		action: "DeleteTask",
 		id: id,
