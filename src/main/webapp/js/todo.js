@@ -5,15 +5,19 @@ const taskDueDate = document.getElementById("task_due_date");
 const lane = document.getElementById("todo_lane");
 const btnSubmit = document.getElementById("modal_submit_btn");
 const modalBackground = document.querySelector(".modal_background");
-
+const modalContainer = document.querySelector(".modal_container");
+const myDropdown = document.getElementById("myDropdown");
+const openDropDownBtn = document.getElementById("openDropDownBtn");
+const myDropdownDelete = document.getElementById("myDropdownDelete");
+let currentTaskId = null;
 
 // Event Listeners
 document.getElementById("modal_button").addEventListener("click", openModalForCreate);
-document.querySelector(".close-btn").addEventListener("click", closeModal);
 
 // Function to open modal for creating a task
 function openModalForCreate() {
     modalBackground.style.display = "flex";
+    openDropDownBtn.style.display = "none";
     form.removeEventListener("submit", handleUpdateTask);
     form.addEventListener("submit", handleCreateTask);
     resetFormInputs();
@@ -34,6 +38,22 @@ function resetFormInputs() {
     taskDueDate.value = "";
     btnSubmit.innerText = "Add Task";
 }
+
+// Close details modal when clicked outside 
+modalBackground.addEventListener("click", function(event) {
+    const currentDropDownDisplay = window.getComputedStyle(myDropdown).display;
+    if (currentDropDownDisplay === "flex" && !openDropDownBtn.classList.contains("firstOpen")) {
+            myDropdown.style.display = "none";
+            return;
+    } else {
+        openDropDownBtn.classList.remove("firstOpen");
+    }
+
+    const currentModalDisplay = window.getComputedStyle(modalBackground).display;
+    if (currentModalDisplay === "flex" && !modalContainer.contains(event.target)) {
+        closeModal();
+    }
+});
 
 // Function to create a task and add it to the lane
 function handleCreateTask(event) {
@@ -113,7 +133,10 @@ function showDetails(id, title, description, dueDate, conclusionDate) {
     openModalDetails(title, description, dueDate);
     form.removeEventListener("submit", handleCreateTask);
     form.removeEventListener("submit", handleUpdateTask);
+    
     form.addEventListener("submit", handleUpdateTask);
+  
+	currentTaskId = id;
     form.id = id;
 }
 
@@ -144,8 +167,7 @@ function handleUpdateTask(event) {
             closeModal();
         },
         error: function (xhr, status, error) {
-            console.error("Error:", error);
-            alert("Error occurred trying to save task");
+            alert("Error occurred trying to update task");
         }
     });
 }
@@ -153,6 +175,7 @@ function handleUpdateTask(event) {
 // Function to open modal with task details
 function openModalDetails(title, description, dueDate) {
     modalBackground.style.display = "flex";
+    openDropDownBtn.style.display = "flex";
     taskName.value = title;
     taskDescription.value = description;
     taskDueDate.value = dueDate;
@@ -162,7 +185,6 @@ function openModalDetails(title, description, dueDate) {
 // Function to update a taskElement
 function updateTaskElement(response, taskElement) {
     if (!taskElement) {
-        console.error("Task element not found in DOM");
         return;
     }
     taskElement.textContent = response.title;
@@ -186,3 +208,43 @@ function formatDate(dateObj) {
     const formattedDay = day.toString().padStart(2, '0');
     return `${year}-${formattedMonth}-${formattedDay}`;
 }
+
+function openDropDown() {
+    myDropdown.style.display = "flex";
+    openDropDownBtn.classList.toggle("firstOpen");
+}
+
+myDropdownDelete.addEventListener("click", handleDeleteTask);
+
+function handleDeleteTask(event) {
+	const id = currentTaskId;
+	
+	const formData = {
+		action: "DeleteTask",
+		id: id,
+	};
+	
+	$.ajax({
+		type: "POST",
+		url: "main",
+		data: formData,
+		success: function(response) {
+			removeTaskElement(response);
+			closeModal();
+		},
+		error: function() {
+			alert("Error occurred trying to delete task");
+		}
+	});
+}
+
+
+function removeTaskElement(response) {
+	const elementToRemove = document.getElementById("task-" + response.id);
+	if (!elementToRemove) {
+		console.error("Task element not found in DOM");
+    	return;
+    }
+    elementToRemove.remove();
+}
+

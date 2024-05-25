@@ -1,5 +1,6 @@
 package com.jjpedrogomes.controller.action;
 
+import com.jjpedrogomes.controller.util.GsonUtil;
 import com.jjpedrogomes.model.task.TaskDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,7 +35,9 @@ public class DeleteTaskAction implements Action {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             throw exception;
         }
-        taskDao.get(id).ifPresent(taskDao::delete);
-        logger.info("task deleted successfully");
+        taskDao.get(id).ifPresent(task -> {
+        	taskDao.delete(task);
+        	GsonUtil.convertObjectToJson(response, task);
+        });
     }
 }

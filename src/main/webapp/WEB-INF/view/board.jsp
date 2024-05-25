@@ -79,20 +79,32 @@
                 </a>
                 <div class="modal_background">
                     <form id="modal_form">
-                        <div class="modal_container">
-                            <div class="close-btn">&times;</div>
-                            <div class="modal_form_element">
-                                <input type="text" id="task_title" name="title" placeholder="Task name" required>
-                            </div>
-                            <div class="modal_form_element" id="description_details">
-                                <textarea id="task_description" name="description" placeholder="Description"></textarea>
-                            </div>
-                            <div class="modal_form_element">
-                                <label class="date_label" for="task_due_date">Due Date:</label>
-                                <input type="date" id="task_due_date" name="dueDate">
-                            </div>
-                            <div class="modal_form_element">
-                                <button type="submit" id="modal_submit_btn">Add task</button>
+                        <div class="modal_wrapper">
+                            <div class="modal_container">
+                                <div class="modal_header">
+                                    <div class="modal_header_content">
+                                        <input type="text" id="task_title" name="title" placeholder="Task name" required>
+                                    </div>
+                                    <div class="dropdown">
+                                        <i onclick="openDropDown()" class="fas fa-ellipsis-v" id="openDropDownBtn"></i>
+                                        <div id="myDropdown" class="dropdown_options">
+                                            <a id="myDropdownDelete" href="#">
+                                                <i class="fas fa-trash"></i>
+                                                <span>Delete</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal_form_element" id="description_details">
+                                    <textarea id="task_description" name="description" placeholder="Description"></textarea>
+                                </div>
+                                <div class="modal_form_element">
+                                    <label class="date_label" for="task_due_date">Due Date:</label>
+                                    <input type="date" id="task_due_date" name="dueDate">
+                                </div>
+                                <div class="modal_form_element">
+                                    <button type="submit" id="modal_submit_btn">Add task</button>
+                                </div>
                             </div>
                         </div>
                     </form>
