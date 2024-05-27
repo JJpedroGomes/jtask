@@ -1,8 +1,8 @@
 package com.jjpedrogomes.task;
 
 import com.jjpedrogomes.controller.action.CreateTaskAction;
-import com.jjpedrogomes.controller.TaskController;
 import com.jjpedrogomes.controller.action.UpdateTaskAction;
+import com.jjpedrogomes.controller.task.TaskController;
 import com.jjpedrogomes.model.task.TaskDao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;

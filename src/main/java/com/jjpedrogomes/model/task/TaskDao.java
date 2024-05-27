@@ -14,6 +14,7 @@ public class TaskDao implements Dao<Task> {
 
     private final EntityManager entityManager;
     private static final Logger logger = LogManager.getLogger(TaskDao.class);
+    
     public TaskDao(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
