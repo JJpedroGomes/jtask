@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import com.jjpedrogomes.model.user.Email;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
 
@@ -17,6 +18,35 @@ class UserTest {
 	
 	static User buildUser() {
 		return new User("Josh", null, null, null);
+	}
+	
+	@Nested
+	class EmailTest {
+		
+		/**
+         * Test to verify creating an Email object with a valid address string.
+         * Ensures no exception is thrown and the email content matches.
+         */
+		@Test
+		void create_matching_regex() {
+			String address = "email@email.com";
+			assertThatCode(() -> {
+				Email email = new Email(address); 
+				assertThat(email.getAddress()).isEqualTo(address);
+			}).doesNotThrowAnyException();
+		}
+		
+		/**
+         * Test to verify creating an Email object with an invalid address string.
+         * Ensures a RuntimeException is thrown with the appropriate message.
+         */
+		@Test
+		void create_not_matching_regex() {
+			String address = "email@";
+			assertThatThrownBy(() -> {
+				new Email(address);
+			}).isExactlyInstanceOf(RuntimeException.class).hasMessage("Email is not valid");
+		}
 	}
 	
 	@Nested
@@ -31,7 +61,7 @@ class UserTest {
 			String content = "a1b2c3d4";
 			assertThatCode(() -> {
 				Password password = new Password(content); 
-				assertThat(password.getPasswordContent()).isEqualTo(content);
+				assertThat(password.getContent()).isEqualTo(content);
 			}).doesNotThrowAnyException();
 		}
 		
@@ -69,7 +99,7 @@ class UserTest {
 			Password password = new Password(firstPassword);
 			assertThatCode(() -> {
 				password.setNewPassword(new Password(secondPassword));
-				assertThat(password.getPasswordContent()).isEqualTo(secondPassword);
+				assertThat(password.getContent()).isEqualTo(secondPassword);
 			}).doesNotThrowAnyException();
 		}
 		
