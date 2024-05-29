@@ -19,26 +19,38 @@ public class User implements Entity<User> {
 		this.birthDate = birthDate;
 	}
 	
+	public Email getEmail() {
+		return email;
+	}
+	
 	public void setPassword(Password password) {
-		this.password = password;
+		this.password.setNewPassword(password);
+	}
+	
+	public Password getPassword() {
+		return password;
+	}
+	
+	public boolean isAbleToRecoverPassword(Email email, LocalDate birthDate) {
+		return this.email.equals(email) && this.birthDate.equals(birthDate);
 	}
 	
 	@Override
 	public boolean sameIdentityAs(User other) {
-		return other != null && email.equals(other.email);
+		return other != null && id.equals(other.id);
 	}
 	
 	@Override
-	public boolean equals(Object object) {
-		if (this == object) return true;
-		if (object == null || getClass() != object.getClass()) return false;
-		final User other = (User) object;
-		return sameIdentityAs(other);
-	}
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        final User other = (User) object;
+        return sameIdentityAs(other);
+    }
 	
 	@Override
 	public int hashCode() {
-		return email.hashCode();
+		return id.hashCode();
 	}
 
 	@Override
@@ -46,7 +58,5 @@ public class User implements Entity<User> {
 		return "User [id=" + id + ", email=" + email + "]";
 	}
 	
-	public User() {
-		// Needed By hibernate
-	}
+	public User() {}
 }

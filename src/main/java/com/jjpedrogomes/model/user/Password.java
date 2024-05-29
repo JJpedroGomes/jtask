@@ -9,7 +9,8 @@ import com.jjpedrogomes.model.shared.ValueObject;
 public class Password implements ValueObject<Password>{
 	
 	private String content;
-	 // Regular expression to enforce password rules: at least one digit, one lowercase letter, and minimum 8 characters
+	
+	// Regular expression to enforce password rules: at least one digit, one lower case letter, and minimum 8 characters
 	private static final String REGEX_PASSWORD = "(?=.*[0-9])(?=.*[a-z]).{8,}";
 	
 	/**
@@ -50,7 +51,7 @@ public class Password implements ValueObject<Password>{
 		return content != null && content.matches(REGEX_PASSWORD);
 	}
 	
-	public String getPasswordContent() {
+	public String getContent() {
 		return content;
 	}
 		
@@ -61,6 +62,7 @@ public class Password implements ValueObject<Password>{
 	
 	@Override
 	public boolean equals(Object object) {
+		if (this == object)return true;
 		if (object == null || getClass() != object.getClass()) return false;
 		Password other = (Password) object;		
 		return sameValueAs(other);
