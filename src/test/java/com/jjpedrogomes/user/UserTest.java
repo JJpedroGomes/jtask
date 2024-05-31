@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
@@ -16,9 +18,69 @@ import com.jjpedrogomes.model.user.User;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class UserTest {
 	
-	static User buildUser() {
-		return new User("Josh", null, null, null);
+	private static User user;
+	
+	static {
+		String name = "Cleiton Rasta";
+		String address = "email@email.com";
+		String password = "a1b2c3d4";
+		LocalDate birthDate = LocalDate.of(1974, 9, 27);
+		
+		user = new User(name, new Email(address), new Password(password), birthDate);
 	}
+	
+	@Test
+	void create_user_with_all_params() {
+		String name = "joe rogan";
+		String address = "email@email.com";
+		String password = "a1b2c3d4";
+		LocalDate birthDate = LocalDate.of(1974, 9, 27);
+		
+		assertThatCode(() -> {
+			User user = new User(name, new Email(address), new Password(password), birthDate);
+			assertThat(user.getName()).isEqualTo("Joe Rogan");
+		}).doesNotThrowAnyException();		
+	}
+	
+	@Test
+	void create_user_with_invalid_name() {
+		String name = "joe 123";
+		String address = "email@email.com";
+		String password = "a1b2c3d4";
+		LocalDate birthDate = LocalDate.of(1974, 9, 27);
+		
+		assertThatThrownBy(() -> {
+			new User(name, new Email(address), new Password(password), birthDate);
+		}).isExactlyInstanceOf(RuntimeException.class).hasMessage("Name can not be null or contain numbers");
+	}
+	
+	@Test
+	void create_user_with_null_birthdate() {
+		String name = "joão pedro";
+		String address = "email@email.com";
+		String password = "a1b2c3d4";
+		
+		assertThatThrownBy(() -> {
+			new User(name, new Email(address), new Password(password), null);
+		}).isExactlyInstanceOf(RuntimeException.class).hasMessage("Birth date can not be null");
+	}
+	
+	@Test
+	void set_new_valid_name() {
+		user.setName("João Pedro");
+		assertThatCode(() -> {
+			assertThat(user.getName()).isEqualTo("João Pedro");
+		}).doesNotThrowAnyException();	
+	}
+	
+	@Test
+	void set_new_invalid_name() {
+		assertThatThrownBy(() -> {
+			user.setName("João Pedro123");
+		}).isExactlyInstanceOf(RuntimeException.class).hasMessage("Name can not be null or contain numbers");
+		user.setName("João Pedro");
+	}
+	
 	
 	@Nested
 	class EmailTest {
@@ -114,8 +176,6 @@ class UserTest {
 			assertThatThrownBy(() -> {
 				password.setNewPassword(password);
 			}).isExactlyInstanceOf(RuntimeException.class).hasMessage("The given password is already being used");
-		}
-		
+		}	
 	}
-
 }
