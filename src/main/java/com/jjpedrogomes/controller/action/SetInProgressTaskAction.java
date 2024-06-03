@@ -1,7 +1,8 @@
 package com.jjpedrogomes.controller.action;
 
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.model.task.TaskDao;
+import com.jjpedrogomes.repository.task.TaskDao;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

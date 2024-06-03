@@ -2,7 +2,8 @@ package com.jjpedrogomes.task;
 
 import com.jjpedrogomes.controller.action.DeleteTaskAction;
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.model.task.TaskDao;
+import com.jjpedrogomes.repository.task.TaskDao;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;

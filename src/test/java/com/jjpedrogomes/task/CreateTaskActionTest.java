@@ -36,7 +36,7 @@ import org.mockito.Mock;
 
 import com.jjpedrogomes.controller.action.CreateTaskAction;
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.model.task.TaskDao;
+import com.jjpedrogomes.repository.task.TaskDao;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class CreateTaskActionTest {
