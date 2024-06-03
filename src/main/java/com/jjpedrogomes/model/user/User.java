@@ -2,23 +2,40 @@ package com.jjpedrogomes.model.user;
 
 import java.time.LocalDate;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import com.jjpedrogomes.model.shared.Entity;
 
+@javax.persistence.Entity
+@Table(name = "USER")
 public class User implements Entity<User> {
 	
+	@Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
+    @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
 	private Long id;
+	@Column(nullable = false)
 	private String name;
+	@Embedded
+    @AttributeOverride(name = "address", column = @Column(name = "email", nullable = false))
 	private Email email;
+	@Embedded
+    @AttributeOverride(name = "content", column = @Column(name = "password", nullable = false))
 	private Password password;
+	@Column(name = "birth_date", columnDefinition = "DATE", nullable = false)
 	private LocalDate birthDate;
+	@Transient
 	private static final String REGEX_NAME = "[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+"; 
 	
 	public User (String name, Email email, Password password, LocalDate birthDate) {
-//		if (!isValidName(name)) {
-//			throw new RuntimeException("Name can not be null or contain numbers");
-//		} else if (birthDate == null) {
-//			throw new RuntimeException("Birth date can not be null");
-//		}
 		validateName(name);
 		if (birthDate == null) throw new RuntimeException("Birth date can not be null");
 		this.name = capitalizeName(name);
@@ -53,6 +70,10 @@ public class User implements Entity<User> {
 	public void setName(String name) {
 		validateName(name);
 		this.name = capitalizeName(name);
+	}
+	
+	public Long getId() {
+		return id;
 	}
 	
 	public Email getEmail() {

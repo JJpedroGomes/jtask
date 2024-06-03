@@ -1,11 +1,14 @@
 package com.jjpedrogomes.model.user;
 
+import javax.persistence.Embeddable;
+
 import com.jjpedrogomes.model.shared.ValueObject;
 
 /**
  * The Password class represents a user's password as a value object.
  * It enforces certain rules for password validity and provides methods to handle password operations.
  */
+@Embeddable
 public class Password implements ValueObject<Password>{
 	
 	private String content;

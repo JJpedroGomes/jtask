@@ -1,5 +1,7 @@
 package com.jjpedrogomes.model.user;
 
+import javax.persistence.Embeddable;
+
 import com.jjpedrogomes.model.shared.ValueObject;
 
 
@@ -7,6 +9,7 @@ import com.jjpedrogomes.model.shared.ValueObject;
  * The Email class represents an email address as a value object.
  * It includes validation to ensure the email address is in a valid format.
  */
+@Embeddable
 public class Email implements ValueObject<Email>{
 	
 	private String address;
