@@ -1,4 +1,4 @@
-package com.jjpedrogomes.model.user;
+package com.jjpedrogomes.repository.user;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +9,8 @@ import javax.persistence.EntityManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jjpedrogomes.model.shared.Dao;
+import com.jjpedrogomes.model.user.User;
+import com.jjpedrogomes.repository.shared.Dao;
 
 public class UserDao implements Dao<User>{
 	
@@ -38,9 +39,9 @@ public class UserDao implements Dao<User>{
 	}
 
 	@Override
-	public void save(User t) {
-		// TODO Auto-generated method stub
-		
+	public void save(User user) {
+		entityManager.persist(user);
+		logger.info("User saved successfully.");
 	}
 
 	@Override
