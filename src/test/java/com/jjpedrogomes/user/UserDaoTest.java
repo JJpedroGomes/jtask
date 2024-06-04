@@ -1,6 +1,7 @@
 package com.jjpedrogomes.user;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -15,15 +16,15 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.model.user.Email;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
@@ -48,13 +49,16 @@ public class UserDaoTest {
 		
 		@Test
 		void new_user() {
-			User user = new User("Javier Bardem", new Email("email@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
+			String passwordContent = "a1b2c3d4";
+			User user = new User("Javier Bardem", new Email("email@email.com"), new Password(passwordContent), LocalDate.of(1974, 9, 27));
+			PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			// Act
 			entityManager.getTransaction().begin();
 			userDao.save(user);
 			entityManager.getTransaction().commit();
 			// Assert
 			assertThat(user.getId()).isNotNull();
+			assertTrue(passwordEncoder.matches(passwordContent, user.getPassword().getContent()));
 		}
 		
 		@Test

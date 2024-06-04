@@ -9,17 +9,22 @@ import javax.persistence.EntityManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.repository.shared.Dao;
 
 public class UserDao implements Dao<User>{
 	
 	private final EntityManager entityManager;
+	private final PasswordEncoder passwordEncoder;
 	private static final Logger logger = LogManager.getLogger(UserDao.class);
 	
 	public UserDao(EntityManager entityManager) {
 		this.entityManager = entityManager;
+		this.passwordEncoder = new BCryptPasswordEncoder();
 	}
 
 	@Override
@@ -49,6 +54,8 @@ public class UserDao implements Dao<User>{
 
 	@Override
 	public void save(User user) {
+		String encryptedPassword = passwordEncoder.encode(user.getPassword().getContent());
+		user.setPassword(new Password(encryptedPassword));
 		entityManager.persist(user);
 		logger.info("User saved successfully.");
 	}
