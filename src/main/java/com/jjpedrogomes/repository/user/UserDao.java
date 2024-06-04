@@ -1,5 +1,6 @@
 package com.jjpedrogomes.repository.user;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,8 +35,16 @@ public class UserDao implements Dao<User>{
 
 	@Override
 	public List<User> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		String query = "SELECT u from User u";
+        try {
+            logger.info("Selecting all Tasks");
+            List<User> list = this.entityManager.createQuery(query, User.class).getResultList();
+            if (list.isEmpty()) logger.info("Task List is current empty");
+            return list;
+        } catch (Exception exception) {
+            logger.error("Error while retrieving all tasks", exception);
+            return Collections.emptyList();
+        }
 	}
 
 	@Override
