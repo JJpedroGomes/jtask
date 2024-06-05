@@ -32,6 +32,8 @@ public class User implements Entity<User> {
 	private Password password;
 	@Column(name = "birth_date", columnDefinition = "DATE", nullable = false)
 	private LocalDate birthDate;
+	@Column(name = "is_active" ,nullable = false)
+	private boolean isActive;
 	@Transient
 	private static final String REGEX_NAME = "[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+"; 
 	
@@ -42,6 +44,7 @@ public class User implements Entity<User> {
 		this.email = email;
 		this.password = password;
 		this.birthDate = birthDate;
+		this.isActive = true;
 	}
 	
 	private String capitalizeName(String name) {
@@ -62,6 +65,10 @@ public class User implements Entity<User> {
 	public boolean isAbleToRecoverPassword(Email email, LocalDate birthDate) {
 		return this.email.equals(email) && this.birthDate.equals(birthDate);
 	}	
+	
+	public void inactivateUser() {
+		this.isActive = false;
+	}
 	
 	public void setPassword(Password password) {
 		this.password.setNewPassword(password);
@@ -90,6 +97,10 @@ public class User implements Entity<User> {
 	
 	public LocalDate getBirthDate() {
 		return birthDate;
+	}
+	
+	public boolean getIsActive() {
+		return isActive;
 	}
 	
 	private void validateName(String name) {
