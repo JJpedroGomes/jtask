@@ -48,16 +48,18 @@ public class User implements Entity<User> {
 	}
 	
 	private String capitalizeName(String name) {
-		String[] words = name.split(" ");
+		char[] charArray = name.toCharArray();
         StringBuilder capitalized = new StringBuilder();
+
+        capitalized.append(Character.toUpperCase(charArray[0]));
         
-        for (String word : words) {
-            if (word.length() > 0) {
-                capitalized.append(Character.toUpperCase(word.charAt(0)))
-                           .append(word.substring(1).toLowerCase())
-                           .append(" ");
-            }
-        }
+        for (int i = 1; i < charArray.length; i++) {
+        	if (charArray[i - 1] == ' ' || charArray[i - 1] == '-') {
+        		capitalized.append(Character.toUpperCase(charArray[i]));
+        		continue;
+        	}
+        	capitalized.append(charArray[i]);
+        }        
         
         return capitalized.toString().trim();
 	}
