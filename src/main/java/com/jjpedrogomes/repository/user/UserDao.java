@@ -67,9 +67,9 @@ public class UserDao implements Dao<User>{
 	}
 
 	@Override
-	public void delete(User t) {
-		// TODO Auto-generated method stub
-		
+	public void delete(User user) {
+		User managedUser = entityManager.merge(user);
+		managedUser.inactivateUser();
 	}
 
 }

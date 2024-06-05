@@ -53,9 +53,7 @@ public class UserDaoTest {
 			User user = new User("Javier Bardem", new Email("email@email.com"), new Password(passwordContent), LocalDate.of(1974, 9, 27));
 			PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			// Act
-			entityManager.getTransaction().begin();
-			userDao.save(user);
-			entityManager.getTransaction().commit();
+			persistUser(user);
 			// Assert
 			assertThat(user.getId()).isNotNull();
 			assertTrue(passwordEncoder.matches(passwordContent, user.getPassword().getContent()));
@@ -82,9 +80,7 @@ public class UserDaoTest {
 		void by_id_sucessfully() {
 			// Arrange
 			User user = new User("Ryan Gosling", new Email("email@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
-			entityManager.getTransaction().begin();
-			userDao.save(user);
-			entityManager.getTransaction().commit();
+			persistUser(user);
 			// Act
 			User userFromDb = userDao.get(user.getId()).get();
 			// Assert
@@ -116,12 +112,6 @@ public class UserDaoTest {
 			// Assert
 			assertThat(userListFromDb).containsAll(userList);			
 		}
-
-		private void persistUsers(List<User> userList) {
-			entityManager.getTransaction().begin();
-			userList.forEach(user -> userDao.save(user));
-			entityManager.getTransaction().commit();;
-		}
 		
 		@Test
 		void all_user_empty() {
@@ -133,5 +123,37 @@ public class UserDaoTest {
 			 assertThat(userListFromDb).isEmpty();
 		}
 		
+	}
+	
+	@Nested
+	class user_dao_delete {
+		
+		@Test
+		void active_user() {
+			// Arrange
+			User user = new User("Joe Pesci", new Email("email@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
+			persistUser(user);
+			// Act
+			entityManager.getTransaction().begin();
+			userDao.delete(user);
+			entityManager.getTransaction().commit();
+			
+			User userFromDb = userDao.get(user.getId()).get();
+			// Assert
+			assertThat(userFromDb.getIsActive()).isFalse();
+		}
+		
+	}
+	
+	private void persistUsers(List<User> userList) {
+		entityManager.getTransaction().begin();
+		userList.forEach(user -> userDao.save(user));
+		entityManager.getTransaction().commit();;
+	}
+	
+	private void persistUser(User user) {
+		entityManager.getTransaction().begin();
+		userDao.save(user);
+		entityManager.getTransaction().commit();;
 	}
 }
