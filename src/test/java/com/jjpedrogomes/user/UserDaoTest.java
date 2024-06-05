@@ -1,5 +1,6 @@
 package com.jjpedrogomes.user;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -37,6 +37,7 @@ public class UserDaoTest {
 	
 	private EntityManager entityManager;
 	private UserDao userDao;
+	private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	
 	@BeforeEach
 	 void setUpBeforeEach() {
@@ -51,7 +52,6 @@ public class UserDaoTest {
 		void new_user() {
 			String passwordContent = "a1b2c3d4";
 			User user = new User("Javier Bardem", new Email("email@email.com"), new Password(passwordContent), LocalDate.of(1974, 9, 27));
-			PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			// Act
 			persistUser(user);
 			// Assert
@@ -143,6 +143,31 @@ public class UserDaoTest {
 			assertThat(userFromDb.getIsActive()).isFalse();
 		}
 		
+	}
+	
+	@Nested
+	class user_dao_update {
+		
+		@Test
+		void user_sucessfully() {
+			// Arrange
+			String passwordContent = "a1b2c3d4";
+			User user = new User("Charlize Theron", new Email("email@email.com"), new Password(passwordContent), LocalDate.of(1974, 9, 27));
+			persistUser(user);
+			// Act
+			entityManager.getTransaction().begin();
+			String newPasswordContent = "a123b123c123d123";
+			String newName = "anya taylor-joy";
+			
+			user.setPassword(new Password(newPasswordContent));
+			user.setName(newName);
+			User userAfterUpdate = userDao.update(user);
+			entityManager.getTransaction().commit();
+			// Assert
+			assertTrue(passwordEncoder.matches(newPasswordContent, userAfterUpdate.getPassword().getContent()));
+			assertFalse(passwordEncoder.matches(passwordContent, userAfterUpdate.getPassword().getContent()));
+			assertThat(userAfterUpdate.getName()).isEqualTo("Anya Taylor-Joy");
+		}
 	}
 	
 	private void persistUsers(List<User> userList) {

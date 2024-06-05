@@ -54,22 +54,27 @@ public class UserDao implements Dao<User>{
 
 	@Override
 	public void save(User user) {
-		String encryptedPassword = passwordEncoder.encode(user.getPassword().getContent());
-		user.setPassword(new Password(encryptedPassword));
+		encryptUserPassword(user);
 		entityManager.persist(user);
 		logger.info("User saved successfully.");
 	}
 
 	@Override
-	public User update(User t) {
-		// TODO Auto-generated method stub
-		return null;
+	public User update(User user) {
+		encryptUserPassword(user);
+		return entityManager.merge(user);
 	}
 
 	@Override
 	public void delete(User user) {
 		User managedUser = entityManager.merge(user);
 		managedUser.inactivateUser();
+	}
+	
+	private User encryptUserPassword(User user) {
+		String encryptedPassword = passwordEncoder.encode(user.getPassword().getContent());
+		user.setPassword(new Password(encryptedPassword));
+		return user;
 	}
 
 }
