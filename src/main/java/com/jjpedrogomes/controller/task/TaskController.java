@@ -26,7 +26,8 @@ import java.util.List;
 )
 public class TaskController extends HttpServlet {
 
-    private static final Logger logger = LogManager.getLogger(TaskController.class);
+    private static final long serialVersionUID = 1L;
+	private static final Logger logger = LogManager.getLogger(TaskController.class);
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)

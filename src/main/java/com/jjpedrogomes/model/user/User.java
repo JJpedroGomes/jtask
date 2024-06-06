@@ -25,7 +25,7 @@ public class User implements Entity<User> {
 	@Column(nullable = false)
 	private String name;
 	@Embedded
-    @AttributeOverride(name = "address", column = @Column(name = "email", nullable = false))
+    @AttributeOverride(name = "address", column = @Column(name = "email", nullable = false, unique = true))
 	private Email email;
 	@Embedded
     @AttributeOverride(name = "content", column = @Column(name = "password", nullable = false))
