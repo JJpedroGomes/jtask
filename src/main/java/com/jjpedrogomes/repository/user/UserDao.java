@@ -1,5 +1,7 @@
 package com.jjpedrogomes.repository.user;
 
+import static org.assertj.core.api.Assertions.filter;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -75,6 +77,18 @@ public class UserDao implements Dao<User>{
 		String encryptedPassword = passwordEncoder.encode(user.getPassword().getContent());
 		user.setPassword(new Password(encryptedPassword));
 		return user;
+	}
+
+	public Optional<User> getUserByCredentials(String email, String password) {
+		try {
+			String query = "SELECT u FROM User u WHERE u.email = :email";
+			return Optional.ofNullable(entityManager.createQuery(query, User.class)
+				.setParameter("email", email)
+				.getSingleResult())
+				.filter(user -> passwordEncoder.matches(password, user.getPassword().getContent()));
+		} catch (Exception e) {
+			return Optional.empty();
+		}
 	}
 
 }
