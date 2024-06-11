@@ -1,4 +1,4 @@
-package com.jjpedrogomes.task;
+package com.jjpedrogomes.controller.action;
 
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.repository.task.TaskDao;

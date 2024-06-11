@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class TaskTest {
+public class TaskTest {
 
     //Builds a new task with conclusionDate = LocalDate.now() and status COMPLETED
     public static Task buildCompletedTask() {

@@ -1,6 +1,5 @@
-package com.jjpedrogomes.task;
+package com.jjpedrogomes.controller.action;
 
-import static com.jjpedrogomes.task.TaskTest.buildInProgressTask;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -37,6 +36,7 @@ import org.mockito.Mock;
 import com.jjpedrogomes.controller.action.CreateTaskAction;
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.repository.task.TaskDao;
+import static com.jjpedrogomes.task.TaskTest.buildInProgressTask;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class CreateTaskActionTest {

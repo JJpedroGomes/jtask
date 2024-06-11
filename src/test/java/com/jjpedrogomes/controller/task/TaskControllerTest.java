@@ -1,4 +1,4 @@
-package com.jjpedrogomes.task;
+package com.jjpedrogomes.controller.task;
 
 import com.jjpedrogomes.controller.action.CreateTaskAction;
 import com.jjpedrogomes.controller.action.UpdateTaskAction;
@@ -43,6 +43,7 @@ class TaskControllerTest {
     TaskDao taskDao;
     @InjectMocks
     private TaskController taskController;
+    
     @BeforeEach
     void setUp() {
         initMocks(this);

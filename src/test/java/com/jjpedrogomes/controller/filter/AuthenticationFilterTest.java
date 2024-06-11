@@ -1,4 +1,4 @@
-package com.jjpedrogomes.controller;
+package com.jjpedrogomes.controller.filter;
 
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
