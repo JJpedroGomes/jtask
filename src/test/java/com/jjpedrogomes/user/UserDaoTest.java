@@ -62,7 +62,7 @@ public class UserDaoTest {
 		@Test
 		void new_user_with_error() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 			// Arrange
-			User user = new User("Liam Neeson", new Email("email@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
+			User user = new User("Liam Neeson", new Email("email1@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
 			Field name = User.class.getDeclaredField("name");
 			name.setAccessible(true);
 			name.set(user, null);
@@ -79,7 +79,7 @@ public class UserDaoTest {
 		@Test
 		void by_id_sucessfully() {
 			// Arrange
-			User user = new User("Ryan Gosling", new Email("email@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
+			User user = new User("Ryan Gosling", new Email("email2@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
 			persistUser(user);
 			// Act
 			User userFromDb = userDao.get(user.getId()).get();
@@ -100,9 +100,9 @@ public class UserDaoTest {
 		@Test
 		void all_users() {
 			// Arrange
-			User user1 = new User("Mike Faist", new Email("email@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
-			User user2 = new User("Zendaya", new Email("email@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
-			User user3 = new User("Josh Connor", new Email("email@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
+			User user1 = new User("Mike Faist", new Email("email3@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
+			User user2 = new User("Zendaya", new Email("email4@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
+			User user3 = new User("Josh Connor", new Email("email5@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
 			
 			List<User> userList = new ArrayList<User>();
 			Collections.addAll(userList, user1, user2, user3);
@@ -131,7 +131,7 @@ public class UserDaoTest {
 		@Test
 		void active_user() {
 			// Arrange
-			User user = new User("Joe Pesci", new Email("email@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
+			User user = new User("Joe Pesci", new Email("email6@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
 			persistUser(user);
 			// Act
 			entityManager.getTransaction().begin();
@@ -152,7 +152,7 @@ public class UserDaoTest {
 		void user_sucessfully() {
 			// Arrange
 			String passwordContent = "a1b2c3d4";
-			User user = new User("Charlize Theron", new Email("email@email.com"), new Password(passwordContent), LocalDate.of(1974, 9, 27));
+			User user = new User("Charlize Theron", new Email("email7@email.com"), new Password(passwordContent), LocalDate.of(1974, 9, 27));
 			persistUser(user);
 			// Act
 			entityManager.getTransaction().begin();
