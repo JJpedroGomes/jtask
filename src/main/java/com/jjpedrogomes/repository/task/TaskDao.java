@@ -1,6 +1,8 @@
-package com.jjpedrogomes.model.task;
+package com.jjpedrogomes.repository.task;
 
-import com.jjpedrogomes.model.shared.Dao;
+import com.jjpedrogomes.model.task.Task;
+import com.jjpedrogomes.repository.shared.Dao;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,6 +16,7 @@ public class TaskDao implements Dao<Task> {
 
     private final EntityManager entityManager;
     private static final Logger logger = LogManager.getLogger(TaskDao.class);
+    
     public TaskDao(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

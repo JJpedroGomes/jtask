@@ -1,9 +1,10 @@
-package com.jjpedrogomes.task;
+package com.jjpedrogomes.controller.task;
 
 import com.jjpedrogomes.controller.action.CreateTaskAction;
-import com.jjpedrogomes.controller.TaskController;
 import com.jjpedrogomes.controller.action.UpdateTaskAction;
-import com.jjpedrogomes.model.task.TaskDao;
+import com.jjpedrogomes.controller.task.TaskController;
+import com.jjpedrogomes.repository.task.TaskDao;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -42,6 +43,7 @@ class TaskControllerTest {
     TaskDao taskDao;
     @InjectMocks
     private TaskController taskController;
+    
     @BeforeEach
     void setUp() {
         initMocks(this);

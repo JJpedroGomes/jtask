@@ -1,8 +1,9 @@
-package com.jjpedrogomes.controller;
+package com.jjpedrogomes.controller.task;
 
 import com.jjpedrogomes.controller.action.Action;
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.model.task.TaskDao;
+import com.jjpedrogomes.repository.task.TaskDao;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,7 +26,8 @@ import java.util.List;
 )
 public class TaskController extends HttpServlet {
 
-    private static final Logger logger = LogManager.getLogger(TaskController.class);
+    private static final long serialVersionUID = 1L;
+	private static final Logger logger = LogManager.getLogger(TaskController.class);
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)

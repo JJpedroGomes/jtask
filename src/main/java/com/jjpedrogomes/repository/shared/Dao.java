@@ -1,4 +1,4 @@
-package com.jjpedrogomes.model.shared;
+package com.jjpedrogomes.repository.shared;
 
 import java.util.List;
 import java.util.Optional;

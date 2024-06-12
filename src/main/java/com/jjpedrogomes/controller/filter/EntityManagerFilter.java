@@ -8,7 +8,6 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-//Todo: Adapt for just transaction requests
 @WebFilter(urlPatterns = {"/*"})
 public class EntityManagerFilter implements Filter {
 

@@ -1,4 +1,4 @@
-package com.jjpedrogomes.controller;
+package com.jjpedrogomes.controller.filter;
 
 import com.jjpedrogomes.controller.filter.EntityManagerFilter;
 import com.jjpedrogomes.model.util.JpaUtil;

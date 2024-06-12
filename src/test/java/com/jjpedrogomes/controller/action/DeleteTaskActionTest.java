@@ -1,8 +1,9 @@
-package com.jjpedrogomes.task;
+package com.jjpedrogomes.controller.action;
 
 import com.jjpedrogomes.controller.action.DeleteTaskAction;
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.model.task.TaskDao;
+import com.jjpedrogomes.repository.task.TaskDao;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -12,6 +13,9 @@ import org.mockito.Mock;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Optional;
 
 import static com.jjpedrogomes.task.TaskTest.buildInProgressTask;
@@ -40,10 +44,12 @@ class DeleteTaskActionTest {
     }
 
     @Test
-    void delete_existing_task() {
+    void delete_existing_task() throws IOException {
         // Arrange
+    	Task task = buildInProgressTask();
         when(request.getParameter("id")).thenReturn("1");
         when(taskDao.get(any(Long.class))).thenReturn(Optional.ofNullable(task));
+        when(response.getWriter()).thenReturn(mock(PrintWriter.class));
         // Act
         action.execute(request, response);
         // Assert
