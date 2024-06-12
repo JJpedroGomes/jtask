@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 public class AuthenticationFilter implements Filter{
 	
 	private final String[] loginRequiredUrls = {
-			"/main", "/board.jsp"
+			"/main", "/board.jsp", "/logout"
 	};
 
 	@Override
