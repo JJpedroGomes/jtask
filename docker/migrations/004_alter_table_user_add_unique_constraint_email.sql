@@ -1,2 +1,2 @@
-ALTER TABLE user
+ALTER TABLE "user"
 ADD UNIQUE(email);

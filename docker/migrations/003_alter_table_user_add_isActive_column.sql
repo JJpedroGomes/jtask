@@ -1,2 +1,2 @@
-ALTER TABLE user
+ALTER TABLE "user"
 ADD COLUMN is_active BOOLEAN NOT NULL;
