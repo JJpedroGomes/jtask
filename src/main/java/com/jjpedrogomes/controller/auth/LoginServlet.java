@@ -20,7 +20,7 @@ public class LoginServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
@@ -29,6 +29,11 @@ public class LoginServlet extends HttpServlet{
 		
 		Optional<User> userOptional = userDao.getUserByCredentials(email, password);
 		if (userOptional.isPresent()) {
+			HttpSession oldSession = request.getSession(false);
+			if (oldSession != null) {
+				oldSession.invalidate();
+			}	
+			
 			HttpSession session = request.getSession();
 			session.setAttribute("user", email);
 			session.setAttribute("displayName", userOptional.get().getName());
