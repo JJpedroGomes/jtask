@@ -46,4 +46,9 @@ public class LoginServlet extends HttpServlet{
 			response.sendRedirect(request.getContextPath() + "/login.jsp?error=Invalid credentials");
 		}
 	}
+	
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
+	}
 }
