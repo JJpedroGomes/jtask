@@ -49,6 +49,7 @@ public class LoginServlet extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// in auth filter, if user is already logged in, redirects to /main
 		response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
 	}
 }
