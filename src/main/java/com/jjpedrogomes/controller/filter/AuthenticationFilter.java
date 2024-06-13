@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 public class AuthenticationFilter implements Filter{
 	
 	private final String[] loginRequiredUrls = {
-			"/main", "/board.jsp", "/logout"
+			"/main", "/logout", 
 	};
 
 	@Override
@@ -36,13 +36,14 @@ public class AuthenticationFilter implements Filter{
 		boolean isLoginPage = httpRequest.getRequestURI().endsWith("login.jsp");
 		boolean isLoggedIn = (session != null && session.getAttribute("user") != null);
 		
+		
 		if (isLoggedIn && (isLoginRequest || isLoginPage)) {
             // the user is already logged in and he's trying to login again
 			httpReponse.sendRedirect(httpRequest.getContextPath() + "/main");
 		} else if (!isLoggedIn && isLoginRequired(httpRequest)) {
 			// the user is not logged in, and the requested page requires
             // authentication, then forward to the login page
-			httpReponse.sendRedirect(httpRequest.getContextPath() + "/login.jsp");
+			httpReponse.sendRedirect(httpRequest.getContextPath() + "/pages/login.jsp");
 		} else {
 			// for other requested pages that do not require authentication
             // or the user is already logged in, continue to the destination
@@ -50,11 +51,11 @@ public class AuthenticationFilter implements Filter{
 		}
 	}
 
-	private boolean isLoginRequired(HttpServletRequest httpRequest) {
+	private boolean isLoginRequired(HttpServletRequest httpRequest) {		
 		String requestUrl = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 		
 		for (String loginRequiredUrl : loginRequiredUrls) {
-			if (requestUrl.contains(loginRequiredUrl)) {
+			if (requestUrl.equals(loginRequiredUrl)) {
 				return true;
 			}
 		}
