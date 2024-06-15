@@ -1,0 +1,60 @@
+@charset "UTF-8";
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    margin:0 ;
+    padding: 0;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    list-style: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+html, body {
+    height: 100%;
+}
+
+.major_container {
+	display: flex;
+	height: 100%;
+	width: 100%;
+}
+
+.major_container .side_banner_container {
+	width: 50%;
+	height: 100%;
+	position: left;
+	background-color: red;
+}
+
+.major_container .login_container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 50%;
+	height: 100%;
+	position: right;
+	background-color: green;
+}
+
+.major_container .login_container .login_form_container {
+	width: 50%;
+	background-color: blue;
+}
+
+.major_container .login_container .login_form_container .login_form_element {
+	margin: 15px 0;
+    padding: 0 15px;
+}
+
+.major_container .login_container .login_form_container .login_form_element label, textarea {
+	display:block;
+}
+
+.major_container .login_container .login_form_container .login_form_element label {
+	margin-bottom: 5px;
+}
+
