@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.jjpedrogomes.controller.task.TaskController;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.repository.user.UserDao;
 
@@ -18,9 +22,12 @@ import com.jjpedrogomes.repository.user.UserDao;
 public class LoginServlet extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
+	private static final Logger logger = LogManager.getLogger(LoginServlet.class);
 	
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+		logger.info("Entering method doPost() in Login Servlet");
+		
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
@@ -43,7 +50,7 @@ public class LoginServlet extends HttpServlet{
             
             response.sendRedirect(request.getContextPath() + "/main");
 		} else {
-			response.sendRedirect(request.getContextPath() + "/login.jsp?error=Invalid credentials");
+			response.sendRedirect(request.getContextPath() + "/pages/login.jsp?error=Invalid credentials");
 		}
 	}
 	
