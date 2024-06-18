@@ -1,21 +1,16 @@
 package com.jjpedrogomes.repository.user;
 
-import static org.assertj.core.api.Assertions.filter;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.jjpedrogomes.model.user.Email;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.repository.shared.Dao;
@@ -83,11 +78,11 @@ public class UserDao implements Dao<User>{
 
 	public Optional<User> getUserByCredentials(String email, String password) {
 		try {
-			String query = "SELECT u FROM User u WHERE u.email = :email";
+			String query = "SELECT u FROM User u WHERE u.email.address = :email";			
 			return Optional.ofNullable(entityManager.createQuery(query, User.class)
-				.setParameter("email", new Email(email))
+				.setParameter("email", email)
 				.getSingleResult())
-				.filter(user -> passwordEncoder.matches(password, user.getPassword().getContent()));		
+				.filter(user -> passwordEncoder.matches(password, user.getPassword().getContent()));	
 		} catch (Exception e) {
 			return Optional.empty();
 		}

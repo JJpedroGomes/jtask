@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,11 +13,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.jjpedrogomes.model.shared.Entity;
 
-@javax.persistence.Entity
-@Table(name = "USER")
-public class User implements Entity<User> {
+@Entity
+@Table(name = "users")
+public class User implements com.jjpedrogomes.model.shared.Entity<User> {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
