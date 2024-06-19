@@ -1,7 +1,7 @@
 package com.jjpedrogomes.repository.task;
 
+import com.jjpedrogomes.controller.task.TaskDao;
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.repository.shared.Dao;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Optional;
 
 // This class represents a Data Access Object (DAO) responsible for managing Task entities in the database.
-public class TaskDao implements Dao<Task> {
+public class TaskDaoImpl implements TaskDao<Task> {
 
     private final EntityManager entityManager;
-    private static final Logger logger = LogManager.getLogger(TaskDao.class);
+    private static final Logger logger = LogManager.getLogger(TaskDaoImpl.class);
     
-    public TaskDao(EntityManager entityManager) {
+    public TaskDaoImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 

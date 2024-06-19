@@ -29,20 +29,20 @@ import com.jjpedrogomes.model.user.Email;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.model.util.JpaUtil;
-import com.jjpedrogomes.repository.user.UserDao;
+import com.jjpedrogomes.repository.user.UserDaoImpl;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserDaoTest {
 	
 	private EntityManager entityManager;
-	private UserDao userDao;
+	private UserDaoImpl userDao;
 	private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	
 	@BeforeEach
 	 void setUpBeforeEach() {
 		 this.entityManager = JpaUtil.getEntityManager();
-		 this.userDao = new UserDao(entityManager);
+		 this.userDao = new UserDaoImpl(entityManager);
 	 }
 
 	@Nested
@@ -116,7 +116,7 @@ public class UserDaoTest {
 		@Test
 		void all_user_empty() {
 			 EntityManager entityManager = mock(EntityManager.class);
-			 UserDao userDao = new UserDao(entityManager);
+			 UserDaoImpl userDao = new UserDaoImpl(entityManager);
 			 when(entityManager.createQuery(anyString(), eq(User.class)))
              					.thenThrow(new RuntimeException("Simulated Error"));
 			 List<User> userListFromDb = userDao.getAll();

@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jjpedrogomes.controller.task.TaskController;
 import com.jjpedrogomes.model.user.User;
-import com.jjpedrogomes.repository.user.UserDao;
+import com.jjpedrogomes.repository.user.UserDaoImpl;
 
 @WebServlet(urlPatterns = "/login")
 public class LoginServlet extends HttpServlet{
@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet{
 		String password = request.getParameter("password");
 		
 		EntityManager entityManager = (EntityManager) request.getAttribute("entityManager");
-		UserDao userDao = new UserDao(entityManager);
+		UserDaoImpl userDao = new UserDaoImpl(entityManager);
 		
 		Optional<User> userOptional = userDao.getUserByCredentials(email, password);
 		if (userOptional.isPresent()) {
@@ -58,5 +58,11 @@ public class LoginServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// in auth filter, if user is already logged in, redirects to /main
 		response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
+	}
+	
+	@Override
+	public void init() throws ServletException {
+		// TODO Auto-generated method stub
+		super.init();
 	}
 }

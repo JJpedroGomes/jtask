@@ -2,7 +2,7 @@ package com.jjpedrogomes.controller.action;
 
 import com.jjpedrogomes.controller.action.DeleteTaskAction;
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.repository.task.TaskDao;
+import com.jjpedrogomes.repository.task.TaskDaoImpl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -30,7 +30,7 @@ class DeleteTaskActionTest {
     @InjectMocks
     private DeleteTaskAction action;
     @Mock
-    private TaskDao taskDao;
+    private TaskDaoImpl taskDao;
     @Mock
     private HttpServletRequest request;
     @Mock

@@ -11,17 +11,18 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.jjpedrogomes.controller.auth.UserDao;
+import com.jjpedrogomes.controller.task.TaskDao;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
-import com.jjpedrogomes.repository.shared.Dao;
 
-public class UserDao implements Dao<User>{
+public class UserDaoImpl implements UserDao<User>{
 	
 	private final EntityManager entityManager;
 	private final PasswordEncoder passwordEncoder;
-	private static final Logger logger = LogManager.getLogger(UserDao.class);
+	private static final Logger logger = LogManager.getLogger(UserDaoImpl.class);
 	
-	public UserDao(EntityManager entityManager) {
+	public UserDaoImpl(EntityManager entityManager) {
 		this.entityManager = entityManager;
 		this.passwordEncoder = new BCryptPasswordEncoder();
 	}

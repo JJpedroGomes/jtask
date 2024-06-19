@@ -1,7 +1,7 @@
 package com.jjpedrogomes.controller.action;
 
 import com.jjpedrogomes.controller.util.GsonUtil;
-import com.jjpedrogomes.repository.task.TaskDao;
+import com.jjpedrogomes.repository.task.TaskDaoImpl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DeleteTaskAction implements Action {
 
-    private final TaskDao taskDao;
+    private final TaskDaoImpl taskDao;
     private static final Logger logger = LogManager.getLogger(DeleteTaskAction.class);
 
-    public DeleteTaskAction(TaskDao taskDao) {
+    public DeleteTaskAction(TaskDaoImpl taskDao) {
         this.taskDao = taskDao;
     }
 

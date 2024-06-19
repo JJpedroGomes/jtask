@@ -3,7 +3,7 @@ package com.jjpedrogomes.controller.task;
 import com.jjpedrogomes.controller.action.CreateTaskAction;
 import com.jjpedrogomes.controller.action.UpdateTaskAction;
 import com.jjpedrogomes.controller.task.TaskController;
-import com.jjpedrogomes.repository.task.TaskDao;
+import com.jjpedrogomes.repository.task.TaskDaoImpl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -40,7 +40,7 @@ class TaskControllerTest {
     @Mock
     private PrintWriter writer;
     @Mock
-    TaskDao taskDao;
+    TaskDaoImpl taskDao;
     @InjectMocks
     private TaskController taskController;
     
@@ -63,7 +63,7 @@ class TaskControllerTest {
         method.setAccessible(true);
         // Act
         String actionFullQualifiedName = (String) method.invoke(taskController, "CreateTask", response);
-        Constructor<?> constructor = Class.forName(actionFullQualifiedName).getConstructor(TaskDao.class);
+        Constructor<?> constructor = Class.forName(actionFullQualifiedName).getConstructor(TaskDaoImpl.class);
         CreateTaskAction instance = (CreateTaskAction) constructor.newInstance(taskDao);
         taskController.doPost(request, response);
         // Assert
@@ -87,7 +87,7 @@ class TaskControllerTest {
         method.setAccessible(true);
         // Act
         String actionFullQualifiedName = (String) method.invoke(taskController, "UpdateTask", response);
-        Constructor<?> constructor = Class.forName(actionFullQualifiedName).getConstructor(TaskDao.class);
+        Constructor<?> constructor = Class.forName(actionFullQualifiedName).getConstructor(TaskDaoImpl.class);
         UpdateTaskAction instance = (UpdateTaskAction) constructor.newInstance(taskDao);
         taskController.doPost(request, response);
         // Assert
@@ -105,7 +105,7 @@ class TaskControllerTest {
         method.setAccessible(true);
         // Act and Assert
         String actionFullQualifiedName = (String) method.invoke(taskController, invalidAction, response);
-        assertThrows(ClassNotFoundException.class, () -> Class.forName(actionFullQualifiedName).getConstructor(TaskDao.class));
+        assertThrows(ClassNotFoundException.class, () -> Class.forName(actionFullQualifiedName).getConstructor(TaskDaoImpl.class));
         assertThrows(ServletException.class, () -> taskController.doPost(request, response));
         verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
