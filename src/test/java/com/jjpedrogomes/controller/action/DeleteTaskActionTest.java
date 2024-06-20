@@ -1,6 +1,6 @@
 package com.jjpedrogomes.controller.action;
 
-import com.jjpedrogomes.controller.action.DeleteTaskAction;
+import com.jjpedrogomes.controller.task.DeleteTaskAction;
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.repository.task.TaskDaoImpl;
 

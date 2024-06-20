@@ -80,7 +80,7 @@ class AuthenticationFilterTest {
 		// Act
 		authenticationFilter.doFilter(requestMock, responseMock, filterChainMock);
 		// Assert
-		verify(responseMock).sendRedirect(requestMock.getContextPath() + "/login.jsp");
+		verify(responseMock).sendRedirect(requestMock.getContextPath() + "/pages/login.jsp");
 		verify(filterChainMock, never()).doFilter(requestMock, responseMock);
 	}
 	

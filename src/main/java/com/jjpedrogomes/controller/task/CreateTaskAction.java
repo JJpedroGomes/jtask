@@ -1,5 +1,6 @@
-package com.jjpedrogomes.controller.action;
+package com.jjpedrogomes.controller.task;
 
+import com.jjpedrogomes.controller.action.Action;
 import com.jjpedrogomes.controller.util.GsonUtil;
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.repository.task.TaskDaoImpl;

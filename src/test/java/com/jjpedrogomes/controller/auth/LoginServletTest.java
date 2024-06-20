@@ -87,7 +87,7 @@ class LoginServletTest {
         loginServlet.doPost(request, response);
         
         // Assert
-        verify(response).sendRedirect(request.getContextPath() + "/login.jsp?error=Invalid credentials");
+        verify(response).sendRedirect(request.getContextPath() + "/pages/login.jsp?error=Invalid credentials");
 	}
 	
 	private void persistUser(User user) {

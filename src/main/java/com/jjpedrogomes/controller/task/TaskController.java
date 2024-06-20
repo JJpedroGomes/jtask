@@ -27,6 +27,7 @@ import java.util.List;
 public class TaskController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    private final String ACTION_PATH = "com.jjpedrogomes.controller.task.";
 	private static final Logger logger = LogManager.getLogger(TaskController.class);
 
     @Override
@@ -87,7 +88,6 @@ public class TaskController extends HttpServlet {
             throw new ServletException();
         }
         StringBuilder builder = new StringBuilder();
-        String ACTION_PATH = "com.jjpedrogomes.controller.action.";
         return builder.append(ACTION_PATH).append(action).append("Action").toString();
     }
 }
