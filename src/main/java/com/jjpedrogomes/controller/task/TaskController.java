@@ -2,7 +2,7 @@ package com.jjpedrogomes.controller.task;
 
 import com.jjpedrogomes.controller.action.Action;
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.repository.task.TaskDao;
+import com.jjpedrogomes.repository.task.TaskDaoImpl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +27,7 @@ import java.util.List;
 public class TaskController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    private final String ACTION_PATH = "com.jjpedrogomes.controller.task.";
 	private static final Logger logger = LogManager.getLogger(TaskController.class);
 
     @Override
@@ -35,12 +36,12 @@ public class TaskController extends HttpServlet {
         logger.info("Entering method doPost() in TaskController Servlet");
 
         EntityManager entityManager = (EntityManager) request.getAttribute("entityManager");
-        TaskDao taskDao = new TaskDao(entityManager);
+        TaskDao<Task> taskDao = new TaskDaoImpl(entityManager);
         String action = request.getParameter("action");
 
         String qualifiedClassName = getQualifiedClassName(action, response);
         try {
-            Constructor<?> constructor = Class.forName(qualifiedClassName).getConstructor(TaskDao.class);
+            Constructor<?> constructor = Class.forName(qualifiedClassName).getConstructor(TaskDaoImpl.class);
             Action actionClass = (Action) constructor.newInstance(taskDao);
             actionClass.execute(request, response);
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException
@@ -57,7 +58,7 @@ public class TaskController extends HttpServlet {
         logger.info("Entering method doGet() in TaskController Servlet");
 
         EntityManager entityManager = (EntityManager) request.getAttribute("entityManager");
-        TaskDao taskDao = new TaskDao(entityManager);
+        TaskDaoImpl taskDao = new TaskDaoImpl(entityManager);
         String action = request.getParameter("action");
         logger.info("action provided:" + action);
 
@@ -87,7 +88,6 @@ public class TaskController extends HttpServlet {
             throw new ServletException();
         }
         StringBuilder builder = new StringBuilder();
-        String ACTION_PATH = "com.jjpedrogomes.controller.action.";
         return builder.append(ACTION_PATH).append(action).append("Action").toString();
     }
 }

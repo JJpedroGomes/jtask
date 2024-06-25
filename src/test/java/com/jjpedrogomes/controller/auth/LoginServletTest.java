@@ -23,14 +23,14 @@ import com.jjpedrogomes.model.user.Email;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.model.util.JpaUtil;
-import com.jjpedrogomes.repository.user.UserDao;
+import com.jjpedrogomes.repository.user.UserDaoImpl;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class LoginServletTest {
 	
 	private HttpServletRequest request;
 	private HttpServletResponse response;
-	private UserDao userDao;
+	private UserDaoImpl userDao;
 	private EntityManager entityManager;
 	
 	@BeforeEach
@@ -38,7 +38,7 @@ class LoginServletTest {
 		this.request = mock(HttpServletRequest.class);
 		this.response = mock(HttpServletResponse.class);
 		this.entityManager = JpaUtil.getEntityManager();
-		this.userDao = new UserDao(entityManager);
+		this.userDao = new UserDaoImpl(entityManager);
 	}
 	
 	@Test
@@ -87,7 +87,7 @@ class LoginServletTest {
         loginServlet.doPost(request, response);
         
         // Assert
-        verify(response).sendRedirect(request.getContextPath() + "/login.jsp?error=Invalid credentials");
+        verify(response).sendRedirect(request.getContextPath() + "/pages/login.jsp?error=Invalid credentials");
 	}
 	
 	private void persistUser(User user) {

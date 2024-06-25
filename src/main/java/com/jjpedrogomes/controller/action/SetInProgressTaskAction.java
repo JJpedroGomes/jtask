@@ -1,7 +1,8 @@
 package com.jjpedrogomes.controller.action;
 
+import com.jjpedrogomes.controller.task.CreateTaskAction;
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.repository.task.TaskDao;
+import com.jjpedrogomes.repository.task.TaskDaoImpl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,9 +14,9 @@ import java.util.Optional;
 public class SetInProgressTaskAction implements Action {
 
     private static final Logger logger = LogManager.getLogger(CreateTaskAction.class);
-    private final TaskDao taskDao;
+    private final TaskDaoImpl taskDao;
 
-    public SetInProgressTaskAction(TaskDao  taskDao) {
+    public SetInProgressTaskAction(TaskDaoImpl  taskDao) {
         this.taskDao = taskDao;
     }
 

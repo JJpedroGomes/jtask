@@ -1,8 +1,9 @@
-package com.jjpedrogomes.controller.action;
+package com.jjpedrogomes.controller.task;
 
+import com.jjpedrogomes.controller.action.Action;
 import com.jjpedrogomes.controller.util.GsonUtil;
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.repository.task.TaskDao;
+import com.jjpedrogomes.repository.task.TaskDaoImpl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,10 +16,10 @@ import java.util.Optional;
 
 public class UpdateTaskAction implements Action {
 
-    private final TaskDao taskDao;
+    private final TaskDaoImpl taskDao;
     private static final Logger logger = LogManager.getLogger(UpdateTaskAction.class);
 
-    public UpdateTaskAction(TaskDao taskDao) {
+    public UpdateTaskAction(TaskDaoImpl taskDao) {
         this.taskDao = taskDao;
     }
 

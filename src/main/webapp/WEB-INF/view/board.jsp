@@ -57,10 +57,12 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="#" id="logout_link">
                                     <i class="fas fa-sign-out-alt"></i>
                                     <span>Log Out</span>
                                 </a>
+                                <form id="logout_form" action="${pageContext.request.contextPath}/logout" method="POST" style="display: none;">
+								</form>
                             </li>
                         </div>
                         <!--End:  navigation bar bottom links-->

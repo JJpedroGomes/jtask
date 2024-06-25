@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import com.jjpedrogomes.model.user.Email;
+import com.jjpedrogomes.model.user.InvalidEmailException;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
 
@@ -107,7 +108,7 @@ class UserTest {
 			String address = "email@";
 			assertThatThrownBy(() -> {
 				new Email(address);
-			}).isExactlyInstanceOf(RuntimeException.class).hasMessage("Email is not valid");
+			}).isExactlyInstanceOf(InvalidEmailException.class);
 		}
 	}
 	

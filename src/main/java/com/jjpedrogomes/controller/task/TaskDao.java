@@ -1,10 +1,10 @@
-package com.jjpedrogomes.repository.shared;
+package com.jjpedrogomes.controller.task;
 
 import java.util.List;
 import java.util.Optional;
 
 // This interface represents a Data Access Object (DAO) contract for managing entities in the database.
-public interface Dao<T> {
+public interface TaskDao<T> {
 
     // Retrieves an entity by its ID from the database.
     Optional<T> get(long id);

@@ -25,24 +25,25 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.jjpedrogomes.controller.auth.UserDao;
 import com.jjpedrogomes.model.user.Email;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.model.util.JpaUtil;
-import com.jjpedrogomes.repository.user.UserDao;
+import com.jjpedrogomes.repository.user.UserDaoImpl;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserDaoTest {
 	
 	private EntityManager entityManager;
-	private UserDao userDao;
+	private UserDaoImpl userDao;
 	private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	
 	@BeforeEach
 	 void setUpBeforeEach() {
 		 this.entityManager = JpaUtil.getEntityManager();
-		 this.userDao = new UserDao(entityManager);
+		 this.userDao = new UserDaoImpl(entityManager);
 	 }
 
 	@Nested
@@ -67,9 +68,7 @@ public class UserDaoTest {
 			name.setAccessible(true);
 			name.set(user, null);
 			// Act & Assert
-			entityManager.getTransaction().begin();
-			assertThrows(Exception.class, () -> userDao.save(user));
-			entityManager.getTransaction().commit();	
+			assertThrows(Exception.class, () -> userDao.save(user));	
 		}
 	}
 	
@@ -116,7 +115,7 @@ public class UserDaoTest {
 		@Test
 		void all_user_empty() {
 			 EntityManager entityManager = mock(EntityManager.class);
-			 UserDao userDao = new UserDao(entityManager);
+			 UserDaoImpl userDao = new UserDaoImpl(entityManager);
 			 when(entityManager.createQuery(anyString(), eq(User.class)))
              					.thenThrow(new RuntimeException("Simulated Error"));
 			 List<User> userListFromDb = userDao.getAll();
@@ -171,14 +170,14 @@ public class UserDaoTest {
 	}
 	
 	private void persistUsers(List<User> userList) {
-		entityManager.getTransaction().begin();
+		EntityManager entityManager = JpaUtil.getEntityManager();
+		UserDao<User> userDao = new UserDaoImpl(entityManager);
 		userList.forEach(user -> userDao.save(user));
-		entityManager.getTransaction().commit();;
 	}
 	
 	private void persistUser(User user) {
-		entityManager.getTransaction().begin();
+		EntityManager entityManager = JpaUtil.getEntityManager();
+		UserDao<User> userDao = new UserDaoImpl(entityManager);
 		userDao.save(user);
-		entityManager.getTransaction().commit();;
 	}
 }

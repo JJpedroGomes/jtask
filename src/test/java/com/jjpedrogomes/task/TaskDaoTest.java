@@ -2,7 +2,7 @@ package com.jjpedrogomes.task;
 
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.model.util.JpaUtil;
-import com.jjpedrogomes.repository.task.TaskDao;
+import com.jjpedrogomes.repository.task.TaskDaoImpl;
 
 import org.junit.jupiter.api.*;
 
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TaskDaoTest {
 
-    private TaskDao taskDao;
+    private TaskDaoImpl taskDao;
     private EntityManager entityManager;
     private Task task;
     private Task taskPreSaved;
@@ -33,7 +33,7 @@ class TaskDaoTest {
     @BeforeAll
     void createPreSavedTask() {
         EntityManager entityManager = JpaUtil.getEntityManager();
-        TaskDao taskDaoEnv = new TaskDao(entityManager);
+        TaskDaoImpl taskDaoEnv = new TaskDaoImpl(entityManager);
 
         Task task = buildPendingTask();
 
@@ -51,7 +51,7 @@ class TaskDaoTest {
     void setUpBeforeEach() {
         this.task = buildInProgressTask();
         this.entityManager = JpaUtil.getEntityManager();
-        this.taskDao = new TaskDao(entityManager);
+        this.taskDao = new TaskDaoImpl(entityManager);
     }
 
     @AfterEach
@@ -121,7 +121,7 @@ class TaskDaoTest {
         void by_id_when_exception_thrown() {
             // Arrange
             EntityManager entityManager = mock(EntityManager.class);
-            TaskDao taskDaoEnv = new TaskDao(entityManager);
+            TaskDaoImpl taskDaoEnv = new TaskDaoImpl(entityManager);
             when(entityManager.find(eq(Task.class),anyLong())).thenThrow(new RuntimeException("Simulated Error"));
             // Act
             List<Task> taskList = taskDaoEnv.getAll();
@@ -158,7 +158,7 @@ class TaskDaoTest {
         void empty_list() {
             // Arrange
             EntityManager entityManager = mock(EntityManager.class);
-            TaskDao taskDaoEnv = new TaskDao(entityManager);
+            TaskDaoImpl taskDaoEnv = new TaskDaoImpl(entityManager);
             when(entityManager.createQuery(anyString(), eq(Task.class)))
                     .thenThrow(new RuntimeException("Simulated Error"));
             // Act
@@ -214,7 +214,7 @@ class TaskDaoTest {
         void task_with_error() {
             // Arrange
             EntityManager entityManager = mock(EntityManager.class);
-            TaskDao taskDao = new TaskDao(entityManager);
+            TaskDaoImpl taskDao = new TaskDaoImpl(entityManager);
             // Mocking EntityManager behavior to throw an exception when remove method is called
             doThrow(RuntimeException.class).when(entityManager).remove(any());
             // Act and Assert

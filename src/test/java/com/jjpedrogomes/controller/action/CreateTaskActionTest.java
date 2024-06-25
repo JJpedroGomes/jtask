@@ -33,9 +33,9 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import com.jjpedrogomes.controller.action.CreateTaskAction;
+import com.jjpedrogomes.controller.task.CreateTaskAction;
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.repository.task.TaskDao;
+import com.jjpedrogomes.repository.task.TaskDaoImpl;
 import static com.jjpedrogomes.task.TaskTest.buildInProgressTask;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -50,7 +50,7 @@ public class CreateTaskActionTest {
     @Mock
     private HttpSession httpSession;
     @Mock
-    private TaskDao taskDao;
+    private TaskDaoImpl taskDao;
     @Captor
     private ArgumentCaptor<List<Task>> taskListCaptor;
 

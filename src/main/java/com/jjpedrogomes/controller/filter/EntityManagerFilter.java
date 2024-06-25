@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 @WebFilter(urlPatterns = {"/*"})
@@ -36,6 +38,7 @@ public class EntityManagerFilter implements Filter {
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
             }
+            ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new ServletException("Something went wrong with the transaction", exception);
         } finally {
             entityManager.close();

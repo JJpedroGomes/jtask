@@ -11,21 +11,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.jjpedrogomes.model.user.User;
-import com.jjpedrogomes.repository.user.UserDao;
+import com.jjpedrogomes.repository.user.UserDaoImpl;
 
 @WebServlet(urlPatterns = "/login")
 public class LoginServlet extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
+	private static final Logger logger = LogManager.getLogger(LoginServlet.class);
 	
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+		logger.info("Entering method doPost() in Login Servlet");
+		
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
 		EntityManager entityManager = (EntityManager) request.getAttribute("entityManager");
-		UserDao userDao = new UserDao(entityManager);
+		UserDao<User> userDao = new UserDaoImpl(entityManager);
 		
 		Optional<User> userOptional = userDao.getUserByCredentials(email, password);
 		if (userOptional.isPresent()) {
@@ -43,7 +49,19 @@ public class LoginServlet extends HttpServlet{
             
             response.sendRedirect(request.getContextPath() + "/main");
 		} else {
-			response.sendRedirect(request.getContextPath() + "/login.jsp?error=Invalid credentials");
+			response.sendRedirect(request.getContextPath() + "/pages/login.jsp?error=Invalid credentials");
 		}
+	}
+	
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// in auth filter, if user is already logged in, redirects to /main
+		response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
+	}
+	
+	@Override
+	public void init() throws ServletException {
+		// TODO Auto-generated method stub
+		super.init();
 	}
 }

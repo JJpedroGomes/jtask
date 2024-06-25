@@ -1,8 +1,8 @@
 package com.jjpedrogomes.controller.action;
 
+import com.jjpedrogomes.controller.task.UpdateTaskAction;
 import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.repository.task.TaskDao;
-import com.jjpedrogomes.controller.action.UpdateTaskAction;
+import com.jjpedrogomes.repository.task.TaskDaoImpl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -32,7 +32,7 @@ class UpdateTaskActionTest {
     @InjectMocks
     private UpdateTaskAction useCase;
     @Mock
-    private TaskDao taskDao;
+    private TaskDaoImpl taskDao;
     @Mock
     private HttpServletRequest request;
     @Mock
