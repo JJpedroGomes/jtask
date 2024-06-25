@@ -24,7 +24,7 @@ public class Email implements ValueObject<Email>{
      */
 	public Email(String address) {
 		if (!isEmailValid(address)) {
-			throw new RuntimeException("Email is not valid");
+			throw new InvalidEmailException();
 		}
 		this.address = address;
 	}
@@ -63,7 +63,7 @@ public class Email implements ValueObject<Email>{
 
 	@Override
 	public String toString() {
-		return "Email [address=" + address + "]";
+		return address;
 	}	
 	
 	Email() {}
