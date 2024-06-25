@@ -45,11 +45,9 @@ public class CreateUserAction implements Action{
 			UserDto userDto = new UserDto(user);
 			clientResponseHandler.createObjectJsonResponse(userDto);
 		} catch (Exception e) {
-			logger.error("Unexpected error saving user: {}", e.getMessage(), e);
+			logger.error("Unexpected error creating user {}", e.getMessage(), e);
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             clientResponseHandler.createErrorJsonResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		} finally {
-			clientResponseHandler.commitJsonToResponse();
 		}
 	}
 

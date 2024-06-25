@@ -43,7 +43,9 @@ public class UserController extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
+		
 		action.execute(request, response);
+		clientResponseHandler.commitJsonToResponse();
 	}
 	
 	private Action newInstance(String action, UserDao<User> userDao, ClientResponseHandler clientResponseHandler) {
