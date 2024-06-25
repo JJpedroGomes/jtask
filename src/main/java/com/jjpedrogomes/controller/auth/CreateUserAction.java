@@ -35,19 +35,19 @@ public class CreateUserAction implements Action{
 		String birthDateParam = request.getParameter("birthDate");
 		
 		User user = createUser(response, nameParam, emailParam, passwordParam, birthDateParam);
-		if (user == null) {
-			return;
-		}
+		if (user == null) return;
 		
 		try {
 			logger.info("Saving user...");
 			userDao.save(user);
 			response.setStatus(HttpServletResponse.SC_CREATED);	
-			clientResponseHandler.createObjectJsonResponse(user);
+			
+			UserDto userDto = new UserDto(user);
+			clientResponseHandler.createObjectJsonResponse(userDto);
 		} catch (Exception e) {
 			logger.error("Unexpected error saving user: {}", e.getMessage(), e);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             clientResponseHandler.createErrorJsonResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		} finally {
 			clientResponseHandler.commitJsonToResponse();
 		}
@@ -56,20 +56,25 @@ public class CreateUserAction implements Action{
 	private User createUser(HttpServletResponse response, String nameParam, String emailParam, String passwordParam, String birthDateParam) {
 		try {
 			logger.info("Creating user...");
+			
 			Email email = new Email(emailParam);
 			Password password = new Password(passwordParam);
 			LocalDate birthDate = LocalDate.parse(birthDateParam);
+			
 			return new User(nameParam, email, password, birthDate);
 		} catch (ModelException e) {		
 			ModelErrorCode errorCode = e.getErrorCode();
 			logger.error("Error creating user: {}", errorCode.getLogMessage(), e);
 			
 			clientResponseHandler.createErrorJsonResponse(errorCode.getCode());
+			
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return null;
 		} catch (Exception e) {
 			int errorCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 			logger.error("Unexpected error creating user: {}", e.getMessage(), e);
+			
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			
 			clientResponseHandler.createErrorJsonResponse(errorCode);
 			response.setStatus(errorCode);	

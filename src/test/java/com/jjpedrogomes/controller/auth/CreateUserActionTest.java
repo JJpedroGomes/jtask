@@ -20,7 +20,7 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
-import com.jjpedrogomes.controller.util.ClientResponseHandler;
+import com.jjpedrogomes.controller.util.ClientResponseHandlerImpl;
 import com.jjpedrogomes.model.shared.ModelErrorCode;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.repository.user.UserDaoImpl;
@@ -31,7 +31,7 @@ class CreateUserActionTest {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private UserDao<User> userDao;
-	private ClientResponseHandler clientResponseHandler;
+	private ClientResponseHandlerImpl clientResponseHandler;
 	private CreateUserAction createUserAction;
 	private String nameParam = "test";
 	private String emailParam = "email@email.com";
@@ -43,7 +43,7 @@ class CreateUserActionTest {
 		this.request = mock(HttpServletRequest.class);
 		this.response = mock(HttpServletResponse.class);
 		this.userDao = mock(UserDaoImpl.class);
-		this.clientResponseHandler = new ClientResponseHandler(response);
+		this.clientResponseHandler = new ClientResponseHandlerImpl(response);
 		this.createUserAction = new CreateUserAction(userDao, clientResponseHandler);
 	}
 

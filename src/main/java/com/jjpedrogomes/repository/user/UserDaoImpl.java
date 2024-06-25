@@ -12,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.jjpedrogomes.controller.auth.UserDao;
-import com.jjpedrogomes.controller.task.TaskDao;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
 

@@ -11,6 +11,7 @@ const openDropDownBtn = document.getElementById("openDropDownBtn");
 const myDropdownDelete = document.getElementById("myDropdownDelete");
 let currentTaskId = null;
 
+// Logout button event listener to communicate with logout servlet
 document.getElementById("logout_link").addEventListener("click", function(event) {
 	event.preventDefault();
 	document.getElementById("logout_form").submit();

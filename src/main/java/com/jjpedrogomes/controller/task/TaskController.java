@@ -36,7 +36,7 @@ public class TaskController extends HttpServlet {
         logger.info("Entering method doPost() in TaskController Servlet");
 
         EntityManager entityManager = (EntityManager) request.getAttribute("entityManager");
-        TaskDaoImpl taskDao = new TaskDaoImpl(entityManager);
+        TaskDao<Task> taskDao = new TaskDaoImpl(entityManager);
         String action = request.getParameter("action");
 
         String qualifiedClassName = getQualifiedClassName(action, response);

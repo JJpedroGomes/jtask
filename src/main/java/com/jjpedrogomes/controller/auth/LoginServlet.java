@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet{
 		String password = request.getParameter("password");
 		
 		EntityManager entityManager = (EntityManager) request.getAttribute("entityManager");
-		UserDaoImpl userDao = new UserDaoImpl(entityManager);
+		UserDao<User> userDao = new UserDaoImpl(entityManager);
 		
 		Optional<User> userOptional = userDao.getUserByCredentials(email, password);
 		if (userOptional.isPresent()) {

@@ -1,6 +1,5 @@
 package com.jjpedrogomes.controller.task;
 
-import com.jjpedrogomes.controller.task.TaskController;
 import com.jjpedrogomes.repository.task.TaskDaoImpl;
 
 import org.junit.jupiter.api.BeforeEach;
