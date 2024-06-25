@@ -46,7 +46,6 @@ public class ClientResponseHandlerImpl implements ClientResponseHandler{
         }
         try (PrintWriter writer = response.getWriter()) {
             writer.println(currentJson);
-            writer.flush();
             this.isCommited = true;
         } catch (IOException e) {
         	logger.error("Unexpected error commiting json to print writer: {}", e.getMessage(), e);
