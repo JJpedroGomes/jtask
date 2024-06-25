@@ -1,10 +1,8 @@
 package com.jjpedrogomes.controller.auth;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 
 import javax.persistence.EntityManager;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,13 +12,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jjpedrogomes.controller.action.Action;
-import com.jjpedrogomes.controller.util.ActionPathUtil;
+import com.jjpedrogomes.controller.util.ClientResponseHandlerImpl;
 import com.jjpedrogomes.controller.util.PathConstants;
+import com.jjpedrogomes.controller.util.ActionPathUtil;
+import com.jjpedrogomes.controller.util.ClientResponseHandler;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.repository.user.UserDaoImpl;
 
 @WebServlet(
-        name = "TaskController",
+        name = "UserController",
         urlPatterns = "/user"
 )
 public class UserController extends HttpServlet {
@@ -29,23 +29,31 @@ public class UserController extends HttpServlet {
 	private static final Logger logger = LogManager.getLogger(UserController.class);
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 		logger.info("Entering method doPost() in UserController Servlet");
 		
 		EntityManager entityManager = (EntityManager) request.getAttribute("entityManager");
 		UserDao<User> userDao = new UserDaoImpl(entityManager);
+		ClientResponseHandler clientResponseHandler = new ClientResponseHandlerImpl(response);
 		
-		String action = request.getParameter("action");
+		String actionParam = request.getParameter("action");
+		Action action = newInstance(actionParam, userDao, clientResponseHandler);
 		
-		String qualifiedClassName = ActionPathUtil.getQualifiedClassName(PathConstants.USER, action, response);
-		try {
-			Constructor<?> constructor = Class.forName(qualifiedClassName).getConstructor(UserDaoImpl.class);
-            Action actionClass = (Action) constructor.newInstance(userDao);
-            actionClass.execute(request, response);
-		} catch (Exception e) {
+		if (action == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            logger.error("Action:" + action + "not found", e);
-            throw new ServletException(e);
+			return;
+		}
+		action.execute(request, response);
+	}
+	
+	private Action newInstance(String action, UserDao<User> userDao, ClientResponseHandler clientResponseHandler) {
+		try {
+			String qualifiedClassName = ActionPathUtil.getQualifiedClassName(PathConstants.USER, action);
+			Constructor<?> constructor = Class.forName(qualifiedClassName).getConstructor(UserDao.class, ClientResponseHandler.class);
+			return (Action) constructor.newInstance(userDao, clientResponseHandler);
+		} catch (Exception e) {
+			logger.error("Failed to create a UserAction instance, cause:", e);
+			return null;
 		}
 	}
 }
