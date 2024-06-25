@@ -6,6 +6,8 @@ import java.util.Optional;
 
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -53,9 +55,21 @@ public class UserDaoImpl implements UserDao<User>{
 
 	@Override
 	public void save(User user) {
-		encryptUserPassword(user);
-		entityManager.persist(user);
-		logger.info("User saved successfully.");
+		logger.info("Entering method save in UserDaoImpl");
+		EntityTransaction transaction = entityManager.getTransaction();
+		if (!transaction.isActive()) {
+			transaction.begin();
+		}
+		try {
+			encryptUserPassword(user);
+			entityManager.persist(user);
+			transaction.commit();
+			logger.info("User saved successfully.");
+		} catch (Exception e) {
+			logger.error("Unexpected error saving user: {}", e.getMessage());
+			transaction.rollback();
+			throw new RuntimeException(e.getMessage());
+		}
 	}
 
 	@Override

@@ -25,6 +25,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.jjpedrogomes.controller.auth.UserDao;
 import com.jjpedrogomes.model.user.Email;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
@@ -67,9 +68,7 @@ public class UserDaoTest {
 			name.setAccessible(true);
 			name.set(user, null);
 			// Act & Assert
-			entityManager.getTransaction().begin();
-			assertThrows(Exception.class, () -> userDao.save(user));
-			entityManager.getTransaction().commit();	
+			assertThrows(Exception.class, () -> userDao.save(user));	
 		}
 	}
 	
@@ -171,14 +170,14 @@ public class UserDaoTest {
 	}
 	
 	private void persistUsers(List<User> userList) {
-		entityManager.getTransaction().begin();
+		EntityManager entityManager = JpaUtil.getEntityManager();
+		UserDao<User> userDao = new UserDaoImpl(entityManager);
 		userList.forEach(user -> userDao.save(user));
-		entityManager.getTransaction().commit();;
 	}
 	
 	private void persistUser(User user) {
-		entityManager.getTransaction().begin();
+		EntityManager entityManager = JpaUtil.getEntityManager();
+		UserDao<User> userDao = new UserDaoImpl(entityManager);
 		userDao.save(user);
-		entityManager.getTransaction().commit();;
 	}
 }
