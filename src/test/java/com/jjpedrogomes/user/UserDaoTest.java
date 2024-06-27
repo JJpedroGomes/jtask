@@ -175,7 +175,7 @@ public class UserDaoTest {
 		userList.forEach(user -> userDao.save(user));
 	}
 	
-	private void persistUser(User user) {
+	public static void persistUser(User user) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		UserDao<User> userDao = new UserDaoImpl(entityManager);
 		userDao.save(user);

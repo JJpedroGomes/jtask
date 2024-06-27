@@ -40,7 +40,9 @@ public class UserController extends HttpServlet {
 		Action action = newInstance(actionParam, userDao, clientResponseHandler);
 		
 		if (action == null) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			int scBadRequest = HttpServletResponse.SC_BAD_REQUEST;
+			response.setStatus(scBadRequest);
+			clientResponseHandler.createErrorJsonResponse(scBadRequest);
 			return;
 		}
 		
