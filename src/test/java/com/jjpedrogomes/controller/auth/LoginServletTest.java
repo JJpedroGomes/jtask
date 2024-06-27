@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
@@ -23,22 +22,18 @@ import com.jjpedrogomes.model.user.Email;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.model.util.JpaUtil;
-import com.jjpedrogomes.repository.user.UserDaoImpl;
+import com.jjpedrogomes.user.UserDaoTest;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class LoginServletTest {
 	
 	private HttpServletRequest request;
 	private HttpServletResponse response;
-	private UserDaoImpl userDao;
-	private EntityManager entityManager;
 	
 	@BeforeEach
 	void setUp() {
 		this.request = mock(HttpServletRequest.class);
 		this.response = mock(HttpServletResponse.class);
-		this.entityManager = JpaUtil.getEntityManager();
-		this.userDao = new UserDaoImpl(entityManager);
 	}
 	
 	@Test
@@ -49,7 +44,7 @@ class LoginServletTest {
 		HttpSession session = mock(HttpSession.class);
 		
 		User user = new User("Matthew McConaughey", new Email(email), new Password(password), LocalDate.now());
-        persistUser(user);
+        UserDaoTest.persistUser(user);
 		
 		when(request.getParameter("email")).thenReturn(email);
         when(request.getParameter("password")).thenReturn(password);
@@ -75,7 +70,7 @@ class LoginServletTest {
 		String wrongPassord = "a1b2c3d5";
 		
         User user = new User("Anne Hathaway", new Email(email), new Password(wrongPassord), LocalDate.now());
-        persistUser(user);
+        UserDaoTest.persistUser(user);
 		
 		when(request.getParameter("email")).thenReturn(email);
         when(request.getParameter("password")).thenReturn(password);	
@@ -89,11 +84,4 @@ class LoginServletTest {
         // Assert
         verify(response).sendRedirect(request.getContextPath() + "/pages/login.jsp?error=Invalid credentials");
 	}
-	
-	private void persistUser(User user) {
-		entityManager.getTransaction().begin();
-        userDao.save(user);
-        entityManager.getTransaction().commit();
-	}
-
 }
