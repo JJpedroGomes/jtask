@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import com.jjpedrogomes.model.user.Email;
 import com.jjpedrogomes.model.user.InvalidEmailException;
+import com.jjpedrogomes.model.user.InvalidPasswordException;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
 
@@ -137,7 +138,7 @@ class UserTest {
 			String content = "invalid";
 			assertThatThrownBy(() -> {
 				new Password(content);
-			}).isExactlyInstanceOf(RuntimeException.class).hasMessage("Password does not match requirements");
+			}).isExactlyInstanceOf(InvalidPasswordException.class);
 		}
 		
 		/**
@@ -148,7 +149,7 @@ class UserTest {
 		void create_with_null_password() {
 			assertThatThrownBy(() -> {
 				new Password(null);
-			}).isExactlyInstanceOf(RuntimeException.class).hasMessage("Password does not match requirements");
+			}).isExactlyInstanceOf(InvalidPasswordException.class);
 		}
 		
 		/**

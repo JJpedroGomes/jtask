@@ -25,7 +25,8 @@ public class Password implements ValueObject<Password>{
      */
 	public Password (String content) {
 		if (!isPasswordValid(content)) {
-			throw new RuntimeException("Password does not match requirements");
+//			throw new RuntimeException("Password does not match requirements");
+			throw new InvalidPasswordException();
 		}
 		this.content = content;
 	}

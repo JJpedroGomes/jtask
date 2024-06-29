@@ -3,14 +3,14 @@ package com.jjpedrogomes.model.shared;
 public abstract class ModelException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
-	private ModelErrorCode errorCode;
+	private ModelError errorCode;
 	
-	public ModelException(ModelErrorCode errorCode) {
+	public ModelException(ModelError errorCode) {
 		super(errorCode.getLogMessage());
 		this.errorCode = errorCode;
 	}
 
-	public ModelErrorCode getErrorCode() {
+	public ModelError getErrorCode() {
 		return errorCode;
 	}
 }

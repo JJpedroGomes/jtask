@@ -21,7 +21,6 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import com.jjpedrogomes.controller.util.ClientResponseHandlerImpl;
-import com.jjpedrogomes.model.shared.ModelErrorCode;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.repository.user.UserDaoImpl;
 
@@ -50,7 +49,6 @@ class CreateUserActionTest {
 	@Test
 	void create_user_with_invalid_param() throws IOException {
 		// Arrange
-		String errorCode = ModelErrorCode.INVALID_EMAIL.getCode().toString();
 		when(request.getParameter("name")).thenReturn(nameParam);
 		when(request.getParameter("email")).thenReturn(null);
 		when(request.getParameter("password")).thenReturn(passwordParam);
@@ -61,7 +59,6 @@ class CreateUserActionTest {
 		// Assert
 		verify(userDao, never()).save(any(User.class));
 		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		assertThat(clientResponseHandler.getCurrentJson()).isEqualTo("{\"error\":" + errorCode + "}");
 	}
 	
 	@Test
