@@ -17,35 +17,45 @@ public class ClientResponseHandlerImpl implements ClientResponseHandler{
 
     private HttpServletResponse response;
     private boolean isCommited;
-    private String currentJson;
+    private String jsonString;
+    private JsonObject json;
 
     public ClientResponseHandlerImpl(HttpServletResponse response) {
         this.response = response;
     }
-
-    @Override
-    public ClientResponseHandlerImpl createErrorJsonResponse(int errorCode) {
-        setResponseContentToJson();
-        JsonObject jsonResponse = new JsonObject();
-        jsonResponse.addProperty("error", errorCode);
-        this.currentJson = transformToJsonString(jsonResponse);
-        return this;
+    
+    public ClientResponseHandlerImpl createJsonResponse() {
+    	setResponseContentToJson();
+    	this.json = new JsonObject();
+    	return this;
     }
-
-    @Override
-    public ClientResponseHandlerImpl createObjectJsonResponse(Object obj) {
-        setResponseContentToJson();
-        this.currentJson = transformToJsonString(obj);
-        return this;
+    
+    public ClientResponseHandlerImpl setErrorCode(int errorCode) {
+    	this.json.addProperty("error", errorCode);
+    	return this;
+    }
+    
+    public ClientResponseHandlerImpl setMessage(String message) {
+    	this.json.addProperty("errorMessage", message);
+    	return this;
+    }
+    
+    public ClientResponseHandlerImpl setObject(Object obj) {
+    	Gson gson = new Gson();
+    	this.json = gson.toJsonTree(obj).getAsJsonObject();
+    	return this;
     }
     
     @Override
     public void commitJsonToResponse() {
+    	if (jsonString == null) {
+    		this.jsonString = transformToJsonString(json);
+    	}
     	if (isCommited) {
             return;
         }
         try (PrintWriter writer = response.getWriter()) {
-            writer.println(currentJson);
+            writer.println(jsonString);
             this.isCommited = true;
         } catch (IOException e) {
         	logger.error("Unexpected error commiting json to print writer: {}", e.getMessage(), e);
@@ -62,8 +72,13 @@ public class ClientResponseHandlerImpl implements ClientResponseHandler{
         response.setCharacterEncoding("UTF-8");
     }
 
-	public String getCurrentJson() {
-		return currentJson;
+	public String getCurrentJsonString() {
+		return jsonString;
 	}
+	
+	public JsonObject getCurrentJson() {
+		return json;
+	}
+	
 }
 

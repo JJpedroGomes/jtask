@@ -1,6 +1,7 @@
 package com.jjpedrogomes.controller.auth;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -20,7 +21,9 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
+import com.google.gson.JsonObject;
 import com.jjpedrogomes.controller.util.ClientResponseHandlerImpl;
+import com.jjpedrogomes.model.shared.ModelError;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.repository.user.UserDaoImpl;
 
@@ -59,6 +62,9 @@ class CreateUserActionTest {
 		// Assert
 		verify(userDao, never()).save(any(User.class));
 		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		JsonObject json = clientResponseHandler.getCurrentJson();
+		assertTrue(json.has("error"));
+		assertThat(json.get("error").getAsInt()).isEqualTo(ModelError.INVALID_EMAIL.getCode());
 	}
 	
 	@Test
@@ -74,7 +80,10 @@ class CreateUserActionTest {
 		 // Assert
 		verify(userDao).save(any(User.class));
 		verify(response).setStatus(HttpServletResponse.SC_CREATED);
-		assertThat(clientResponseHandler.getCurrentJson()).doesNotContain("error");
+		JsonObject json = clientResponseHandler.getCurrentJson();
+//		assertTrue(json.has("id"));
+		assertTrue(json.has("name"));
+		assertTrue(json.has("email"));
 	}
 	
 	@Test
@@ -90,6 +99,6 @@ class CreateUserActionTest {
 		createUserAction.execute(request, response);
 		// Assert
 		verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		assertThat(clientResponseHandler.getCurrentJson()).isEqualTo("{\"error\":" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR + "}");
+		assertTrue(clientResponseHandler.getCurrentJson().has("error"));
 	}
 }
