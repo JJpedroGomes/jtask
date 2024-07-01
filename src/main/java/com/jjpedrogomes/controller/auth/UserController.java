@@ -42,7 +42,7 @@ public class UserController extends HttpServlet {
 		if (action == null) {
 			int scBadRequest = HttpServletResponse.SC_BAD_REQUEST;
 			response.setStatus(scBadRequest);
-			clientResponseHandler.createErrorJsonResponse(scBadRequest);
+			clientResponseHandler.createJsonResponse().setErrorCode(scBadRequest);
 			return;
 		}
 		
