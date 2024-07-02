@@ -36,7 +36,7 @@ public class ClientResponseHandlerImpl implements ClientResponseHandler{
     }
     
     public ClientResponseHandlerImpl setMessage(String message) {
-    	this.json.addProperty("errorMessage", message);
+    	this.json.addProperty("message", message);
     	return this;
     }
     

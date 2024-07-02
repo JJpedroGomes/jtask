@@ -3,7 +3,8 @@ package com.jjpedrogomes.model.shared;
 public enum ModelError {
 	
 	INVALID_EMAIL(1001, "Invalid email address provided"),
-	INVALID_PASSWORD(1002, "Password does not match requirements");
+	INVALID_PASSWORD(1002, "Password does not match requirements"),
+	EMAIL_ALREADY_TAKEN(1003, "Email is already taken");
 
 	private final Integer code;
     private final String logMessage;

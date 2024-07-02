@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/stylesheet/forms.css">
+<script src="${pageContext.request.contextPath}/js/user.js" defer></script>
 <title>Create an Account</title>
 </head>
 <body>
@@ -17,7 +18,10 @@
 				<!-- logo above login form -->
 			</div>
 			<div class="login_form_container">
-				<form id="login_form" method="POST" action="${pageContext.request.contextPath}/user">
+				<form id="login_form" action="${pageContext.request.contextPath}/user">
+					<div id="response_container" class="response_container">
+						<div id="response_message" class="response_message"></div>
+					</div>
 					<input type="hidden" name="action" value="CreateUser">
 					<div class="login_form_element">
 						<label for="name">Name</label>
