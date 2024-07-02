@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -101,4 +102,28 @@ class CreateUserActionTest {
 		verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		assertTrue(clientResponseHandler.getCurrentJson().has("error"));
 	}
+	
+	@Test
+	void create_user_but_email_alredy_taken() throws IOException {
+		// Arrange
+		when(request.getParameter("name")).thenReturn(nameParam);
+		when(request.getParameter("email")).thenReturn(emailParam);
+		when(request.getParameter("password")).thenReturn(passwordParam);
+		when(request.getParameter("birthDate")).thenReturn(birthDateParam);
+		when(response.getWriter()).thenReturn(mock(PrintWriter.class));
+		when(userDao.getUserByEmail(emailParam)).thenReturn(Optional.of(new User()));
+		// Act
+		createUserAction.execute(request, response);
+		// Assert
+		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		JsonObject json = clientResponseHandler.getCurrentJson();
+		int error = json.get("error").getAsInt();
+		String message = json.get("message").getAsString();
+		assertThat(error).isEqualTo(ModelError.EMAIL_ALREADY_TAKEN.getCode());
+		assertThat(message).isEqualTo(ModelError.EMAIL_ALREADY_TAKEN.getLogMessage());
+	}
+	
+	
+	
+	
 }

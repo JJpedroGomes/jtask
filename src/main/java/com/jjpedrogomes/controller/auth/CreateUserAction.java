@@ -38,19 +38,31 @@ public class CreateUserAction implements Action{
 		User user = createUser(response, nameParam, emailParam, passwordParam, birthDateParam);
 		if (user == null) return;
 		
-		try {
-			logger.info("Saving user...");
-			userDao.save(user);
-			response.setStatus(HttpServletResponse.SC_CREATED);	
-			
-			UserDto userDto = new UserDto(user);
-			clientResponseHandler.setObject(userDto);
-		} catch (Exception e) {
-			int error = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-			logger.error("Unexpected error creating user {}", e.getMessage(), e);
-			response.setStatus(error);
-            clientResponseHandler.setErrorCode(error);
+		if(!isEmailAlreadyTaken(emailParam)) {
+			try {
+				logger.info("Saving user...");
+				userDao.save(user);
+				response.setStatus(HttpServletResponse.SC_CREATED);	
+				
+				UserDto userDto = new UserDto(user);
+				clientResponseHandler.setObject(userDto);
+			} catch (Exception e) {
+				int error = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+				logger.error("Unexpected error creating user {}", e.getMessage(), e);
+				response.setStatus(error);
+	            clientResponseHandler.setErrorCode(error);
+			}
 		}
+		else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			ModelError error = ModelError.EMAIL_ALREADY_TAKEN;
+			clientResponseHandler.setErrorCode(error.getCode())
+			.setMessage(error.getLogMessage());
+		}
+	}
+
+	private boolean isEmailAlreadyTaken(String email) {
+		return userDao.getUserByEmail(email).isPresent();
 	}
 
 	private User createUser(HttpServletResponse response, String nameParam, String emailParam, String passwordParam, String birthDateParam) {

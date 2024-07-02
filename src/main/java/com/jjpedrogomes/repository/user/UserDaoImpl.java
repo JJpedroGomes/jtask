@@ -91,12 +91,16 @@ public class UserDaoImpl implements UserDao<User>{
 	}
 
 	public Optional<User> getUserByCredentials(String email, String password) {
+		return getUserByEmail(email).filter(user -> passwordEncoder.matches(password, user.getPassword().getContent()));
+	}
+
+	@Override
+	public Optional<User> getUserByEmail(String email) {
 		try {
 			String query = "SELECT u FROM User u WHERE u.email.address = :email";			
 			return Optional.ofNullable(entityManager.createQuery(query, User.class)
 				.setParameter("email", email)
-				.getSingleResult())
-				.filter(user -> passwordEncoder.matches(password, user.getPassword().getContent()));	
+				.getSingleResult());	
 		} catch (Exception e) {
 			return Optional.empty();
 		}

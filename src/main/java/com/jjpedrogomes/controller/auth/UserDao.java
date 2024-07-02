@@ -24,5 +24,8 @@ public interface UserDao<T> {
     
     // Retrieves an entity by its email and password from the database.
     Optional<User> getUserByCredentials(String email, String password);
+    
+ // Retrieves an entity by its email and password from the database.
+    Optional<User> getUserByEmail(String email);
 
 }
