@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.time.LocalDate;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,18 +24,20 @@ public class UserControllerTest {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private EntityManager entityManager;
+	private EntityTransaction transaction;
 	
 	@BeforeEach
 	void setUp() {
 		this.request = mock(HttpServletRequest.class);
 		this.response = mock(HttpServletResponse.class);
 		this.entityManager = mock(EntityManager.class);
+		this.transaction = mock(EntityTransaction.class);
 	}
 
 	@Test
 	void doPost_with_create_user_action() throws Exception {
 		// Arrange
-		when(request.getAttribute("entityManager")).thenReturn(entityManager);
+		provideEntityManager();
 		when(request.getParameter("action")).thenReturn("CreateUser");
 		when(response.getWriter()).thenReturn(mock(PrintWriter.class));
 		when(request.getParameter("email")).thenReturn("email@email.com");
@@ -51,8 +54,22 @@ public class UserControllerTest {
 		verify(response).setStatus(HttpServletResponse.SC_CREATED);
 	}
 	
-    void doPost_with_invalid_action_parameter() {
-		
+	@Test
+    void doPost_with_invalid_action_parameter() throws Exception {
+		// Arrange
+		provideEntityManager();
+		when(response.getWriter()).thenReturn(mock(PrintWriter.class));
+		when(request.getParameter("action")).thenReturn("idk");
+		UserController usrController = new UserController();
+		// Act
+		usrController.doPost(request, response);
+		// Assert
+		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	}
+	
+	private void provideEntityManager() {
+		when(request.getAttribute("entityManager")).thenReturn(entityManager);
+		when(entityManager.getTransaction()).thenReturn(transaction);
 	}
 	
 }

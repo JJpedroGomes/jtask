@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jjpedrogomes.controller.action.Action;
 import com.jjpedrogomes.controller.util.ClientResponseHandler;
-import com.jjpedrogomes.model.shared.ModelErrorCode;
+import com.jjpedrogomes.model.shared.ModelError;
 import com.jjpedrogomes.model.shared.ModelException;
 import com.jjpedrogomes.model.user.Email;
 import com.jjpedrogomes.model.user.Password;
@@ -34,21 +34,35 @@ public class CreateUserAction implements Action{
 		String passwordParam = request.getParameter("password");
 		String birthDateParam = request.getParameter("birthDate");
 		
+		clientResponseHandler.createJsonResponse();
 		User user = createUser(response, nameParam, emailParam, passwordParam, birthDateParam);
 		if (user == null) return;
 		
-		try {
-			logger.info("Saving user...");
-			userDao.save(user);
-			response.setStatus(HttpServletResponse.SC_CREATED);	
-			
-			UserDto userDto = new UserDto(user);
-			clientResponseHandler.createObjectJsonResponse(userDto);
-		} catch (Exception e) {
-			logger.error("Unexpected error creating user {}", e.getMessage(), e);
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            clientResponseHandler.createErrorJsonResponse(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		if(!isEmailAlreadyTaken(emailParam)) {
+			try {
+				logger.info("Saving user...");
+				userDao.save(user);
+				response.setStatus(HttpServletResponse.SC_CREATED);	
+				
+				UserDto userDto = new UserDto(user);
+				clientResponseHandler.setObject(userDto);
+			} catch (Exception e) {
+				int error = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+				logger.error("Unexpected error creating user {}", e.getMessage(), e);
+				response.setStatus(error);
+	            clientResponseHandler.setErrorCode(error);
+			}
 		}
+		else {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			ModelError error = ModelError.EMAIL_ALREADY_TAKEN;
+			clientResponseHandler.setErrorCode(error.getCode())
+			.setMessage(error.getLogMessage());
+		}
+	}
+
+	private boolean isEmailAlreadyTaken(String email) {
+		return userDao.getUserByEmail(email).isPresent();
 	}
 
 	private User createUser(HttpServletResponse response, String nameParam, String emailParam, String passwordParam, String birthDateParam) {
@@ -61,11 +75,10 @@ public class CreateUserAction implements Action{
 			
 			return new User(nameParam, email, password, birthDate);
 		} catch (ModelException e) {		
-			ModelErrorCode errorCode = e.getErrorCode();
-			logger.error("Error creating user: {}", errorCode.getLogMessage(), e);
-			
-			clientResponseHandler.createErrorJsonResponse(errorCode.getCode());
-			
+			ModelError error = e.getErrorCode();
+			logger.error("Error creating user: {}", error.getLogMessage(), e);
+			clientResponseHandler.setErrorCode(error.getCode())
+			.setMessage(error.getLogMessage());
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return null;
 		} catch (Exception e) {
@@ -74,7 +87,7 @@ public class CreateUserAction implements Action{
 			
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			
-			clientResponseHandler.createErrorJsonResponse(errorCode);
+			clientResponseHandler.setErrorCode(errorCode);
 			response.setStatus(errorCode);	
             return null;
 		}	

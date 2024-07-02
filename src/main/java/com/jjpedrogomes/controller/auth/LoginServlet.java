@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jjpedrogomes.controller.util.PathConstants;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.repository.user.UserDaoImpl;
 
@@ -49,7 +50,7 @@ public class LoginServlet extends HttpServlet{
             
             response.sendRedirect(request.getContextPath() + "/main");
 		} else {
-			response.sendRedirect(request.getContextPath() + "/pages/login.jsp?error=Invalid credentials");
+			response.sendRedirect(request.getContextPath() + PathConstants.LOGIN_SCREEN.getPath() + "?error=Invalid credentials");
 		}
 	}
 	

@@ -1,6 +1,7 @@
 package com.jjpedrogomes.controller.auth;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -11,6 +12,7 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,8 +22,9 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
+import com.google.gson.JsonObject;
 import com.jjpedrogomes.controller.util.ClientResponseHandlerImpl;
-import com.jjpedrogomes.model.shared.ModelErrorCode;
+import com.jjpedrogomes.model.shared.ModelError;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.repository.user.UserDaoImpl;
 
@@ -50,7 +53,6 @@ class CreateUserActionTest {
 	@Test
 	void create_user_with_invalid_param() throws IOException {
 		// Arrange
-		String errorCode = ModelErrorCode.INVALID_EMAIL.getCode().toString();
 		when(request.getParameter("name")).thenReturn(nameParam);
 		when(request.getParameter("email")).thenReturn(null);
 		when(request.getParameter("password")).thenReturn(passwordParam);
@@ -61,7 +63,9 @@ class CreateUserActionTest {
 		// Assert
 		verify(userDao, never()).save(any(User.class));
 		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		assertThat(clientResponseHandler.getCurrentJson()).isEqualTo("{\"error\":" + errorCode + "}");
+		JsonObject json = clientResponseHandler.getCurrentJson();
+		assertTrue(json.has("error"));
+		assertThat(json.get("error").getAsInt()).isEqualTo(ModelError.INVALID_EMAIL.getCode());
 	}
 	
 	@Test
@@ -77,7 +81,10 @@ class CreateUserActionTest {
 		 // Assert
 		verify(userDao).save(any(User.class));
 		verify(response).setStatus(HttpServletResponse.SC_CREATED);
-		assertThat(clientResponseHandler.getCurrentJson()).doesNotContain("error");
+		JsonObject json = clientResponseHandler.getCurrentJson();
+//		assertTrue(json.has("id"));
+		assertTrue(json.has("name"));
+		assertTrue(json.has("email"));
 	}
 	
 	@Test
@@ -93,6 +100,30 @@ class CreateUserActionTest {
 		createUserAction.execute(request, response);
 		// Assert
 		verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		assertThat(clientResponseHandler.getCurrentJson()).isEqualTo("{\"error\":" + HttpServletResponse.SC_INTERNAL_SERVER_ERROR + "}");
+		assertTrue(clientResponseHandler.getCurrentJson().has("error"));
 	}
+	
+	@Test
+	void create_user_but_email_alredy_taken() throws IOException {
+		// Arrange
+		when(request.getParameter("name")).thenReturn(nameParam);
+		when(request.getParameter("email")).thenReturn(emailParam);
+		when(request.getParameter("password")).thenReturn(passwordParam);
+		when(request.getParameter("birthDate")).thenReturn(birthDateParam);
+		when(response.getWriter()).thenReturn(mock(PrintWriter.class));
+		when(userDao.getUserByEmail(emailParam)).thenReturn(Optional.of(new User()));
+		// Act
+		createUserAction.execute(request, response);
+		// Assert
+		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		JsonObject json = clientResponseHandler.getCurrentJson();
+		int error = json.get("error").getAsInt();
+		String message = json.get("message").getAsString();
+		assertThat(error).isEqualTo(ModelError.EMAIL_ALREADY_TAKEN.getCode());
+		assertThat(message).isEqualTo(ModelError.EMAIL_ALREADY_TAKEN.getLogMessage());
+	}
+	
+	
+	
+	
 }

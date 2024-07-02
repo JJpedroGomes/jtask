@@ -62,7 +62,7 @@ html, body {
 	padding-bottom: 5%;
 }
 
-.major_container .login_container .error_container {
+.major_container .login_container .response_container {
 	/*! margin: 15px 0; */
 	padding: 0 15px;
 	height: 20px;
@@ -70,9 +70,9 @@ html, body {
 	margin-bottom: 30px;
 }
 
-.major_container .login_container .error_container .error_message{
-	color: white; 
-	background-color: #EE4E4E; 
+.major_container .login_container .response_container .response_message{
+	color: #AA2F33;
+	background-color: #FFC1C3;
 	height: 40px;
 	text-align: center;
 	display: flex;

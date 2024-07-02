@@ -122,6 +122,43 @@ public class UserDaoTest {
 			 assertThat(userListFromDb).isEmpty();
 		}
 		
+		@Test
+		void user_by_credentials() {
+			// Arrange
+			String email = "email11@email.com"; 
+			String password = "a1b2c3d4";
+			User user = new User("Harrison Ford", new Email(email), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
+			persistUser(user);
+			// Act
+			Optional<User> userFromDb = userDao.getUserByCredentials(email, password);
+			// Assert
+			assertTrue(userFromDb.isPresent());
+		}
+		
+		@Test
+		void user_by_credentials_but_one_is_wrong() {
+			// Arrange
+			String email = "email10@email.com"; 
+			String password = "a1b2c3d4";
+			User user = new User("Harrison Ford", new Email(email), new Password("a1b2c3d8"), LocalDate.of(1974, 9, 27));
+			persistUser(user);
+			// Act
+			Optional<User> userFromDb = userDao.getUserByCredentials(email, password);
+			// Assert
+			assertFalse(userFromDb.isPresent());
+		}
+		
+		@Test
+		void user_by_email() {
+			// Arrange
+			String email = "email12@email.com";
+			User user = new User("Pedro Pascal", new Email(email), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
+			persistUser(user);
+			// Act
+			Optional<User> userFromDb = userDao.getUserByEmail(email);
+			// Assert
+			assertTrue(userFromDb.isPresent());
+		}	
 	}
 	
 	@Nested
@@ -175,7 +212,7 @@ public class UserDaoTest {
 		userList.forEach(user -> userDao.save(user));
 	}
 	
-	private void persistUser(User user) {
+	public static void persistUser(User user) {
 		EntityManager entityManager = JpaUtil.getEntityManager();
 		UserDao<User> userDao = new UserDaoImpl(entityManager);
 		userDao.save(user);

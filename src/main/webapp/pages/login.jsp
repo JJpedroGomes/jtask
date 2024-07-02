@@ -17,8 +17,8 @@
 			</div>
 			<div class="login_form_container">
 				<form id="login_form" method="POST" action="${pageContext.request.contextPath}/login">
-					<div id="error_container" class="error_container">
-						<div id="error_message" class="error_message"></div>
+					<div id="response_container" class="response_container">
+						<div id="response_message" class="response_message"></div>
 					</div>
 					<div class="login_form_element">
 						<label for="email">Email</label>
@@ -47,15 +47,21 @@
         // JavaScript to read the URL parameters and display error message
         window.onload = function() {
             const params = new URLSearchParams(window.location.search);
+            const responseDiv = document.getElementById('response_container');
+            const responseMessageDiv = document.getElementById('response_message');
+            
             const errorMessage = params.get('error');
+            const successMessage = params.get('success');
+            
             if (errorMessage) {
-                const errorDiv = document.getElementById('error_container');
-                errorDiv.style.display = 'block';
-                
-                const errorMessageDiv = document.getElementById('error_message');
-                errorMessageDiv.textContent = decodeURIComponent(errorMessage);
-                
-            }
+            	responseDiv.style.display = 'block';
+                responseMessageDiv.textContent = decodeURIComponent(errorMessage);
+            } else if (successMessage) {
+            	responseDiv.style.display = 'block';
+            	responseMessageDiv.style.backgroundColor = "green";
+            	responseMessageDiv.style.color = "white";
+            	responseMessageDiv.textContent = decodeURIComponent(successMessage);
+			}
         };
     </script>
 </body>
