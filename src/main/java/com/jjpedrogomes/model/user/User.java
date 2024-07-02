@@ -109,7 +109,7 @@ public class User implements com.jjpedrogomes.model.shared.Entity<User> {
 		if (name != null && name.matches(REGEX_NAME)) {
 			return;
 		}
-		throw new RuntimeException("Name can not be null or contain numbers");
+		throw new InvalidNameException();
 	}
 	
 	@Override

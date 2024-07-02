@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import com.jjpedrogomes.model.user.Email;
 import com.jjpedrogomes.model.user.InvalidEmailException;
+import com.jjpedrogomes.model.user.InvalidNameException;
 import com.jjpedrogomes.model.user.InvalidPasswordException;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
@@ -53,7 +54,7 @@ class UserTest {
 		
 		assertThatThrownBy(() -> {
 			new User(name, new Email(address), new Password(password), birthDate);
-		}).isExactlyInstanceOf(RuntimeException.class).hasMessage("Name can not be null or contain numbers");
+		}).isExactlyInstanceOf(InvalidNameException.class);
 	}
 	
 	@Test
@@ -79,7 +80,7 @@ class UserTest {
 	void set_new_invalid_name() {
 		assertThatThrownBy(() -> {
 			user.setName("João Pedro123");
-		}).isExactlyInstanceOf(RuntimeException.class).hasMessage("Name can not be null or contain numbers");
+		}).isExactlyInstanceOf(InvalidNameException.class);
 		user.setName("João Pedro");
 	}
 	
