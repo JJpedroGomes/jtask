@@ -3,7 +3,7 @@
 <html>
 <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheet/styles.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheet/sideBar.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheet/all.css">
         <script src="${pageContext.request.contextPath}/js/sideBar.js" defer></script>
 </head>
@@ -23,19 +23,19 @@
                         </li>
                         <!--End: navigation bar logo -->
                         <!--Start:  navigation bar main links-->
-                        <li>
-                            <a href="#">
+                        <li class="menu-button" id="home">
+                            <a href="${pageContext.request.contextPath}/main">
                                 <i class="fas fa-home"></i>
                                 <span>Home</span>
                             </a>
                         </li>
-                        <li>
+                        <li class="menu-button" id="today">
                             <a href="#">
                                 <i class="fas fa-calendar-day"></i>
                                 <span>Today</span>
                             </a>
                         </li>
-                        <li>
+                        <li class="menu-button" id="upcoming">
                             <a href="#">
                                 <i class="fas fa-calendar"></i>
                                 <span>Upcoming</span>
@@ -44,19 +44,18 @@
                         <!--End:  navigation bar main links-->
                         <!--Start:  navigation bar bottom links-->
                         <div class="bottom_links_container">
-                            <li>
+                            <li class="menu-button" id="displayName">
                                 <a href="${pageContext.request.contextPath}/user">
                                     <i class="fas fa-user-circle"></i>
                                     <span><%= session.getAttribute("displayName") %></span>
                                 </a>
                             </li>
-                            <li>
+                            <li class="menu-button" id="logOut">
                                 <a href="#" id="logout_link">
                                     <i class="fas fa-sign-out-alt"></i>
                                     <span>Log Out</span>
                                 </a>
-                                <form id="logout_form" action="${pageContext.request.contextPath}/logout" method="POST" style="display: none;">
-								</form>
+                                <form id="logout_form" action="${pageContext.request.contextPath}/logout" method="POST" style="display: none;"></form>
                             </li>
                         </div>
                         <!--End:  navigation bar bottom links-->
