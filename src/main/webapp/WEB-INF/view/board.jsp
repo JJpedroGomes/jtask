@@ -14,63 +14,7 @@
         <title>My Board</title>
     </head>
     <body>
-        <!--Start: side navigation bar -->
-        <section class="sidebar_container">
-            <div class="column_wrapper">
-                <div class="sidebar">
-                    <ul>
-                        <!--Start: navigation bar logo -->
-                        <li class="logo_container">
-                            <!--Todo Change logo-->
-                            <div class="logo">
-                                <img src="${pageContext.request.contextPath}/assets/img/logo.png" alt="">
-                                <span>Jtask</span>
-                            </div>
-                        </li>
-                        <!--End: navigation bar logo -->
-                        <!--Start:  navigation bar main links-->
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-home"></i>
-                                <span>Home</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-calendar-day"></i>
-                                <span>Today</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-calendar"></i>
-                                <span>Upcoming</span>
-                            </a>
-                        </li>
-                        <!--End:  navigation bar main links-->
-                        <!--Start:  navigation bar bottom links-->
-                        <div class="bottom_links_container">
-                            <li>
-                                <a href="#">
-                                    <i class="fas fa-user-circle"></i>
-                                    <span>User name</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" id="logout_link">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    <span>Log Out</span>
-                                </a>
-                                <form id="logout_form" action="${pageContext.request.contextPath}/logout" method="POST" style="display: none;">
-								</form>
-                            </li>
-                        </div>
-                        <!--End:  navigation bar bottom links-->
-                    </ul>
-                </div>
-            </div>
-        </section>
-        <!--End: side navigation bar -->
+        <%@ include file="commonSideBarMenu.jsp" %>
 
         <!--Start: Board -->
         <section>
