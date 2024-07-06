@@ -1,6 +1,10 @@
 package com.jjpedrogomes.controller.filter;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -16,9 +20,8 @@ import javax.servlet.http.HttpSession;
 @WebFilter("/*")
 public class AuthenticationFilter implements Filter{
 	
-	private final String[] loginRequiredUrls = {
-			"/main", "/logout", 
-	};
+	private final Set<String> loginRequiredUrls = Stream.of("/main", "/logout", "/user")
+			.collect(Collectors.toCollection(HashSet::new));
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {}
@@ -54,12 +57,22 @@ public class AuthenticationFilter implements Filter{
 	private boolean isLoginRequired(HttpServletRequest httpRequest) {		
 		String requestUrl = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 		
+		if (isException(httpRequest, requestUrl)) {
+			return false;
+		}
+		
 		for (String loginRequiredUrl : loginRequiredUrls) {
 			if (requestUrl.equals(loginRequiredUrl)) {
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	private boolean isException(HttpServletRequest request, String requestUrl) {
+		return "/user".equals(requestUrl) 
+				&& "POST".equalsIgnoreCase(request.getMethod()) 
+				&& request.getParameter("action").equals("CreateUser");
 	}
 
 	@Override
