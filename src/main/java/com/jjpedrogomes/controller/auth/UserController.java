@@ -1,8 +1,11 @@
 package com.jjpedrogomes.controller.auth;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 
 import javax.persistence.EntityManager;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -48,6 +51,12 @@ public class UserController extends HttpServlet {
 		
 		action.execute(request, response);
 		clientResponseHandler.commitJsonToResponse();
+	}
+	
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher dispatcher = request.getRequestDispatcher(PathConstants.ACCOUNT_DETAILS.getPath());
+		dispatcher.forward(request,response);
 	}
 	
 	private Action newInstance(String action, UserDao<User> userDao, ClientResponseHandler clientResponseHandler) {
