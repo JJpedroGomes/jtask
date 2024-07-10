@@ -1,4 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
+<%@ page import="com.jjpedrogomes.controller.auth.UserDto" %>
+<% 
+	UserDto user = (UserDto) request.getAttribute("userDTO");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,11 +22,11 @@
 				<form id="account_details_form">
 					<div class="account_form_element">
 						<label for="name">Name:</label>
-						<input id="name" name="name" required></input>
+						<input id="name" name="name" value="<%= user.getName() %>" required></input>
 					</div>
 					<div class="account_form_element">
 						<label for="birth_date">Birth Date:</label>
-						<input id="birth_date" name="birthDate" type="date" required></input>
+						<input id="birth_date" name="birthDate" type="date" value="<%= user.getBirthDate() %>" required></input>
 					</div>
 					<div class="account_form_element">
 						<label for="password">Password:</label>
@@ -49,7 +53,7 @@
 				</div>
 				<div class="final_data">
 						<span class="#">Email:</span>
-        				<span class="#">teste@email.com</span>
+        				<span class="#"><%= user.getEmail() %></span>
 				</div>
 				<div class="final_data"">
 						<span class="#">Creation Date:</span>
@@ -57,7 +61,7 @@
 				</div>
 				<div class="final_data"">
 						<span class="#">Status:</span>
-        				<span class="#">Active</span>
+        				<span class="#"><%= Boolean.TRUE.equals(user.isActive()) ? "Active" : "Inactive" %></span>
 				</div>
 			</div>	
 		</div>
