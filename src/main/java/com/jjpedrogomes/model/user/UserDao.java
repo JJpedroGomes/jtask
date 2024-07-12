@@ -1,9 +1,7 @@
-package com.jjpedrogomes.controller.auth;
+package com.jjpedrogomes.model.user;
 
 import java.util.List;
 import java.util.Optional;
-
-import com.jjpedrogomes.model.user.User;
 
 public interface UserDao<T> {
 	

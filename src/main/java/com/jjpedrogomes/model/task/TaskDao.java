@@ -1,4 +1,4 @@
-package com.jjpedrogomes.controller.task;
+package com.jjpedrogomes.model.task;
 
 import java.util.List;
 import java.util.Optional;

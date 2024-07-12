@@ -15,8 +15,22 @@ import com.jjpedrogomes.model.shared.ModelException;
 import com.jjpedrogomes.model.user.Email;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
+import com.jjpedrogomes.model.user.UserDao;
 
 public class CreateUserAction implements Action{
+	
+	/*
+	 * Criar uma classe service, essa classe Action/Controller, essa Action/Controller 
+	 * deve acionar a service atraves da interface da service, garantindo inversao de dependencia,
+	 * desacoplamento e flexibilidade. Podemos alterar a implementacao livremente sem afetar o controlador.
+	 * 
+	 * A Classe ServiceImpl e Interface devem ser mantidas no model, sua 
+	 * implementacao diz respeito apenas para a camada de regra de negocio
+	 * 
+	 * A camada ServiceImpl vai chamar a interface DAO para persitencia, mas a implementacao
+	 * da classe DAO com a implementacao da JPA diz respeito ao Repository, dessa forma 
+	 * se precisarmos trocar o HIbernate, por exemplo, nao precisamos mexer nos componentes do model
+	 */
 	
 	private final UserDao<User> userDao;
 	private ClientResponseHandler clientResponseHandler;

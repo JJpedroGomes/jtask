@@ -25,10 +25,10 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.jjpedrogomes.controller.auth.UserDao;
 import com.jjpedrogomes.model.user.Email;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
+import com.jjpedrogomes.model.user.UserDao;
 import com.jjpedrogomes.model.util.JpaUtil;
 import com.jjpedrogomes.repository.user.UserDaoImpl;
 

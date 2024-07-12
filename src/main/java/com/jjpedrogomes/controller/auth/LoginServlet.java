@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jjpedrogomes.controller.util.PathConstants;
 import com.jjpedrogomes.model.user.User;
+import com.jjpedrogomes.model.user.UserDao;
 import com.jjpedrogomes.repository.user.UserDaoImpl;
 
 @WebServlet(urlPatterns = "/login")

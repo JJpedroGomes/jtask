@@ -26,6 +26,7 @@ import com.google.gson.JsonObject;
 import com.jjpedrogomes.controller.util.ClientResponseHandlerImpl;
 import com.jjpedrogomes.model.shared.ModelError;
 import com.jjpedrogomes.model.user.User;
+import com.jjpedrogomes.model.user.UserDao;
 import com.jjpedrogomes.repository.user.UserDaoImpl;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)

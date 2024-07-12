@@ -20,6 +20,7 @@ import com.jjpedrogomes.controller.util.ClientResponseHandler;
 import com.jjpedrogomes.controller.util.ClientResponseHandlerImpl;
 import com.jjpedrogomes.controller.util.PathConstants;
 import com.jjpedrogomes.model.user.User;
+import com.jjpedrogomes.model.user.UserDao;
 import com.jjpedrogomes.repository.user.UserDaoImpl;
 
 @WebServlet(
