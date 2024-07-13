@@ -9,7 +9,6 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheet/accountDetails.css">
-	<script src="${pageContext.request.contextPath}/js/user.js"></script>
 	<title>Account Details</title>
 </head>
 <body>
@@ -37,7 +36,6 @@
 						<label for="password">Password:</label>
 						<input id="password" name="password" type="password"></input>
 					</div>
-					<!-- Todo: Esse campo tem de ficar bloqueado se a senha nao for preenchida -->
 					<div class="account_form_element form_password">
 						<label for="password">Confirm Password:</label>
 						<input id="password" name="password" type="password"></input>
@@ -47,7 +45,7 @@
 							<button type="submit" id="save_button">Save Changes</button>
 						</div>
 						<div class="account_form_element">
-							<button type="submit" id="cancel_button">Cancel</button>
+							<button id="cancel_button">Cancel</button>
 						</div>
 					</div>
 				</form>
@@ -71,5 +69,6 @@
 			</div>	
 		</div>
 	</section>
+	<script src="${pageContext.request.contextPath}/js/userDetails.js"></script>
 </body>
 </html>
