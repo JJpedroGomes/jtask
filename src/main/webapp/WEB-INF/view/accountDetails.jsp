@@ -9,6 +9,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheet/accountDetails.css">
+	<script src="${pageContext.request.contextPath}/js/user.js"></script>
 	<title>Account Details</title>
 </head>
 <body>
@@ -22,20 +23,24 @@
 				<form id="account_details_form">
 					<div class="account_form_element">
 						<label for="name">Name:</label>
-						<input id="name" name="name" value="<%= user.getName() %>" required></input>
+						<input id="name" name="name" value="<%= user.getName() %>"></input>
 					</div>
 					<div class="account_form_element">
 						<label for="birth_date">Birth Date:</label>
-						<input id="birth_date" name="birthDate" type="date" value="<%= user.getBirthDate() %>" required></input>
+						<input id="birth_date" name="birthDate" type="date" value="<%= user.getBirthDate() %>"></input>
 					</div>
-					<div class="account_form_element">
+					<div id="change_password_btn">
+						<i class="fas fa-pen"></i>
+						<span>Change Password</span>
+					</div>
+					<div class="account_form_element form_password">
 						<label for="password">Password:</label>
-						<input id="password" name="password" type="password" required></input>
+						<input id="password" name="password" type="password"></input>
 					</div>
 					<!-- Todo: Esse campo tem de ficar bloqueado se a senha nao for preenchida -->
-					<div class="account_form_element">
+					<div class="account_form_element form_password">
 						<label for="password">Confirm Password:</label>
-						<input id="password" name="password" type="password" required></input>
+						<input id="password" name="password" type="password"></input>
 					</div>
 					<div class="account_form_buttons">
 						<div class="account_form_element">

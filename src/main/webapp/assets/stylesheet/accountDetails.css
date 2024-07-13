@@ -48,6 +48,10 @@
 	align-items: center;
 }
 
+.account_details_container .account_details .form_password {
+	display: none;
+}
+
 .account_details_container .account_details .account_form_element label {
   white-space: nowrap;
   margin: 0 10px 0 0;
@@ -67,6 +71,22 @@
 
 .account_details_container .account_details .account_form_buttons .account_form_element {
     padding: 0 0 0 10px;
+}
+
+#change_password_btn {
+	display: flex;
+	margin: 15px 0 0 15px;
+	padding: 7.5px;
+	align-items: center;
+	cursor: pointer;
+}
+
+#change_password_btn span {
+	margin: 0 0 0 5px;
+}
+
+#change_password_btn i, #change_password_btn span {
+	color: #478CCF;
 }
 
 #save_button {
