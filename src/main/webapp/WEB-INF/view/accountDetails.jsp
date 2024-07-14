@@ -20,13 +20,16 @@
 		<div class="account_details_container">
 			<div class="account_details">
 				<form id="account_details_form">
+					<div id="response_container" class="response_container">
+						<div id="response_message" class="response_message"></div>
+					</div>
 					<div class="account_form_element">
 						<label for="name">Name:</label>
-						<input id="name" name="name" value="<%= user.getName() %>"></input>
+						<input id="name" name="name" value="<%= user.getName() %>" required></input>
 					</div>
 					<div class="account_form_element">
 						<label for="birth_date">Birth Date:</label>
-						<input id="birth_date" name="birthDate" type="date" value="<%= user.getBirthDate() %>"></input>
+						<input id="birth_date" name="birthDate" type="date" value="<%= user.getBirthDate() %>" required></input>
 					</div>
 					<div id="change_password_btn">
 						<i class="fas fa-pen"></i>
@@ -38,7 +41,7 @@
 					</div>
 					<div class="account_form_element form_password">
 						<label for="password">Confirm Password:</label>
-						<input id="password" name="password" type="password"></input>
+						<input id="confirm_password" name="confirm_password" type="password"></input>
 					</div>
 					<div class="account_form_buttons">
 						<div class="account_form_element">
@@ -55,20 +58,21 @@
 					<span>Immutable Data</span>
 				</div>
 				<div class="final_data">
-						<span class="#">Email:</span>
-        				<span class="#"><%= user.getEmail() %></span>
+						<span>Email:</span>
+        				<span id="form_email"><%= user.getEmail() %></span>
 				</div>
 				<div class="final_data"">
 						<span class="#">Creation Date:</span>
         				<span class="#">20/05/24</span>
 				</div>
 				<div class="final_data"">
-						<span class="#">Status:</span>
-        				<span class="#"><%= Boolean.TRUE.equals(user.isActive()) ? "Active" : "Inactive" %></span>
+						<span>Status:</span>
+        				<span><%= Boolean.TRUE.equals(user.isActive()) ? "Active" : "Inactive" %></span>
 				</div>
 			</div>	
 		</div>
 	</section>
 	<script src="${pageContext.request.contextPath}/js/userDetails.js"></script>
+	<script src="${pageContext.request.contextPath}/js/responseHandler.js"></script>
 </body>
 </html>
