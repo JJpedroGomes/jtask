@@ -43,26 +43,6 @@
 			</div>
 		</div>
 	</div>
-	<script>
-        // JavaScript to read the URL parameters and display error message
-        window.onload = function() {
-            const params = new URLSearchParams(window.location.search);
-            const responseDiv = document.getElementById('response_container');
-            const responseMessageDiv = document.getElementById('response_message');
-            
-            const errorMessage = params.get('error');
-            const successMessage = params.get('success');
-            
-            if (errorMessage) {
-            	responseDiv.style.display = 'block';
-                responseMessageDiv.textContent = decodeURIComponent(errorMessage);
-            } else if (successMessage) {
-            	responseDiv.style.display = 'block';
-            	responseMessageDiv.style.backgroundColor = "green";
-            	responseMessageDiv.style.color = "white";
-            	responseMessageDiv.textContent = decodeURIComponent(successMessage);
-			}
-        };
-    </script>
+	<script src="${pageContext.request.contextPath}/js/responseHandler.js"></script>
 </body>
 </html>

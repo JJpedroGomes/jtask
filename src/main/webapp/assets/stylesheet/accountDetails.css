@@ -133,10 +133,9 @@
 }
 
 .account_details_container .account_details .response_container {
-	padding: 0 15px;
+	padding: 10px 15px;
 	height: 20px;
 	display: none;
 	margin-bottom: 30px;
-	background-color: red;
 }
 

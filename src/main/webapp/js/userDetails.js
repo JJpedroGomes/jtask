@@ -85,15 +85,14 @@ form.addEventListener("submit", (event) => {
 		})
 		.then(response => {
 			if(response.status === 200) {
-				window.location.href = "/user?sucess=Account updated successfully";
+				window.location.href = "/user?success=Account updated successfully";
 			} else {
 				window.location.href = "/user?error=Unexpected error occured"
 				responseMessageDiv.style.display = "block";
 			}
 		});
 	} else {
-		responseDiv.style.display = 'block';
-		responseMessageDiv.style.backgroundColor = "red";
+		showMessage('red', null, 'block');
 	}
 });
 

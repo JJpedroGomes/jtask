@@ -7,12 +7,10 @@ window.onload = function() {
             const successMessage = params.get('success');
             
             if (errorMessage) {
-            	responseDiv.style.display = 'block';
+				showMessage("#AA2F33", "#FFC1C3", "block")
                 responseMessageDiv.textContent = decodeURIComponent(errorMessage);
             } else if (successMessage) {
-            	responseDiv.style.display = 'block';
-            	responseMessageDiv.style.backgroundColor = "green";
-            	responseMessageDiv.style.color = "white";
+				showMessage("green", null, "block");
             	responseMessageDiv.textContent = decodeURIComponent(successMessage);
 			}
         };
@@ -21,3 +19,9 @@ function resetResponseContainer() {
 	responseDiv.style.display = "none";
 	responseMessageDiv.textContent = "";
 };
+
+function showMessage(messageColor, backgroundColor, display) {
+	responseDiv.style.display =  display;
+	responseMessageDiv.style.background = backgroundColor;
+	responseMessageDiv.style.color = messageColor;
+}
