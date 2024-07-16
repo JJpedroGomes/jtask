@@ -13,9 +13,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.jjpedrogomes.controller.auth.UserDao;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
+import com.jjpedrogomes.model.user.UserDao;
 
 public class UserDaoImpl implements UserDao<User>{
 	

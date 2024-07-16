@@ -1,6 +1,7 @@
 package com.jjpedrogomes.controller.auth;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -67,9 +69,20 @@ public class UserControllerTest {
 		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 	
+	@Test
+	void doGet_userDto_but_cant_find_user() throws Exception {
+		// Arrange
+		provideEntityManager();
+		HttpSession session = mock(HttpSession.class);
+		when(request.getSession()).thenReturn(session);
+		when(session.getAttribute("user")).thenReturn("email");
+		UserController usrController = new UserController();
+		// Act && Assert
+		assertThrows(RuntimeException.class, () -> usrController.doGet(request, response));
+	}
+	
 	private void provideEntityManager() {
 		when(request.getAttribute("entityManager")).thenReturn(entityManager);
 		when(entityManager.getTransaction()).thenReturn(transaction);
 	}
-	
 }

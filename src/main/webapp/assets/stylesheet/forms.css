@@ -71,8 +71,6 @@ html, body {
 }
 
 .major_container .login_container .response_container .response_message{
-	color: #AA2F33;
-	background-color: #FFC1C3;
 	height: 40px;
 	text-align: center;
 	display: flex;
