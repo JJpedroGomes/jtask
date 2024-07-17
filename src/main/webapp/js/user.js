@@ -1,15 +1,3 @@
-window.onload = function() {
-            const params = new URLSearchParams(window.location.search);
-            const responseDiv = document.getElementById('response_container');
-            const responseMessageDiv = document.getElementById('response_message');
-            const errorMessage = params.get('error');
-            
-            if (errorMessage) {
-				responseDiv.style.display = 'block';
-                responseMessageDiv.textContent = decodeURIComponent(errorMessage);
-            } 
-        };
-
 const form = document.getElementById("login_form");
 
 form.addEventListener("submit", function(event){

@@ -51,5 +51,6 @@
 			</div>
 		</div>
 	</div>
+	<script src="${pageContext.request.contextPath}/js/responseHandler.js"></script>
 </body>
 </html>
