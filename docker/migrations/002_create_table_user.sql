@@ -6,6 +6,7 @@ CREATE TABLE users (
     email VARCHAR UNIQUE NOT NULL,
     password VARCHAR NOT NULL,
     birth_date DATE NOT NULL,
+    creation_date DATE NOT NULL,
     is_active BOOLEAN NOT NULL,
     CONSTRAINT PK_user PRIMARY KEY (id)
 );
