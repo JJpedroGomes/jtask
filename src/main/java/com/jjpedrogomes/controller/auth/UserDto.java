@@ -8,6 +8,7 @@ public class UserDto {
 	private String name;
 	private String email;
 	private String birthDate;
+	private String creationDate;
 	private boolean isActive;
 	
 	public UserDto(User user) {
@@ -15,6 +16,7 @@ public class UserDto {
 		this.name = user.getName();
 		this.email = user.getEmail().toString();
 		this.birthDate = user.getBirthDate().toString();
+		this.creationDate = user.getCreationDate().toString();
 		this.isActive = user.getIsActive();
 	}
 	
@@ -50,6 +52,15 @@ public class UserDto {
 	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
+
+	public String getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(String creationDate) {
+		this.creationDate = creationDate;
+	}
+
 
 	public boolean isActive() {
 		return isActive;

@@ -63,7 +63,7 @@
 				</div>
 				<div class="final_data"">
 						<span class="#">Creation Date:</span>
-        				<span class="#">20/05/24</span>
+        				<span class="#"><%= user.getCreationDate() %></span>
 				</div>
 				<div class="final_data"">
 						<span>Status:</span>
