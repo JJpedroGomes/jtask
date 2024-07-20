@@ -4,17 +4,19 @@ import com.google.gson.JsonObject;
 
 public interface ClientResponseHandler {
    
-    public void commitJsonToResponse();
+    void commitJsonToResponse();
     
-    public ClientResponseHandlerImpl createJsonResponse();
+    ClientResponseHandlerImpl createJsonResponse();
     
-    public ClientResponseHandlerImpl setErrorCode(int errorCode);
+    ClientResponseHandlerImpl setErrorCode(int errorCode);
     
-    public ClientResponseHandlerImpl setMessage(String Message);
+    ClientResponseHandlerImpl setMessage(String Message);
     
-    public ClientResponseHandlerImpl setObject(Object obj);
+    ClientResponseHandlerImpl setObject(Object obj);
 
-    public String getCurrentJsonString();
+    ClientResponseHandlerImpl setObjectNotExposingSensitiveFields(Object obj);
     
-    public JsonObject getCurrentJson();
+    String getCurrentJsonString();
+    
+    JsonObject getCurrentJson();
 }

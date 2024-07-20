@@ -59,7 +59,7 @@ public class CreateUserAction implements Action{
 				response.setStatus(HttpServletResponse.SC_CREATED);	
 				
 				UserDto userDto = new UserDto(user);
-				clientResponseHandler.setObject(userDto);
+				clientResponseHandler.setObjectNotExposingSensitiveFields(userDto);
 			} catch (Exception e) {
 				int error = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 				logger.error("Unexpected error creating user {}", e.getMessage(), e);
