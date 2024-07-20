@@ -79,7 +79,7 @@ form.addEventListener("submit", (event) => {
 			data.append(pair[0], pair[1]);
 		};
 		
-		fetch("/user", {
+		fetch("/jtask/user", {
 			method: "post",
 			body: data
 		})
