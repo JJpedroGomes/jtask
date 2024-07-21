@@ -84,6 +84,10 @@ public class User implements com.jjpedrogomes.model.shared.Entity<User> {
 		this.name = capitalizeName(name);
 	}
 	
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
+	}
+	
 	public Long getId() {
 		return id;
 	}
