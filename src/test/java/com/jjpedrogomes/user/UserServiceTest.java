@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +40,7 @@ public class UserServiceTest {
 	
 	@Nested
     @TestMethodOrder(OrderAnnotation.class)
+	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 	class update_user {
 		
 		private String email;
@@ -56,7 +58,7 @@ public class UserServiceTest {
 		@Order(2)
 		void update_user_with_all_params() {
 			// Arrange
-			String name = "allParam";
+			String name = "Allparam";
 			String birthDate = "1999-08-08";
 			String password1 = "a1b2c3d4";
 			String password2 = password1;
@@ -78,7 +80,7 @@ public class UserServiceTest {
 		@Order(1)
 		void update_user_with_few_params() {
 			// Arrange
-			String name = "fewParams";
+			String name = "Fewparam";
 			String birthDate = "1999-09-09";
 			UserDto userDto = new UserDto();
 			userDto.setName(name)
@@ -98,7 +100,7 @@ public class UserServiceTest {
 			// Arrange
 			String name = "invalid Name 123";
 			UserDto userDto = new UserDto();
-			userDto.setName(name);
+			userDto.setName(name).setEmail(email);
 			// Act & Assert
 			assertThrows(IllegalArgumentException.class, () -> userService.updateUser(userDto));
 		}
@@ -111,10 +113,23 @@ public class UserServiceTest {
 			String password2 = password1.toUpperCase();
 			UserDto userDto = new UserDto();
 			userDto.setPassword1(password1)
-				.setPassword2(password2);
+				.setPassword2(password2)
+				.setEmail(email);
 			// Act & Assert
 			assertThrows(IllegalArgumentException.class, () -> userService.updateUser(userDto));
 		}	
+		
+		
+		@Test
+		@Order(5)
+		void update_but_cannot_find_user() {
+			// Arrange
+			String email = "nonexistent@email.com";
+			UserDto userDto = new UserDto();
+			userDto.setEmail(email);
+			// Act & Assert
+			assertThrows(NoSuchElementException.class, () -> userService.updateUser(userDto));
+		}
 	}
 	
 	private boolean checkIfPasswordMatches(String rawPassword, String encryptedPassword) {
