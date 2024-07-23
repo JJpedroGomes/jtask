@@ -21,6 +21,9 @@ import com.jjpedrogomes.controller.util.ClientResponseHandlerImpl;
 import com.jjpedrogomes.controller.util.PathConstants;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.model.user.UserDao;
+import com.jjpedrogomes.model.user.UserDaoFactory;
+import com.jjpedrogomes.model.user.UserService;
+import com.jjpedrogomes.model.user.UserServiceFactory;
 import com.jjpedrogomes.repository.user.UserDaoImpl;
 
 @WebServlet(
@@ -36,12 +39,21 @@ public class UserController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 		logger.info("Entering method doPost() in UserController Servlet");
 		
-		EntityManager entityManager = (EntityManager) request.getAttribute("entityManager");
-		UserDao<User> userDao = new UserDaoImpl(entityManager);
+//		EntityManager entityManager = (EntityManager) request.getAttribute("entityManager");
+//		UserDao<User> userDao = new UserDaoImpl(entityManager);
+		UserDao<User> userDao = UserDaoFactory.getInstance();
+		UserService userService = UserServiceFactory.getInstance();
+		
 		ClientResponseHandler clientResponseHandler = new ClientResponseHandlerImpl(response);
 		
 		String actionParam = request.getParameter("action");
-		Action action = newInstance(actionParam, userDao, clientResponseHandler);
+		
+		Action action;
+		if(actionParam.equals("UpdateUser")) {
+			action = newInstance(actionParam, userService);
+		} else {
+		    action = newInstance(actionParam, userDao, clientResponseHandler);
+		}
 		
 		if (action == null) {
 			int scBadRequest = HttpServletResponse.SC_BAD_REQUEST;
@@ -77,6 +89,17 @@ public class UserController extends HttpServlet {
 			String qualifiedClassName = ActionPathUtil.getQualifiedClassName(PathConstants.USER, action);
 			Constructor<?> constructor = Class.forName(qualifiedClassName).getConstructor(UserDao.class, ClientResponseHandler.class);
 			return (Action) constructor.newInstance(userDao, clientResponseHandler);
+		} catch (Exception e) {
+			logger.error("Failed to create a UserAction instance, cause:", e);
+			return null;
+		}
+	}
+	
+	private Action newInstance(String action, UserService userService) {
+		try {
+			String qualifiedClassName = ActionPathUtil.getQualifiedClassName(PathConstants.USER, action);
+			Constructor<?> constructor = Class.forName(qualifiedClassName).getConstructor(UserService.class);
+			return (Action) constructor.newInstance(userService);
 		} catch (Exception e) {
 			logger.error("Failed to create a UserAction instance, cause:", e);
 			return null;
