@@ -88,10 +88,16 @@ form.addEventListener("submit", (event) => {
 		})
 		.then(response => {
 			if(response.status === 200) {
-				window.location.href = "/user?success=Account updated successfully";
+				window.location.href = "/jtask/user?success=Account updated successfully";
 			} else {
-				window.location.href = "/user?error=Unexpected error occured"
-				responseMessageDiv.style.display = "block";
+				return response.json().then(error => {
+					if (error.message != null) {
+						responseMessageDiv.textContent = error.message;
+					} else {
+						responseMessageDiv.textContent = "Unexpected error occured";
+					}
+					showMessage('red', null, 'block');
+				});
 			}
 		});
 	} else {
