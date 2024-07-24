@@ -6,6 +6,8 @@ public interface ClientResponseHandler {
    
     void commitJsonToResponse();
     
+    void flushToClient();
+    
     ClientResponseHandlerImpl createJsonResponse();
     
     ClientResponseHandlerImpl setErrorCode(int errorCode);

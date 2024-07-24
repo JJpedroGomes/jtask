@@ -77,6 +77,17 @@ public class ClientResponseHandlerImpl implements ClientResponseHandler{
         	logger.error("Unexpected error commiting json to print writer: {}", e.getMessage(), e);
         }
     }
+    
+	@Override
+	public void flushToClient() {
+		try {
+			response.flushBuffer();
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Unexpected error trying to flush to client");
+		}
+	}	
+
 
     private String transformToJsonString(Object obj) {
         Gson gson = new Gson();
@@ -94,6 +105,6 @@ public class ClientResponseHandlerImpl implements ClientResponseHandler{
 	
 	public JsonObject getCurrentJson() {
 		return json;
-	}	
+	}
 }
 
