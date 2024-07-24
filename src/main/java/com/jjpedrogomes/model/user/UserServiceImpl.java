@@ -37,9 +37,10 @@ public class UserServiceImpl implements UserService{
 			if (userFromDb != null) {
 				if (isPasswordInRequest(userUpdateRequest.getPassword1(), userUpdateRequest.getPassword2()) 
 						&& isNotSameAsCurrent(userUpdateRequest.getPassword1(), userFromDb.getPassword().getContent())) {
-					String encryptUserPassword = encryptUserPassword(userUpdateRequest.getPassword1());
-					Password newPassword = new Password(encryptUserPassword);
-					userFromDb.setPassword(newPassword);
+					Password password = new Password(userUpdateRequest.getPassword1());
+					
+					String encryptUserPassword = encryptUserPassword(password.getContent());
+					userFromDb.setPassword(new Password(encryptUserPassword));
 				}
 				
 				if (userUpdateRequest.getName() != null) {
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	private boolean isPasswordInRequest(String password1, String password2) {
-		if(password1 == null) {
+		if(password1 == null || password1.isEmpty()) {
 			return false;
 		} else if(!password1.equals(password2)) {
 			throw new InvalidPasswordException();
