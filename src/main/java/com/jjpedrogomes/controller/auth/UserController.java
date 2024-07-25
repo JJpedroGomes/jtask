@@ -21,6 +21,8 @@ import com.jjpedrogomes.controller.util.ClientResponseHandlerImpl;
 import com.jjpedrogomes.controller.util.PathConstants;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.model.user.UserDao;
+import com.jjpedrogomes.model.user.UserService;
+import com.jjpedrogomes.model.user.UserServiceFactory;
 import com.jjpedrogomes.repository.user.UserDaoImpl;
 
 @WebServlet(
@@ -35,23 +37,23 @@ public class UserController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 		logger.info("Entering method doPost() in UserController Servlet");
+	
+		UserService userService = UserServiceFactory.getInstance();
 		
-		EntityManager entityManager = (EntityManager) request.getAttribute("entityManager");
-		UserDao<User> userDao = new UserDaoImpl(entityManager);
 		ClientResponseHandler clientResponseHandler = new ClientResponseHandlerImpl(response);
 		
 		String actionParam = request.getParameter("action");
-		Action action = newInstance(actionParam, userDao, clientResponseHandler);
+		Action action = newInstance(actionParam, userService);
 		
 		if (action == null) {
 			int scBadRequest = HttpServletResponse.SC_BAD_REQUEST;
 			response.setStatus(scBadRequest);
 			clientResponseHandler.createJsonResponse().setErrorCode(scBadRequest);
+			clientResponseHandler.commitJsonToResponse();
 			return;
 		}
 		
 		action.execute(request, response);
-		clientResponseHandler.commitJsonToResponse();
 	}
 	
 	@Override
@@ -72,11 +74,11 @@ public class UserController extends HttpServlet {
 		dispatcher.forward(request,response);
 	}
 	
-	private Action newInstance(String action, UserDao<User> userDao, ClientResponseHandler clientResponseHandler) {
+	private Action newInstance(String action, UserService userService) {
 		try {
 			String qualifiedClassName = ActionPathUtil.getQualifiedClassName(PathConstants.USER, action);
-			Constructor<?> constructor = Class.forName(qualifiedClassName).getConstructor(UserDao.class, ClientResponseHandler.class);
-			return (Action) constructor.newInstance(userDao, clientResponseHandler);
+			Constructor<?> constructor = Class.forName(qualifiedClassName).getConstructor(UserService.class);
+			return (Action) constructor.newInstance(userService);
 		} catch (Exception e) {
 			logger.error("Failed to create a UserAction instance, cause:", e);
 			return null;

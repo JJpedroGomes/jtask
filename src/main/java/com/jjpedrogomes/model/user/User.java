@@ -32,6 +32,8 @@ public class User implements com.jjpedrogomes.model.shared.Entity<User> {
 	private Password password;
 	@Column(name = "birth_date", columnDefinition = "DATE", nullable = false)
 	private LocalDate birthDate;
+	@Column(name = "creation_date", columnDefinition = "DATE", nullable = false)
+	private LocalDate creationDate;
 	@Column(name = "is_active" ,nullable = false)
 	private boolean isActive;
 	@Transient
@@ -44,6 +46,7 @@ public class User implements com.jjpedrogomes.model.shared.Entity<User> {
 		this.email = email;
 		this.password = password;
 		this.birthDate = birthDate;
+		this.creationDate = LocalDate.now();
 		this.isActive = true;
 	}
 	
@@ -81,6 +84,10 @@ public class User implements com.jjpedrogomes.model.shared.Entity<User> {
 		this.name = capitalizeName(name);
 	}
 	
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -99,6 +106,10 @@ public class User implements com.jjpedrogomes.model.shared.Entity<User> {
 	
 	public LocalDate getBirthDate() {
 		return birthDate;
+	}
+	
+	public LocalDate getCreationDate() {
+		return creationDate;
 	}
 	
 	public boolean getIsActive() {

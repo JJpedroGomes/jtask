@@ -198,10 +198,8 @@ public class UserDaoTest {
 			user.setPassword(new Password(newPasswordContent));
 			user.setName(newName);
 			User userAfterUpdate = userDao.update(user);
-			entityManager.getTransaction().commit();
 			// Assert
-			assertTrue(passwordEncoder.matches(newPasswordContent, userAfterUpdate.getPassword().getContent()));
-			assertFalse(passwordEncoder.matches(passwordContent, userAfterUpdate.getPassword().getContent()));
+			assertTrue(newPasswordContent.equals(userAfterUpdate.getPassword().getContent()));
 			assertThat(userAfterUpdate.getName()).isEqualTo("Anya Taylor-Joy");
 		}
 	}

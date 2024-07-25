@@ -20,6 +20,7 @@
 		<div class="account_details_container">
 			<div class="account_details">
 				<form id="account_details_form">
+					<input type="hidden" name="action" value="UpdateUser">
 					<div id="response_container" class="response_container">
 						<div id="response_message" class="response_message"></div>
 					</div>
@@ -63,7 +64,7 @@
 				</div>
 				<div class="final_data"">
 						<span class="#">Creation Date:</span>
-        				<span class="#">20/05/24</span>
+        				<span class="#"><%= user.getCreationDate() %></span>
 				</div>
 				<div class="final_data"">
 						<span>Status:</span>

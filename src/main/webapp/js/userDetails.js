@@ -73,22 +73,31 @@ form.addEventListener("submit", (event) => {
 	event.preventDefault();
 	resetResponseContainer();
 	
-	if(isFormValid()) {
+	if(isFormValid()) {		
 		const data = new URLSearchParams();
 		for(const pair of new FormData(form)) {
 			data.append(pair[0], pair[1]);
 		};
 		
-		fetch("/user", {
+		const email = document.getElementById("form_email").textContent;
+		data.append("email", email);
+		
+		fetch("/jtask/user", {
 			method: "post",
 			body: data
 		})
 		.then(response => {
 			if(response.status === 200) {
-				window.location.href = "/user?success=Account updated successfully";
+				window.location.href = "/jtask/user?success=Account updated successfully";
 			} else {
-				window.location.href = "/user?error=Unexpected error occured"
-				responseMessageDiv.style.display = "block";
+				return response.json().then(error => {
+					if (error.message != null) {
+						responseMessageDiv.textContent = error.message;
+					} else {
+						responseMessageDiv.textContent = "Unexpected error occured";
+					}
+					showMessage('red', null, 'block');
+				});
 			}
 		});
 	} else {
