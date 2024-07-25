@@ -20,7 +20,7 @@ public class ClientResponseHandlerImpl implements ClientResponseHandler{
     private boolean isCommited;
     private String jsonString;
     private JsonObject json;
-
+    
     public ClientResponseHandlerImpl(HttpServletResponse response) {
         this.response = response;
     }
