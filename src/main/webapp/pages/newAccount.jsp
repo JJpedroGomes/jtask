@@ -7,7 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/stylesheet/forms.css">
-<script src="${pageContext.request.contextPath}/js/user.js" defer></script>
 <title>Create an Account</title>
 </head>
 <body>
@@ -52,5 +51,6 @@
 		</div>
 	</div>
 	<script src="${pageContext.request.contextPath}/js/responseHandler.js"></script>
+	<script src="${pageContext.request.contextPath}/js/user.js" defer></script>
 </body>
 </html>

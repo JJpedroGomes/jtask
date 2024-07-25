@@ -1,12 +1,16 @@
 package com.jjpedrogomes.model.user;
 
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
+
+import javax.persistence.PersistenceException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.jjpedrogomes.model.shared.ModelError;
 import com.jjpedrogomes.model.shared.ModelException;
 
 public class UserServiceImpl implements UserService{
@@ -19,17 +23,52 @@ public class UserServiceImpl implements UserService{
 		this.userDao = userDao;
 		this.passwordEncoder = new BCryptPasswordEncoder();
 	}   
-
-	/*
-	 * Update the user attributes with the specified {@UserUpdateRequest} data.
+	
+	/**
+	 * Save user in the database
 	 * 
-	 * @param abstraction of data needed to update user {@UserUpdateRequest}
-	 * @return an {@User} after merging into the database with new data
-	 * @throws IllegalArgumentException if {@UserUpdateRquest} are invalid
+	 * @param name the name of the user
+	 * @param emailArg the email of the user
+	 * @param passwordArg the password of the user
+	 * @param birthDate the birth date of the user
+	 * @return a {@link User} after saving into the database
+	 * @throws IllegalArgumentException if the arguments are invalid
+	 * @throws PersistenceException if there is a problem saving the user
+	 */
+	@Override
+	public User createUser(String name, String emailArg, String passwordArg, LocalDate birthDate) throws PersistenceException {
+		if(isEmailAlreadyTaken(emailArg)) {
+			throw new IllegalArgumentException(ModelError.EMAIL_ALREADY_TAKEN.getLogMessage());
+		}
+		
+		try {
+			Email email = new Email(emailArg);
+			Password password = new Password(passwordArg);
+			User user = new User(name, email, password, birthDate);
+			
+			userDao.save(user);
+			return user;
+		} catch (ModelException e) {
+			String logMessage = e.getErrorCode().getLogMessage();
+			logger.error("Error Updating user: {}", logMessage, e);
+			throw new IllegalArgumentException(logMessage, e);
+		}		
+	}
+	
+	private boolean isEmailAlreadyTaken(String email) {
+		return userDao.getUserByEmail(email).isPresent();
+	}
+
+	/**
+	 * Update the user attributes with the specified {@link UserUpdateRequest} data.
+	 * 
+	 * @param userUpdateRequest an abstraction of data needed to update the user
+	 * @return a {@link User} after merging the new data into the database
+	 * @throws IllegalArgumentException if the {@link UserUpdateRequest} contains invalid data
 	 * @throws NoSuchElementException if there is no user with the given email in the database
 	 */
 	@Override
-	public User updateUser(UserUpdateRequest userUpdateRequest) {
+	public User updateUser(UserUpdateRequest userUpdateRequest) throws NoSuchElementException {
 		logger.info("Entering method updateUser() in UserServiceImpl");
 		
 		try {

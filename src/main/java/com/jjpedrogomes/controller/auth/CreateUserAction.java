@@ -2,6 +2,7 @@ package com.jjpedrogomes.controller.auth;
 
 import java.time.LocalDate;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,36 +10,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jjpedrogomes.controller.action.Action;
-import com.jjpedrogomes.controller.util.ClientResponseHandler;
-import com.jjpedrogomes.model.shared.ModelError;
-import com.jjpedrogomes.model.shared.ModelException;
-import com.jjpedrogomes.model.user.Email;
-import com.jjpedrogomes.model.user.Password;
-import com.jjpedrogomes.model.user.User;
-import com.jjpedrogomes.model.user.UserDao;
+import com.jjpedrogomes.controller.util.ErrorResponseUtil;
+import com.jjpedrogomes.model.user.UserService;
 
 public class CreateUserAction implements Action{
 	
-	/*
-	 * Criar uma classe service, essa classe Action/Controller, essa Action/Controller 
-	 * deve acionar a service atraves da interface da service, garantindo inversao de dependencia,
-	 * desacoplamento e flexibilidade. Podemos alterar a implementacao livremente sem afetar o controlador.
-	 * 
-	 * A Classe ServiceImpl e Interface devem ser mantidas no model, sua 
-	 * implementacao diz respeito apenas para a camada de regra de negocio
-	 * 
-	 * A camada ServiceImpl vai chamar a interface DAO para persitencia, mas a implementacao
-	 * da classe DAO com a implementacao da JPA diz respeito ao Repository, dessa forma 
-	 * se precisarmos trocar o HIbernate, por exemplo, nao precisamos mexer nos componentes do model
-	 */
-	
-	private final UserDao<User> userDao;
-	private ClientResponseHandler clientResponseHandler;
+	private final UserService userService;
 	private static final Logger logger = LogManager.getLogger(CreateUserAction.class);
 
-	public CreateUserAction(UserDao<User> userDao, ClientResponseHandler clientResponseHandler) {
-		this.userDao = userDao;
-		this.clientResponseHandler = clientResponseHandler;
+	public CreateUserAction(UserService userService) {
+		this.userService = userService;
 	}
 
 	@Override
@@ -48,62 +29,25 @@ public class CreateUserAction implements Action{
 		String passwordParam = request.getParameter("password");
 		String birthDateParam = request.getParameter("birthDate");
 		
-		clientResponseHandler.createJsonResponse();
-		User user = createUser(response, nameParam, emailParam, passwordParam, birthDateParam);
-		if (user == null) return;
-		
-		if(!isEmailAlreadyTaken(emailParam)) {
-			try {
-				logger.info("Saving user...");
-				userDao.save(user);
-				response.setStatus(HttpServletResponse.SC_CREATED);	
-				
-				UserDto userDto = new UserDto(user);
-				clientResponseHandler.setObjectNotExposingSensitiveFields(userDto);
-			} catch (Exception e) {
-				int error = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-				logger.error("Unexpected error creating user {}", e.getMessage(), e);
-				response.setStatus(error);
-	            clientResponseHandler.setErrorCode(error);
-			}
-		}
-		else {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			ModelError error = ModelError.EMAIL_ALREADY_TAKEN;
-			clientResponseHandler.setErrorCode(error.getCode())
-			.setMessage(error.getLogMessage());
-		}
-	}
-
-	private boolean isEmailAlreadyTaken(String email) {
-		return userDao.getUserByEmail(email).isPresent();
-	}
-
-	private User createUser(HttpServletResponse response, String nameParam, String emailParam, String passwordParam, String birthDateParam) {
 		try {
-			logger.info("Creating user...");
+			logger.info("Saving user...");
 			
-			Email email = new Email(emailParam);
-			Password password = new Password(passwordParam);
 			LocalDate birthDate = LocalDate.parse(birthDateParam);
+			userService.createUser(nameParam, emailParam, passwordParam, birthDate);
 			
-			return new User(nameParam, email, password, birthDate);
-		} catch (ModelException e) {		
-			ModelError error = e.getErrorCode();
-			logger.error("Error creating user: {}", error.getLogMessage(), e);
-			clientResponseHandler.setErrorCode(error.getCode())
-			.setMessage(error.getLogMessage());
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return null;
-		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_CREATED);
+		} catch (IllegalArgumentException e) {
+			int errorCode = HttpServletResponse.SC_BAD_REQUEST;
+			response.setStatus(errorCode);
+			
+			ErrorResponseUtil.handleErrorResponse(errorCode, e.getMessage(), response);
+			throw e;
+		} catch (PersistenceException e) {
 			int errorCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-			logger.error("Unexpected error creating user: {}", e.getMessage(), e);
+			response.setStatus(errorCode);
 			
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			
-			clientResponseHandler.setErrorCode(errorCode);
-			response.setStatus(errorCode);	
-            return null;
-		}	
+			ErrorResponseUtil.handleErrorResponse(errorCode, e.getMessage(), response);
+			throw e;
+		}
 	}
 }
