@@ -1,5 +1,6 @@
 package com.jjpedrogomes.controller.auth;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -7,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 
 import javax.persistence.EntityManager;
@@ -19,6 +21,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+
+import com.jjpedrogomes.model.user.UserService;
+import com.jjpedrogomes.model.user.UserServiceFactory;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class UserControllerTest {
@@ -54,6 +59,20 @@ public class UserControllerTest {
             usrController.doPost(request, response);
         });
 		verify(response).setStatus(HttpServletResponse.SC_CREATED);
+	}
+	
+	@Test
+	void doPost_with_update_user_action() throws Exception {
+		// Arrange
+		UserController usrController = new UserController();
+		UserService usrService = UserServiceFactory.getInstance();
+		
+		Method method = UserController.class.getDeclaredMethod("newInstance", String.class, UserService.class);
+		method.setAccessible(true);
+		// Act
+		UpdateUserAction actionInstance = (UpdateUserAction) method.invoke(usrController, "UpdateUser", usrService);
+		// Assert
+		assertThat(actionInstance).isInstanceOf(UpdateUserAction.class);
 	}
 	
 	@Test
