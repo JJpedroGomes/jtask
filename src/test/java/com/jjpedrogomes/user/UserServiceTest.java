@@ -1,6 +1,7 @@
 package com.jjpedrogomes.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -32,6 +33,16 @@ import com.jjpedrogomes.model.user.UserServiceFactory;
 public class UserServiceTest {
 	
 	private UserService userService;
+	private String email;
+	private String password;
+	
+	@BeforeAll
+	void setUpBeforaAll() {
+		this.email = "random@email.com";
+		this.password = "abcd@12345";
+		User user = new User("Random Name", new Email(email), new Password(password), LocalDate.of(1974, 9, 27));
+		UserDaoTest.persistUser(user);
+	}
 	
 	@BeforeEach
 	void setUpBeforeEach() {
@@ -39,20 +50,54 @@ public class UserServiceTest {
 	}
 	
 	@Nested
+	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+	class create_user {
+		
+		private String name = "test";
+		private String email = "email@email.com";
+		private String password = "a1b2c3d4";
+		private LocalDate birthDate = LocalDate.of(1974, 9, 27);
+		
+		@Test
+		void create_user_sucessfully() {
+			// Act
+			User user = userService.createUser(name, email, password, birthDate);
+			// Assert
+			assertNotNull(user.getId());
+		}
+		
+		@Test
+		void create_user_but_email_is_already_taken() {			
+			// Arrange
+			String emailTaken = "random@email.com";
+			// Act & Assert
+			assertThrows(IllegalArgumentException.class, () -> 
+				userService.createUser(name, emailTaken, password, birthDate));
+		}
+		
+		@Test
+		void create_user_with_invalid_param() {			
+			// Act & Assert
+			assertThrows(IllegalArgumentException.class, () -> 
+				userService.createUser(name, null, password, birthDate));
+		}
+		
+		@Test
+		void create_user_but_password_does_not_fit_requirements() {
+			// Arrange
+			String email = "differentEmail@email.com";
+			String password = "12456";
+			// Act & Assert
+			assertThrows(IllegalArgumentException.class, () -> 
+				userService.createUser(name, email, password, birthDate));
+		}
+	
+	}
+	
+	@Nested
     @TestMethodOrder(OrderAnnotation.class)
 	@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 	class update_user {
-		
-		private String email;
-		private String password;
-		
-		@BeforeAll
-		void setUpBeforaAll() {
-			this.email = "random@email.com";
-			this.password = "abcd@12345";
-			User user = new User("Random Name", new Email(email), new Password(password), LocalDate.of(1974, 9, 27));
-			UserDaoTest.persistUser(user);
-		}
 		
 		@Test
 		@Order(2)
