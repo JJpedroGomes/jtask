@@ -1,6 +1,7 @@
 package com.jjpedrogomes.model.task;
 
 
+import com.jjpedrogomes.model.lane.Lane;
 import com.jjpedrogomes.model.shared.Entity;
 
 import javax.persistence.*;
@@ -31,6 +32,9 @@ public class Task implements Entity<Task> {
     @Embedded
     @AttributeOverride(name = "current", column = @Column(name = "status", nullable = false))
     private Status status;
+    @ManyToOne
+    @JoinColumn(name = "lane_id")
+    private Lane lane;
 
     @Transient
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
