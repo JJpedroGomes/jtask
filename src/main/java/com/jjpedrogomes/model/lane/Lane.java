@@ -40,6 +40,19 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 		this.user = user;
 	}
 	
+	public void switchTaskPosition(Integer desiredPosition) {	
+		TreeSet<Lane> lanes = this.user.getLanes();
+		lanes.remove(this);
+		
+		// if desired position is greater than lanes size, put it in last
+		if(desiredPosition > lanes.size()) {
+			desiredPosition = lanes.size();
+		}
+			
+		this.setPosition(desiredPosition);
+		lanes.add(this);
+	}
+	
 	public Integer getPosition() {
 		return position;
 	}
@@ -74,20 +87,27 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 		final Lane other = (Lane) obj;
 		return sameIdentityAs(other);
 	}
-	
-	public Lane() {}
 
 	@Override
 	public int compareTo(Lane other) {
-		if (this.position == null && other.getPosition() != null) {
+		if (other.getPosition() == null) {
+	        return 1;
+	    }
+		if (this.getPosition() == null) {
 	        return -1;
 	    }
-	    else if (this.position != null && other.getPosition() == null) {
-	        return 1;
-	    } else if (this.position == null && other.getPosition() == null ) {
-	    	return 0;
-	    }
 		
-		return Integer.compare(this.position, other.getPosition());
+		// Regular comparison based on position
+	    int positionComparison = Integer.compare(this.position, other.getPosition());
+	    
+	    // If positions are equal, make sure to treat the new Lane as greater
+	    return positionComparison != 0 ? positionComparison : -1;
 	}
+
+	@Override
+	public String toString() {
+		return "Lane [id=" + id + ", name=" + name + ", user=" + user + ", position=" + position + "]";
+	}
+	
+	public Lane() {}
 }
