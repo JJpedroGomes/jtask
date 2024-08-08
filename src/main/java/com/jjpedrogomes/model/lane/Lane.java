@@ -1,6 +1,8 @@
 package com.jjpedrogomes.model.lane;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
 
@@ -28,7 +30,7 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	@Column(nullable = false)
 	private String name;
 	@OneToMany(mappedBy = "lane", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Collection<Task> tasks = new TreeSet<Task>();
+	private List<Task> tasks = new ArrayList<Task>();
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -52,6 +54,14 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 		this.setPosition(desiredPosition);
 		lanes.add(this);
 	}
+
+	public void addTaskLastToLane(Task newTask) {
+		this.tasks.add(newTask);
+	}
+	
+	public void addTaskIntoLanesPosition(int index, Task thirdTask) {
+		this.tasks.add(index, thirdTask);
+	}
 	
 	public Integer getPosition() {
 		return position;
@@ -67,6 +77,10 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	
 	public User getUser() {
 		return user;
+	}
+	
+	public List<Task> getTasks() {
+		return Collections.unmodifiableList(this.tasks);
 	}
 	
 	@Override
