@@ -1,6 +1,10 @@
 package com.jjpedrogomes.model.lane;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -84,8 +88,45 @@ public class LaneTest {
 		assertThat(tasks.get(index).getTitle()).isEqualTo(thirdTask.getTitle());
 	}
 	
+	@Test
 	void should_change_task_position_inside_lane() {
-
+		Lane newLane = LaneFactory.createLane("To Do", user);
+		Task firstTask = mock(Task.class);
+		Task secondTask = mock(Task.class);
+		Task thirdTask = mock(Task.class);
+		
+		when(firstTask.getId()).thenReturn(123L);
+		when(secondTask.getId()).thenReturn(234L);
+		when(thirdTask.getId()).thenReturn(356L);
+		
+		int desiredIndex = 0;
+		newLane.addTaskLastToLane(firstTask);
+		newLane.addTaskLastToLane(secondTask);
+		newLane.addTaskLastToLane(thirdTask);
+		
+		newLane.changeTaskPosition(desiredIndex, thirdTask);
+		List<Task> tasks = newLane.getTasks();
+	
+		assertThat(tasks).containsExactly(thirdTask, firstTask, secondTask);
+	}
+	
+	@Test
+	void should_throw_UnsupportedOperationException_trying_to_change_task_position() {
+		Lane newLane = LaneFactory.createLane("To Do", user);
+		Task firstTask = mock(Task.class);
+		Task secondTask = mock(Task.class);
+		Task thirdTask = mock(Task.class);
+		
+		when(firstTask.getId()).thenReturn(123L);
+		when(secondTask.getId()).thenReturn(234L);
+		when(thirdTask.getId()).thenReturn(356L);
+		
+		int desiredIndex = 0;
+		newLane.addTaskLastToLane(firstTask);
+		newLane.addTaskLastToLane(secondTask);
+		
+		assertThrows(UnsupportedOperationException.class, 
+				() -> newLane.changeTaskPosition(desiredIndex, thirdTask));
 	}
 	
 	private Lane getElementAtIndex(TreeSet<Lane> set, Integer index) {
@@ -101,7 +142,14 @@ public class LaneTest {
 		LaneFactory.createLane("Pending", user);
 	}
 
+	@Test
 	void should_remove_task_from_lane() {
+		Lane newLane = LaneFactory.createLane("To Do", user);
+		Task task = mock(Task.class);
 		
+		newLane.removeTask(task);
+		List<Task> tasks = newLane.getTasks();
+		
+		assertFalse(tasks.contains(task));
 	}
 }
