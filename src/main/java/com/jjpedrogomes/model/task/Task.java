@@ -53,12 +53,14 @@ public class Task implements Entity<Task> {
      *           - If the due date is in the past, the task status is set to PENDING.
      *           - Otherwise, the task status is IN_PROGRESS.
      */
-    public Task(String title, String description, LocalDate dueDate) {
+    public Task(String title, String description, LocalDate dueDate, Lane lane) {
         this.title = title;
         this.description = description;
         this.creationDate = LocalDate.now();
         this.dueDate = dueDate;
         this.status = (dueDate == null ? new Status() : new Status(dueDate));
+        this.lane = lane;
+        lane.addTaskLastToLane(this);
     }
 
     /**
@@ -131,6 +133,14 @@ public class Task implements Entity<Task> {
 
     public Long getId() {
         return id;
+    }
+    
+    public void setLane(Lane lane) {
+    	this.lane = lane;
+    }
+    
+    public Lane getLane() {
+    	return this.lane;
     }
 
     @Override
