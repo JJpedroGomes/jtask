@@ -42,23 +42,66 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 		this.user = user;
 	}
 	
-	public void switchTaskPosition(Integer desiredPosition) {	
+	/**
+	 * Switches the position of this task within the user's lanes.
+	 * 
+	 * @param desiredIndex the new position index for this task within the user's lanes.
+	 *                      If the index is greater than the current number of lanes, 
+	 *                      the task will be moved to the last position.
+	 */
+	public void switchTaskPosition(Integer desiredIndex) {	
 		TreeSet<Lane> lanes = this.user.getLanes();
 		lanes.remove(this);
 		
 		// if desired position is greater than lanes size, put it in last
-		if(desiredPosition > lanes.size()) {
-			desiredPosition = lanes.size();
+		if(desiredIndex > lanes.size()) {
+			desiredIndex = lanes.size();
 		}
 			
-		this.setPosition(desiredPosition);
+		this.setPosition(desiredIndex);
 		lanes.add(this);
 	}
+	
+	/**
+	 * Changes the position of a specific task within the current list of tasks.
+	 * 
+	 * @param desiredIndex the new position index for the task within the list of tasks.
+	 * @param task the task to be repositioned.
+	 * @throws UnsupportedOperationException if the task is not found in the list of tasks.
+	 */
+	public void changeTaskPosition(int desiredIndex, Task task) {
+		int currentIndex = this.tasks.indexOf(task);
+		if (currentIndex == -1) {
+	        throw new UnsupportedOperationException();
+	    }
+		this.tasks.remove(currentIndex);
+		this.tasks.add(desiredIndex, task);
+	}
+	
+	/**
+	 * Removes a specific task from the list of tasks.
+	 * 
+	 * @param task the task to be removed from the list.
+	 */
+	public void removeTask(Task task) {
+		this.tasks.remove(task);
+	}
 
+	/**
+	 * Adds a new task to the end of the list of tasks within the current lane.
+	 * 
+	 * @param newTask the task to be added to the end of the list.
+	 */
 	public void addTaskLastToLane(Task newTask) {
 		this.tasks.add(newTask);
 	}
 	
+	/**
+	 * Adds a new task at a specific position within the list of tasks.
+	 * 
+	 * @param index the position index at which to insert the new task.
+	 * @param thirdTask the task to be added at the specified index.
+	 */
 	public void addTaskIntoLanesPosition(int index, Task thirdTask) {
 		this.tasks.add(index, thirdTask);
 	}
