@@ -61,11 +61,9 @@ public class LaneTest {
 	@Test
 	void should_add_task_last_in_lane() {
 		Lane newLane = LaneFactory.createLane("Backlog", user);
-		Task firstTask = new Task("Do this", null, null);
-		Task secondTask = new Task("Do that", null, null);
+		new Task("Do this", null, null, newLane);
+		Task secondTask = new Task("Do that", null, null, newLane);
 
-		newLane.addTaskLastToLane(firstTask);
-		newLane.addTaskLastToLane(secondTask);
 		List<Task> tasks = newLane.getTasks();
 		
 		assertThat(tasks.get(tasks.size() - 1).getTitle()).isEqualTo(secondTask.getTitle());
@@ -74,13 +72,11 @@ public class LaneTest {
 	@Test
 	void should_add_task_in_lane_position() {
 		Lane newLane = LaneFactory.createLane("To Do", user);
-		Task firstTask = new Task("Do this", null, null);
-		Task secondTask = new Task("Do that", null, null);
-		Task thirdTask = new Task("Do it", null, null);
+		new Task("Do this", null, null, newLane);
+		new Task("Do that", null, null, newLane);
+		Task thirdTask = new Task("Do it", null, null, newLane);
 		
 		int index = 1;
-		newLane.addTaskLastToLane(firstTask);
-		newLane.addTaskLastToLane(secondTask);
 
 		newLane.addTaskIntoLanesPosition(index, thirdTask);
 		List<Task> tasks = newLane.getTasks();
@@ -151,5 +147,20 @@ public class LaneTest {
 		List<Task> tasks = newLane.getTasks();
 		
 		assertFalse(tasks.contains(task));
+	}
+	
+	@Test
+	void shoudl_remove_task_from_lane_and_add_to_another() {
+		Lane firstLane = LaneFactory.createLane("Backlog", user);
+		Lane secondLane = LaneFactory.createLane("Todo", user);
+		
+		int index = 0;
+		Task task = new Task("Do that", null, null, firstLane);		
+		
+		firstLane.removeTask(task);
+		secondLane.addTaskIntoLanesPosition(index, task);
+		
+		assertThat(firstLane.getTasks()).isEmpty();
+		assertThat(secondLane.getTasks().get(index).getTitle()).isEqualTo(task.getTitle());
 	}
 }

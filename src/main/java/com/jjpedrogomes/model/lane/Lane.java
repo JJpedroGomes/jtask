@@ -94,6 +94,7 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	 */
 	public void addTaskLastToLane(Task newTask) {
 		this.tasks.add(newTask);
+		newTask.setLane(this);
 	}
 	
 	/**
@@ -102,8 +103,9 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	 * @param index the position index at which to insert the new task.
 	 * @param thirdTask the task to be added at the specified index.
 	 */
-	public void addTaskIntoLanesPosition(int index, Task thirdTask) {
-		this.tasks.add(index, thirdTask);
+	public void addTaskIntoLanesPosition(int index, Task newTask) {
+		this.tasks.add(index, newTask);
+		newTask.setLane(this);
 	}
 	
 	public Integer getPosition() {
