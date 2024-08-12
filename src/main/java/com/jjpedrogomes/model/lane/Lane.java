@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -50,16 +49,17 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	 *                      the task will be moved to the last position.
 	 */
 	public void switchTaskPosition(Integer desiredIndex) {	
-		TreeSet<Lane> lanes = this.user.getLanes();
-		lanes.remove(this);
+//		Set<Lane> lanes = this.user.getLanes();
+		int size = this.user.getLanes().size();
+		this.user.removeLane(this);
 		
 		// if desired position is greater than lanes size, put it in last
-		if(desiredIndex > lanes.size()) {
-			desiredIndex = lanes.size();
+		if(desiredIndex > size) {
+			desiredIndex = size;
 		}
 			
 		this.setPosition(desiredIndex);
-		lanes.add(this);
+		this.user.setLaneToUser(this);
 	}
 	
 	/**
@@ -126,6 +126,10 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	
 	public List<Task> getTasks() {
 		return Collections.unmodifiableList(this.tasks);
+	}
+	
+	public Long getId() {
+		return id;
 	}
 	
 	@Override

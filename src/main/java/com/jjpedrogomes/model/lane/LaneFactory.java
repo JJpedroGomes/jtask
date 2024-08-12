@@ -7,7 +7,7 @@ public class LaneFactory {
 	public static Lane createLane(String name, User user) {
 		Lane lane = new Lane(name, user);
 		lane.setPosition(user.getLanes().size());
-        user.getLanes().add(lane);
+        user.setLaneToUser(lane);
         return lane;
 	}
 }

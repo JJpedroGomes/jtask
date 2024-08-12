@@ -125,7 +125,15 @@ public class User implements com.jjpedrogomes.model.shared.Entity<User> {
 	}
 	
 	public TreeSet<Lane> getLanes() {
-		return (TreeSet<Lane>) lanes;
+		return new TreeSet<Lane>(this.lanes);
+	}
+	
+	public void setLaneToUser(Lane lane) {
+		this.lanes.add(lane);
+	}
+	
+	public void removeLane(Lane lane) {
+		this.lanes.remove(lane);
 	}
 	
 	private void validateName(String name) {
