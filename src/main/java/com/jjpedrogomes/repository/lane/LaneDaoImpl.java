@@ -1,5 +1,6 @@
 package com.jjpedrogomes.repository.lane;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,13 +32,18 @@ public class LaneDaoImpl implements LaneDao{
 
 	@Override
 	public List<Lane> getAllFromUser(Long id) {
-		String jpql = "SELECT l from Lane l WHERE l.user = :id";
-		logger.info("Selecting all Lanes");
-		
-		TypedQuery<Lane> query = entityManager.createQuery(jpql, Lane.class);
-		query.setParameter("id", id);
-		
-		return query.getResultList();
+		try {
+			String jpql = "SELECT l from Lane l WHERE l.user.id = :id";
+			logger.info("Selecting all Lanes");
+			
+			TypedQuery<Lane> query = entityManager.createQuery(jpql, Lane.class);
+			query.setParameter("id", id);
+			
+			return query.getResultList();
+		} catch (RuntimeException e) {
+			logger.error("Error while retrieving all lanes", e);
+            return Collections.emptyList();
+		}
 	}
 
 	@Override
@@ -77,9 +83,19 @@ public class LaneDaoImpl implements LaneDao{
 
 	@Override
 	public void delete(Lane lane) {
-		Lane managedLane = this.entityManager.merge(lane);
-		this.entityManager.remove(managedLane);
-		logger.info("Lane deleted successfully.");
+		// Begin transaction if not active
+	    EntityTransaction transaction = this.entityManager.getTransaction();
+	    if (!transaction.isActive()) {
+	        transaction.begin();
+	    }
+	    // Merge the lane to ensure it is managed
+	    Lane managedLane = this.entityManager.merge(lane);
+	    managedLane.clearTasks();
+	    // Remove the managed entity
+	    this.entityManager.remove(managedLane);
+	    // Commit the transaction
+	    transaction.commit(); // Commit here to ensure changes are saved
+	    logger.info("Lane deleted successfully.");
 	}
 	
 

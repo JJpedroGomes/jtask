@@ -86,6 +86,10 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	public void removeTask(Task task) {
 		this.tasks.remove(task);
 	}
+	
+	public void clearTasks() {
+		this.tasks.clear();
+	}
 
 	/**
 	 * Adds a new task to the end of the list of tasks within the current lane.
