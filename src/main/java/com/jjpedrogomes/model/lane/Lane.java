@@ -123,6 +123,10 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	public String getName() {
 		return name;
 	}
+	 
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	public User getUser() {
 		return user;
@@ -138,6 +142,7 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	
 	@Override
 	public boolean sameIdentityAs(Lane other) {
+		if (this.id == null) return false;
 		return other != null && id.equals(other.id);
 	}
 
@@ -167,7 +172,15 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 		// Regular comparison based on position
 	    int positionComparison = Integer.compare(this.position, other.getPosition());
 	    
-	    // If positions are equal, make sure to treat the new Lane as greater
+//	    if(this.id != other.getId() && positionComparison == 0) {
+//	    	other.setPosition(other.getPosition() + 1);
+//	    }
+	    
+	    if(this.id == other.id && positionComparison == 0) {
+	    	return positionComparison;
+	    }
+	    
+	    // If positions are equal, make sure to treat the new Lane as lesser
 	    return positionComparison != 0 ? positionComparison : -1;
 	}
 
