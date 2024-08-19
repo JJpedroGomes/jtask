@@ -2,6 +2,7 @@ package com.jjpedrogomes.repository.lane;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -31,6 +32,7 @@ import com.jjpedrogomes.model.task.TaskDao;
 import com.jjpedrogomes.model.user.Email;
 import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
+import com.jjpedrogomes.model.user.UserDao;
 import com.jjpedrogomes.model.util.JpaUtil;
 import com.jjpedrogomes.repository.task.TaskDaoImpl;
 import com.jjpedrogomes.repository.user.UserDaoImpl;
@@ -153,13 +155,39 @@ public class LaneDaoTest {
 	@Nested
 	class lane_dao_update {
 		
-		
+		@Test
 		void should_update_lane_successfully() {
+			// Arrange
+			User user = new User("Rodrygo Goes", new Email("lanedaotestUpdate@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
+			UserDaoTest.persistUser(user);
 			
-		}
-		
-		void should_try_to_update_and_then_rollback() {
+			Lane lane = LaneFactory.createLane("Todo", user);
+			saveNewLane(lane);
+
+			Lane lane2 = LaneFactory.createLane("Backlog", user);
+			saveNewLane(lane2);
 			
+			Lane lane3 = LaneFactory.createLane("Pending", user);
+			saveNewLane(lane3);
+			
+			Lane lane4 = LaneFactory.createLane("Urgent", user);
+			saveNewLane(lane4);
+			// Act
+			lane2.setName("In Progress");
+			lane2.switchTaskPosition(0);
+			
+			lane4.switchTaskPosition(2);
+
+			UserDao userDao = new UserDaoImpl(entityManager);
+			userDao.update(user);
+			// Assert
+			Lane laneFromDb = entityManager.find(Lane.class, lane.getId());
+			Lane lane2FromDb = entityManager.find(Lane.class, lane2.getId());
+			Lane lane4FromDb = entityManager.find(Lane.class, lane4.getId());
+			assertTrue(lane2FromDb.getName().equals("In Progress"));
+			assertTrue(lane2FromDb.getPosition().equals(0));
+			assertTrue(laneFromDb.getPosition().equals(1));
+			assertTrue(lane4FromDb.getPosition().equals(2));
 		}
 	}
 	
