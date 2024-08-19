@@ -1,6 +1,7 @@
 package com.jjpedrogomes.model.user;
 
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -130,6 +131,18 @@ public class User implements com.jjpedrogomes.model.shared.Entity<User> {
 	
 	public void setLaneToUser(Lane lane) {
 		this.lanes.add(lane);
+		
+		Iterator<Lane> iterator = lanes.iterator();
+	    while (iterator.hasNext()) {
+	        Lane currentLane = iterator.next();
+	      
+	        if (iterator.hasNext()) {
+	            Lane nextLane = iterator.next();
+	            if (nextLane.getPosition() == currentLane.getPosition()) {
+	                nextLane.setPosition(nextLane.getPosition() + 1);
+	            }
+	        }
+	    }
 	}
 	
 	public void removeLane(Lane lane) {
