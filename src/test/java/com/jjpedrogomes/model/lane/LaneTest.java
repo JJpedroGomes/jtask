@@ -50,7 +50,7 @@ public class LaneTest {
 		Lane newLane = LaneFactory.createLane("Finished", user);
 		Integer desiredPosition = 1;
 		
-		newLane.switchTaskPosition(desiredPosition);
+		newLane.switchLanePositionForUser(desiredPosition);
 		
 		Lane elementAtIndex = getElementAtIndex(user.getLanes(), desiredPosition);
 		
@@ -100,7 +100,7 @@ public class LaneTest {
 		newLane.addTaskLastToLane(secondTask);
 		newLane.addTaskLastToLane(thirdTask);
 		
-		newLane.changeTaskPosition(desiredIndex, thirdTask);
+		newLane.switchTaskPositionInsideLane(desiredIndex, thirdTask);
 		List<Task> tasks = newLane.getTasks();
 	
 		assertThat(tasks).containsExactly(thirdTask, firstTask, secondTask);
@@ -122,7 +122,7 @@ public class LaneTest {
 		newLane.addTaskLastToLane(secondTask);
 		
 		assertThrows(UnsupportedOperationException.class, 
-				() -> newLane.changeTaskPosition(desiredIndex, thirdTask));
+				() -> newLane.switchTaskPositionInsideLane(desiredIndex, thirdTask));
 	}
 	
 	private Lane getElementAtIndex(TreeSet<Lane> set, Integer index) {
@@ -143,7 +143,7 @@ public class LaneTest {
 		Lane newLane = LaneFactory.createLane("To Do", user);
 		Task task = mock(Task.class);
 		
-		newLane.removeTask(task);
+		newLane.removeTaskFromLane(task);
 		List<Task> tasks = newLane.getTasks();
 		
 		assertFalse(tasks.contains(task));
@@ -157,7 +157,7 @@ public class LaneTest {
 		int index = 0;
 		Task task = new Task("Do that", null, null, firstLane);		
 		
-		firstLane.removeTask(task);
+		firstLane.removeTaskFromLane(task);
 		secondLane.addTaskIntoLanesPosition(index, task);
 		
 		assertThat(firstLane.getTasks()).isEmpty();
