@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jjpedrogomes.controller.action.Action;
+import com.jjpedrogomes.model.lane.Lane;
 import com.jjpedrogomes.model.lane.LaneService;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.model.user.UserDao;
@@ -31,14 +32,15 @@ public class CreateLaneAction implements Action {
 			if(nameParam == null) {
 				throw new IllegalArgumentException();
 			}
-			
-			userDao.getUserByEmail(userEmail).ifPresent(
-					user -> laneService.createLane(nameParam, user));
+	
+			userDao.getUserByEmail(userEmail).ifPresent(user -> {
+				laneService.createLane(nameParam, user);
+				response.setStatus(HttpServletResponse.SC_CREATED);
+			});
 		} catch (RuntimeException e) {
 			logger.info("Unexpected error occured trying to create lane, "
 					+ "check for request parameters");
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	}
-
 }
