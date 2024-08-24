@@ -35,12 +35,29 @@ public class LaneControllerTest {
 	void should_create_a_instance_of_createLaneAction() throws Exception {
 		// Arrange
 		LaneController laneController = new LaneController();
-		Method method = LaneController.class.getDeclaredMethod("newInstance", String.class, LaneService.class, UserDao.class);
-		method.setAccessible(true);
+		Method method = getMethod();
 		// Act
-		Action action = (Action) method.invoke(laneController, "CreateLane", mock(LaneService.class), mock(UserDao.class));
+//		Action action = (Action) method.invoke(laneController, "CreateLane", mock(LaneService.class), mock(UserDao.class));
+		Action action = (Action) method.invoke(laneController, "CreateLane", mock(LaneService.class));
 		//Assert
 		assertThat(action).isInstanceOf(CreateLaneAction.class);
+	}
+	
+	@Test
+	void should_create_a_instance_of_switchLanePositionAction() throws Exception {
+		// Arrange
+		LaneController laneController = new LaneController();
+		Method method = getMethod();
+		// Act
+		Action action = (Action) method.invoke(laneController, "SwitchLanePosition", mock(LaneService.class));
+		//Assert
+		assertThat(action).isInstanceOf(SwitchLanePositionAction.class);
+	}
+
+	private Method getMethod() throws NoSuchMethodException {
+		Method method = LaneController.class.getDeclaredMethod("newInstance", String.class, LaneService.class);
+		method.setAccessible(true);
+		return method;
 	}
 	
 	@Test
