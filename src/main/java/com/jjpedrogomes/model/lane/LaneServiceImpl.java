@@ -5,11 +5,18 @@ import org.apache.logging.log4j.Logger;
 
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.model.user.User;
+import com.jjpedrogomes.model.user.UserDao;
 
 public class LaneServiceImpl implements LaneService {
 	
 	private final LaneDao laneDao;
+	private UserDao<User> userDao;
 	private static final Logger logger = LogManager.getLogger(LaneServiceImpl.class);
+	
+	public LaneServiceImpl(LaneDao laneDao, UserDao<User> userDao) {
+		this.laneDao = laneDao;
+		this.userDao = userDao;
+	}
 	
 	public LaneServiceImpl(LaneDao laneDao) {
 		this.laneDao = laneDao;
@@ -31,8 +38,10 @@ public class LaneServiceImpl implements LaneService {
 
 	@Override
 	public void switchLanePosition(Long id, int desiredIndex) {
-		// TODO Auto-generated method stub
-		
+		logger.info("Switching lanes position...");
+		Lane lane = laneDao.get(id).orElseThrow(() -> new RuntimeException("Lane not found for id: " + id));
+		lane.switchLanePositionForUser(desiredIndex);
+		userDao.update(lane.getUser());
 	}
 
 	@Override
