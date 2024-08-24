@@ -42,13 +42,13 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	}
 	
 	/**
-	 * Switches the position of this task within the user's lanes.
+	 * Switches the position of this lane within the user's lanes.
 	 * 
 	 * @param desiredIndex the new position index for this task within the user's lanes.
 	 *                      If the index is greater than the current number of lanes, 
 	 *                      the task will be moved to the last position.
 	 */
-	public void switchTaskPosition(Integer desiredIndex) {	
+	public void switchLanePositionForUser(Integer desiredIndex) {	
 //		Set<Lane> lanes = this.user.getLanes();
 		int size = this.user.getLanes().size();
 		this.user.removeLane(this);
@@ -69,7 +69,7 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	 * @param task the task to be repositioned.
 	 * @throws UnsupportedOperationException if the task is not found in the list of tasks.
 	 */
-	public void changeTaskPosition(int desiredIndex, Task task) {
+	public void switchTaskPositionInsideLane(int desiredIndex, Task task) {
 		int currentIndex = this.tasks.indexOf(task);
 		if (currentIndex == -1) {
 	        throw new UnsupportedOperationException();
@@ -83,7 +83,7 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	 * 
 	 * @param task the task to be removed from the list.
 	 */
-	public void removeTask(Task task) {
+	public void removeTaskFromLane(Task task) {
 		this.tasks.remove(task);
 	}
 	
@@ -105,7 +105,7 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	 * Adds a new task at a specific position within the list of tasks.
 	 * 
 	 * @param index the position index at which to insert the new task.
-	 * @param thirdTask the task to be added at the specified index.
+	 * @param newTask the task to be added at the specified index.
 	 */
 	public void addTaskIntoLanesPosition(int index, Task newTask) {
 		this.tasks.add(index, newTask);
