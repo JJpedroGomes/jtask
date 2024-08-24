@@ -32,9 +32,10 @@ public class LaneController extends HttpServlet{
 		
 		String actionParam = request.getParameter("action");	
 		LaneService laneService = LaneServiceFactory.getInstance();
-		UserDao<User> userDao = UserDaoFactory.getInstance();
+//		UserDao<User> userDao = UserDaoFactory.getInstance();
 		
-		Action action = newInstance(actionParam, laneService, userDao);
+//		Action action = newInstance(actionParam, laneService, userDao);
+		Action action = newInstance(actionParam, laneService);
 		
 		if (action == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -43,11 +44,27 @@ public class LaneController extends HttpServlet{
 		action.execute(request, response);
 	}
 
-	private Action newInstance(String actionParam, LaneService laneService, UserDao<User> userDao) {	
+	private Action newInstance(String actionParam, LaneService laneService) {	
 		try {
 			String qualifiedClassName = ActionPathUtil.getQualifiedClassName(PathConstants.Lane, actionParam);
-			Constructor<?> constructor = Class.forName(qualifiedClassName).getConstructor(LaneService.class, UserDao.class);
-			return (Action) constructor.newInstance(laneService, userDao);
+//			Constructor<?> constructor = Class.forName(qualifiedClassName).getConstructor(LaneService.class, UserDao.class);
+			Class<?> clazz = Class.forName(qualifiedClassName);
+			Constructor<?>[] constructors = clazz.getConstructors();
+			
+			for (Constructor<?> constructor : constructors) {
+	            Class<?>[] parameterTypes = constructor.getParameterTypes();
+
+	            // Check if the constructor matches the required parameters
+	            if (parameterTypes.length == 2 
+	                    && parameterTypes[0].equals(LaneService.class) 
+	                    && parameterTypes[1].equals(UserDao.class)) {
+	                return (Action) constructor.newInstance(laneService, UserDaoFactory.getInstance());
+	            } else if (parameterTypes.length == 1 && parameterTypes[0].equals(LaneService.class)) {
+	                return (Action) constructor.newInstance(laneService);
+	            }
+	        }
+			
+			throw new NoSuchMethodException("No suitable constructor found for class: " + qualifiedClassName);
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 			logger.error("method or constructor was not found");
@@ -66,5 +83,4 @@ public class LaneController extends HttpServlet{
 			return null;
 		}
 	}
-
 }
