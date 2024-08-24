@@ -174,9 +174,9 @@ public class LaneDaoTest {
 			saveNewLane(lane4);
 			// Act
 			lane2.setName("In Progress");
-			lane2.switchTaskPosition(0);
+			lane2.switchLanePositionForUser(0);
 			
-			lane4.switchTaskPosition(2);
+			lane4.switchLanePositionForUser(2);
 
 			UserDao userDao = new UserDaoImpl(entityManager);
 			userDao.update(user);
