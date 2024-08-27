@@ -43,11 +43,12 @@ public class User implements com.jjpedrogomes.model.shared.Entity<User> {
 	private LocalDate creationDate;
 	@Column(name = "is_active" ,nullable = false)
 	private boolean isActive;
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.MERGE, orphanRemoval = true)
 	private Set<Lane> lanes = new TreeSet<Lane>();
 	@Transient
 	private static final String REGEX_NAME = "[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+"; 
-	
+		
 	public User (String name, Email email, Password password, LocalDate birthDate) {
 		validateName(name);
 		if (birthDate == null) throw new RuntimeException("Birth date can not be null");

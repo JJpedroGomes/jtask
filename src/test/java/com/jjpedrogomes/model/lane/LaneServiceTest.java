@@ -32,12 +32,13 @@ public class LaneServiceTest {
 			String name = "Todo";			
 			User user = mock(User.class);
 			LaneDaoImpl mockedLaneDao = mock(LaneDaoImpl.class);
+			UserDao userDaoMock = mock(UserDao.class);
 			
 			// Act
-			LaneService laneService = new LaneServiceImpl(mockedLaneDao);
+			LaneService laneService = new LaneServiceImpl(mockedLaneDao, userDaoMock);
 			Lane lane = laneService.createLane(name, user);
 			// Assert
-			verify(mockedLaneDao).save(lane);
+			verify(userDaoMock).update(user);
 		}
 	}
 	

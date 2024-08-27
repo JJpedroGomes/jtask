@@ -9,6 +9,7 @@
         <jta-data-source>java:jboss/datasources/jtaskDS</jta-data-source>
         <class>com.jjpedrogomes.model.task.Task</class>
         <class>com.jjpedrogomes.model.user.User</class>
+        <class>com.jjpedrogomes.model.lane.Lane</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
             <property name="hibernate.show_sql" value="true"/>

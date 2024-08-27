@@ -23,7 +23,6 @@ import com.jjpedrogomes.model.lane.LaneService;
 import com.jjpedrogomes.model.lane.LaneServiceImpl;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.model.user.UserDao;
-import com.jjpedrogomes.repository.lane.LaneDaoImpl;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class CreateLaneActionTest {
@@ -40,7 +39,7 @@ public class CreateLaneActionTest {
 	void setUpBeforeEach() {
 		this.userDao = mock(UserDao.class);
 		this.laneDao = mock(LaneDao.class);
-		this.laneService = new LaneServiceImpl(laneDao);
+		this.laneService = new LaneServiceImpl(laneDao, userDao);
 		this.createLaneAction = new CreateLaneAction(laneService, userDao);
 		this.request = mock(HttpServletRequest.class);
 		this.response = mock(HttpServletResponse.class);
@@ -60,7 +59,8 @@ public class CreateLaneActionTest {
 		// Act
 		createLaneAction.execute(request, response);
 		// Assert
-		verify(laneDao).save(any(Lane.class));		
+//		verify(laneDao).save(any(Lane.class));		
+		verify(userDao).update(any(User.class));
 	}
 	
 	@Test

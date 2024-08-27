@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jjpedrogomes.controller.action.Action;
+import com.jjpedrogomes.controller.util.ClientResponseHandlerImpl;
 import com.jjpedrogomes.model.lane.Lane;
 import com.jjpedrogomes.model.lane.LaneService;
 import com.jjpedrogomes.model.user.User;
@@ -34,8 +35,11 @@ public class CreateLaneAction implements Action {
 			}
 	
 			userDao.getUserByEmail(userEmail).ifPresent(user -> {
-				laneService.createLane(nameParam, user);
+				Lane lane = laneService.createLane(nameParam, user);
 				response.setStatus(HttpServletResponse.SC_CREATED);
+				
+				ClientResponseHandlerImpl responseHandler = new ClientResponseHandlerImpl(response);
+				responseHandler.createJsonResponse().setObject(new LaneDto(lane)).commitJsonToResponse();
 			});
 		} catch (RuntimeException e) {
 			logger.info("Unexpected error occured trying to create lane, "

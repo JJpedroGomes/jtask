@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +22,10 @@ import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.model.user.UserDao;
 import com.jjpedrogomes.model.user.UserDaoFactory;
 
+@WebServlet(
+        name = "LaneController",
+        urlPatterns = "/lane"
+)
 public class LaneController extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
@@ -31,11 +36,9 @@ public class LaneController extends HttpServlet{
 		logger.info("Entering method doPost() in LaneController Servlet");
 		
 		String actionParam = request.getParameter("action");	
-		LaneService laneService = LaneServiceFactory.getInstance();
-//		UserDao<User> userDao = UserDaoFactory.getInstance();
-		
-//		Action action = newInstance(actionParam, laneService, userDao);
-		Action action = newInstance(actionParam, laneService);
+//		LaneService laneService = LaneServiceFactory.getInstance();
+
+		Action action = newInstance(actionParam);
 		
 		if (action == null) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -44,10 +47,9 @@ public class LaneController extends HttpServlet{
 		action.execute(request, response);
 	}
 
-	private Action newInstance(String actionParam, LaneService laneService) {	
+	private Action newInstance(String actionParam) {	
 		try {
 			String qualifiedClassName = ActionPathUtil.getQualifiedClassName(PathConstants.Lane, actionParam);
-//			Constructor<?> constructor = Class.forName(qualifiedClassName).getConstructor(LaneService.class, UserDao.class);
 			Class<?> clazz = Class.forName(qualifiedClassName);
 			Constructor<?>[] constructors = clazz.getConstructors();
 			
@@ -58,9 +60,10 @@ public class LaneController extends HttpServlet{
 	            if (parameterTypes.length == 2 
 	                    && parameterTypes[0].equals(LaneService.class) 
 	                    && parameterTypes[1].equals(UserDao.class)) {
-	                return (Action) constructor.newInstance(laneService, UserDaoFactory.getInstance());
+	            	UserDao<User> instance = UserDaoFactory.getInstance();
+	                return (Action) constructor.newInstance(LaneServiceFactory.getInstance(instance), instance);
 	            } else if (parameterTypes.length == 1 && parameterTypes[0].equals(LaneService.class)) {
-	                return (Action) constructor.newInstance(laneService);
+	                return (Action) constructor.newInstance(LaneServiceFactory.getInstance());
 	            }
 	        }
 			

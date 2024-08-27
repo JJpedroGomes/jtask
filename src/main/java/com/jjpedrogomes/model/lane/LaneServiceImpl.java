@@ -24,9 +24,10 @@ public class LaneServiceImpl implements LaneService {
 
 	@Override
 	public Lane createLane(String name, User user) {
-		logger.info("Creating user...");
+		logger.info("Creating user...");		
 		Lane lane = LaneFactory.createLane(name, user);
-		laneDao.save(lane);
+		
+		this.userDao.update(user);
 		return lane;
 	}
 

@@ -15,11 +15,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.model.user.User;
 
 @Entity
+@Table(name = "lane")
 public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Comparable<Lane>{
 	
 	@Id
@@ -31,7 +33,7 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	@OneToMany(mappedBy = "lane", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Task> tasks = new ArrayList<Task>();
 	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "users_id")
 	private User user;
 	@Column(nullable = false)
 	private Integer position;
@@ -128,6 +130,10 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 		this.name = name;
 	}
 	
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 	public User getUser() {
 		return user;
 	}
@@ -176,8 +182,11 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 //	    	other.setPosition(other.getPosition() + 1);
 //	    }
 	    
-	    if(this.id == other.id && positionComparison == 0) {
+	    if(this.equals(other) && positionComparison == 0) {
 	    	return positionComparison;
+	    }
+	    if(!this.equals(other) && positionComparison == 0) {
+	    	return -1;
 	    }
 	    
 	    // If positions are equal, make sure to treat the new Lane as lesser
@@ -190,4 +199,5 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	}
 	
 	public Lane() {}
+
 }

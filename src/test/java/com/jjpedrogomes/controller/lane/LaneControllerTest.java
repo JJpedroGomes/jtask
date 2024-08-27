@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 import com.jjpedrogomes.controller.action.Action;
 import com.jjpedrogomes.model.lane.LaneService;
-import com.jjpedrogomes.model.user.UserDao;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class LaneControllerTest {
@@ -37,8 +36,7 @@ public class LaneControllerTest {
 		LaneController laneController = new LaneController();
 		Method method = getMethod();
 		// Act
-//		Action action = (Action) method.invoke(laneController, "CreateLane", mock(LaneService.class), mock(UserDao.class));
-		Action action = (Action) method.invoke(laneController, "CreateLane", mock(LaneService.class));
+		Action action = (Action) method.invoke(laneController, "CreateLane");
 		//Assert
 		assertThat(action).isInstanceOf(CreateLaneAction.class);
 	}
@@ -49,13 +47,13 @@ public class LaneControllerTest {
 		LaneController laneController = new LaneController();
 		Method method = getMethod();
 		// Act
-		Action action = (Action) method.invoke(laneController, "SwitchLanePosition", mock(LaneService.class));
+		Action action = (Action) method.invoke(laneController, "SwitchLanePosition");
 		//Assert
 		assertThat(action).isInstanceOf(SwitchLanePositionAction.class);
 	}
 
 	private Method getMethod() throws NoSuchMethodException {
-		Method method = LaneController.class.getDeclaredMethod("newInstance", String.class, LaneService.class);
+		Method method = LaneController.class.getDeclaredMethod("newInstance", String.class);
 		method.setAccessible(true);
 		return method;
 	}
