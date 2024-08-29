@@ -8,9 +8,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheet/styles.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheet/all.css">
-        <script src="${pageContext.request.contextPath}/js/drag.js" defer></script>
-        <script src="${pageContext.request.contextPath}/js/todo.js" defer></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <title>My Board</title>
     </head>
     <body>
@@ -19,10 +16,10 @@
         <!--Start: Board -->
         <section>
             <div class="board_container">
-                <!--Start: New task modal form section -->
-                <a id="modal_button">
-                    <i class="fas fa-plus-circle"></i>Add task
-                </a>
+                <!--Start: New task modal form section -->              
+                <a id="modal_button_lane">
+                    <i class="fas fa-plus-circle"></i>Add lane
+                </a>                
                 <div class="modal_background">
                     <form id="modal_form">
                         <div class="modal_wrapper">
@@ -56,38 +53,41 @@
                     </form>
                 </div>
                 <!--End: New task modal form section -->
-
-                <!--Start: Lanes section -->
+                <!--Start: Lanes section -->              
                 <c:set var="taskList" value="${sessionScope.taskList}" scope="session"/>
+                
+                <script>
+                	const tasks = [
+                		<c:forEach items="${taskList}" var="task">
+                        	{
+                        		id: "${task.id}",
+                                title: "${task.title}",
+                                description: "${task.description}",
+                                dueDate: "${task.dueDate}",
+                                conclusionDate: "${task.conclusionDate}"
+                        	}<c:if test="${!empty taskList}">,</c:if>
+                    	</c:forEach>
+                	];
+                </script>                
                 <div class="lane_wrapper">
-                    <div class="lane" id="todo_lane">
-                        <h3 class="lane_heading">Todo</h3>
-                        <c:if test="${not empty taskList}">
-                            <c:forEach items="${taskList}" var="task">
-                                <p class="task" id="task-${task.id}" draggable="true"
-                                   data-task-id="${task.id}"
-                                   data-task-title="${task.title}"
-                                   data-task-description="${task.description}"
-                                   data-task-dueDate="${task.dueDate}"
-                                   data-task-conclusionDate="${task.conclusionDate}">
-                                        ${task.title}
-                                </p>
-                            </c:forEach>
-                        </c:if>
-                    </div>
-                    <div class="lane">
-                        <h3 class="lane_heading">Doing</h3>
-                        <!--TODO: Load Tasks from Database-->
-                    </div>
-                    <div class="lane">
-                        <h3 class="lane_heading">Done</h3>
-                        <!--TODO: Load Tasks from Database-->
-                    </div>
+	                <c:forEach items="${lanes}" var="lane">
+	                	<div class="lane">
+	                		<h3 class="lane_heading" contenteditable="true">
+	                			"${lane.getName()}"
+	                		</h3>
+	                		<a id="new_task_for_lane_${lane.getId()}">
+	                			<i class="fas fa-plus-circle"></i>
+	                		</a>
+	                	</div>
+	                </c:forEach>
                 </div>
                 <!--End: Lanes section -->
             </div>
         </section>
         <!--End: Board -->
         <footer></footer>
+        <script src="${pageContext.request.contextPath}/js/drag.js" defer></script>
+        <script src="${pageContext.request.contextPath}/js/todo.js" defer></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     </body>
 </html>

@@ -36,8 +36,6 @@ public class LaneController extends HttpServlet{
 		logger.info("Entering method doPost() in LaneController Servlet");
 		
 		String actionParam = request.getParameter("action");	
-//		LaneService laneService = LaneServiceFactory.getInstance();
-
 		Action action = newInstance(actionParam);
 		
 		if (action == null) {
