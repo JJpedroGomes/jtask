@@ -9,10 +9,16 @@ const modalContainer = document.querySelector(".modal_container");
 const myDropdown = document.getElementById("myDropdown");
 const openDropDownBtn = document.getElementById("openDropDownBtn");
 const myDropdownDelete = document.getElementById("myDropdownDelete");
+let laneId;
 let currentTaskId = null;
 
-// Event Listeners
-document.getElementById("modal_button").addEventListener("click", openModalForCreate);
+document.querySelectorAll('.modal_button').forEach(button => {
+	button.addEventListener('click', () => {
+		console.log(button.parentElement.id.split("_").pop());
+		laneId = button.parentElement.id.split("_").pop();
+		openModalForCreate();
+	});
+});
 
 // Function to open modal for creating a task
 function openModalForCreate() {
@@ -66,7 +72,8 @@ function handleCreateTask(event) {
         action: "CreateTask",
         title: value,
         description: taskDescription.value,
-        dueDate: taskDueDate.value
+        dueDate: taskDueDate.value,
+		laneId: laneId
     };
 
     $.ajax({
@@ -247,4 +254,88 @@ function removeTaskElement(response) {
     }
     elementToRemove.remove();
 }
+
+document.getElementById("modal_button_lane").addEventListener("click", async () => {	
+	const data = new URLSearchParams({action: "CreateLane", name: "new"});
+	
+	await fetch("/jtask/lane", {
+		method: "post",
+		body: data
+	}).then (response => {
+		
+		if (response.status === 201) {
+			response.json().then(data => {
+							createNewLane(data.id, data.name);
+						});
+		}
+		else {
+			console.log("Error creating lane");
+		}
+	});
+});
+
+				
+function createNewLane(laneId, laneName) {
+	// Create the new lane div
+	const newLane = document.createElement("div");
+	newLane.classList.add("lane");
+	
+	// Create the new lane title
+	const laneTitle = document.createElement("h3");
+	laneTitle.classList.add("lane_heading");
+	laneTitle.setAttribute("contenteditable", "true");
+	laneTitle.textContent = laneName;
+						
+	// Create the button new task
+	const newTaskButton = document.createElement("a");
+	newTaskButton.id = "new_task_for_lane_" + laneId;
+	
+	// Create and configure the <i> element
+	const icon = document.createElement("i");
+	icon.classList.add("fas", "fa-plus-circle");
+	
+	// Append <i> to <a>
+	newTaskButton.appendChild(icon);
+	
+	// Append <h3> and <a> to the newLane
+	newLane.appendChild(laneTitle);
+	newLane.appendChild(newTaskButton);
+	
+	// Append new lane to div lane_wrapper
+	document.querySelector(".lane_wrapper").appendChild(newLane);
+	
+	// Block user from break lines on lane title
+	document.querySelector('.lane_heading').addEventListener('keydown', (evt) => {
+	if (evt.which === 13) {
+		evt.preventDefault();
+	}});
+}
+
+/*
+render task inside lane when its already persisted
+
+tasks.forEach((task) => {
+					        // Create the <p> element
+					        const taskElement = document.createElement("p");
+					        taskElement.classList.add("task");
+					        taskElement.id = `task-${task.id}`;
+					        taskElement.draggable = true;
+					        
+					        // Set data attributes
+					        taskElement.setAttribute("data-task-id", task.id);
+					        taskElement.setAttribute("data-task-title", task.title);
+					        taskElement.setAttribute("data-task-description", task.description);
+					        taskElement.setAttribute("data-task-dueDate", task.dueDate);
+					        taskElement.setAttribute("data-task-conclusionDate", task.conclusionDate);
+					        
+					        // Set the text content (if you want to include task.title)
+					        taskElement.textContent = task.title;
+					        
+					        // Append the <p> element to the newLane div
+					        newLane.appendChild(taskElement);
+					    });
+*/
+
+
+
 

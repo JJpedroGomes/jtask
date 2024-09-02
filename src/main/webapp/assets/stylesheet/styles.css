@@ -184,7 +184,7 @@ body {
     cursor: pointer;
 }
 
-.board_container #modal_button {
+.board_container #modal_button_lane {
     display: block;
     height: 100px;
     padding: 50px 50px;
@@ -193,7 +193,7 @@ body {
     cursor: pointer;
 }
 
-.board_container #modal_button .fas {
+.board_container #modal_button_lane .fas {
     width: 30px;
 }
 
@@ -221,10 +221,21 @@ body {
     width: 275px;
 }
 
+/*
 .lane_wrapper .lane .lane_heading {
     font-size: 22px;
     font-weight: bold;
     margin-bottom: 8px;
+}
+*/
+
+.lane_wrapper .lane .lane_heading[contenteditable="true"] {
+    border: 1px dashed #ccc; /* Optional: to indicate it's editable */
+    padding: 5px;
+    cursor: text;
+    white-space: nowrap; /* Prevent line breaks */
+    overflow: hidden;    /* Hide overflowed content */
+    text-overflow: ellipsis; /* Show ellipsis for overflowed content */
 }
 
 .lane_wrapper .lane .task {

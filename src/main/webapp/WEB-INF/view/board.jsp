@@ -56,7 +56,7 @@
                 <!--Start: Lanes section -->              
                 <c:set var="taskList" value="${sessionScope.taskList}" scope="session"/>
                 
-                <script>
+                <!-- <script>
                 	const tasks = [
                 		<c:forEach items="${taskList}" var="task">
                         	{
@@ -68,21 +68,32 @@
                         	}<c:if test="${!empty taskList}">,</c:if>
                     	</c:forEach>
                 	];
-                </script>                
+                </script>   -->              
                 <div class="lane_wrapper">
 	                <c:forEach items="${lanes}" var="lane">
 	                	<div class="lane">
 	                		<h3 class="lane_heading" contenteditable="true">
-	                			"${lane.getName()}"
+	                			${lane.getName()}
 	                		</h3>
 	                		<a id="new_task_for_lane_${lane.getId()}">
-	                			<i class="fas fa-plus-circle"></i>
+	                			<i class="fas fa-plus-circle modal_button"></i>
 	                		</a>
 	                	</div>
 	                </c:forEach>
                 </div>
                 <!--End: Lanes section -->
             </div>
+            <script>
+			document.addEventListener('DOMContentLoaded', () => {
+			    document.querySelectorAll('.lane_heading').forEach(laneHeading => {
+			        laneHeading.addEventListener('keydown', (evt) => {
+			            if (evt.which === 13) { // Check if the key pressed is Enter
+			                evt.preventDefault(); // Prevent the default behavior of Enter key
+			            }
+			        });
+			    });
+			});
+			</script>
         </section>
         <!--End: Board -->
         <footer></footer>

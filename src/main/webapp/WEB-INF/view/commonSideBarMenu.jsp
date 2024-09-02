@@ -24,7 +24,7 @@
                         <!--End: navigation bar logo -->
                         <!--Start:  navigation bar main links-->
                         <li class="menu-button" id="home">
-                            <a href="${pageContext.request.contextPath}/main">
+                            <a href="${pageContext.request.contextPath}/board">
                                 <i class="fas fa-home"></i>
                                 <span>Home</span>
                             </a>
