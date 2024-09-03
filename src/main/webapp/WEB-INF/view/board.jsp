@@ -54,30 +54,25 @@
                 </div>
                 <!--End: New task modal form section -->
                 <!--Start: Lanes section -->              
-                <c:set var="taskList" value="${sessionScope.taskList}" scope="session"/>
-                
-                <!-- <script>
-                	const tasks = [
-                		<c:forEach items="${taskList}" var="task">
-                        	{
-                        		id: "${task.id}",
-                                title: "${task.title}",
-                                description: "${task.description}",
-                                dueDate: "${task.dueDate}",
-                                conclusionDate: "${task.conclusionDate}"
-                        	}<c:if test="${!empty taskList}">,</c:if>
-                    	</c:forEach>
-                	];
-                </script>   -->              
+                <c:set var="taskList" value="${sessionScope.taskList}" scope="session"/>            
                 <div class="lane_wrapper">
 	                <c:forEach items="${lanes}" var="lane">
-	                	<div class="lane">
+	                	<div class="lane" id="${lane.getId()}">
 	                		<h3 class="lane_heading" contenteditable="true">
 	                			${lane.getName()}
 	                		</h3>
 	                		<a id="new_task_for_lane_${lane.getId()}">
 	                			<i class="fas fa-plus-circle modal_button"></i>
 	                		</a>
+	                		<c:if test="${not empty lane.getTasks()}">
+		                		<c:forEach items="${lane.getTasks()}" var="task">
+		                			<p id="task-${task.id}" class="task" draggable="true" data-task-id="${task.id}"
+		                			data-task-title="${task.title}" data-task-description="${task.description}"
+		                			data-task-duedate="${task.dueDate}">
+		                			${task.title}
+		                			</p>
+		                		</c:forEach>
+	                		</c:if>
 	                	</div>
 	                </c:forEach>
                 </div>

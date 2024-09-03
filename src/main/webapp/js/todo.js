@@ -2,7 +2,6 @@ let form = document.getElementById("modal_form");
 const taskName = document.getElementById("task_title");
 const taskDescription = document.getElementById("task_description");
 const taskDueDate = document.getElementById("task_due_date");
-//const lane = document.getElementById("todo_lane");
 const btnSubmit = document.getElementById("modal_submit_btn");
 const modalBackground = document.querySelector(".modal_background");
 const modalContainer = document.querySelector(".modal_container");
@@ -89,29 +88,6 @@ function handleCreateTask(event) {
         }
     });
 }
-
-// Function to add a task DOM element to the lane
-/*function addTaskToLane(task) {
-    const newTask = document.createElement("p");
-    newTask.id = `task-${task.id}`;
-    newTask.classList.add("task");
-    newTask.setAttribute("draggable", "true");
-    newTask.innerText = taskName.value;
-
-    lane.appendChild(newTask);
-
-    newTask.dataset.taskId = task.id;
-    addAndUpdateDatasets(newTask, task);
-    addTaskClickListener(newTask);
-    newTask.addEventListener("dragstart", () => {
-        newTask.classList.add("is_dragging");
-    });
-    newTask.addEventListener("dragend", () => {
-        newTask.classList.remove("is_dragging");
-    });
-    resetFormInputs();
-    document.querySelector(".modal_background").style.display = "none";
-}*/
 
 function addTaskToLane(task) {
 	const newTask = document.createElement("p");
@@ -356,32 +332,6 @@ function createNewLane(laneId, laneName) {
 		evt.preventDefault();
 	}});
 }
-
-/*
-render task inside lane when its already persisted
-
-tasks.forEach((task) => {
-					        // Create the <p> element
-					        const taskElement = document.createElement("p");
-					        taskElement.classList.add("task");
-					        taskElement.id = `task-${task.id}`;
-					        taskElement.draggable = true;
-					        
-					        // Set data attributes
-					        taskElement.setAttribute("data-task-id", task.id);
-					        taskElement.setAttribute("data-task-title", task.title);
-					        taskElement.setAttribute("data-task-description", task.description);
-					        taskElement.setAttribute("data-task-dueDate", task.dueDate);
-					        taskElement.setAttribute("data-task-conclusionDate", task.conclusionDate);
-					        
-					        // Set the text content (if you want to include task.title)
-					        taskElement.textContent = task.title;
-					        
-					        // Append the <p> element to the newLane div
-					        newLane.appendChild(taskElement);
-					    });
-*/
-
 
 
 
