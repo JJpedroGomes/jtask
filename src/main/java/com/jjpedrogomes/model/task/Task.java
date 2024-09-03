@@ -1,12 +1,23 @@
 package com.jjpedrogomes.model.task;
 
 
-import com.jjpedrogomes.model.lane.Lane;
-import com.jjpedrogomes.model.shared.Entity;
-
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.jjpedrogomes.model.lane.Lane;
+import com.jjpedrogomes.model.shared.Entity;
 
 /**
  * Represents a task in the system.
@@ -33,7 +44,7 @@ public class Task implements Entity<Task> {
     @AttributeOverride(name = "current", column = @Column(name = "status", nullable = false))
     private Status status;
     @ManyToOne
-    @JoinColumn(name = "lane_id")
+    @JoinColumn(name = "lane_id", nullable = false)
     private Lane lane;
 
     @Transient
