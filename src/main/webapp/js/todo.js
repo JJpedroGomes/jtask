@@ -2,7 +2,7 @@ let form = document.getElementById("modal_form");
 const taskName = document.getElementById("task_title");
 const taskDescription = document.getElementById("task_description");
 const taskDueDate = document.getElementById("task_due_date");
-const lane = document.getElementById("todo_lane");
+//const lane = document.getElementById("todo_lane");
 const btnSubmit = document.getElementById("modal_submit_btn");
 const modalBackground = document.querySelector(".modal_background");
 const modalContainer = document.querySelector(".modal_container");
@@ -91,7 +91,7 @@ function handleCreateTask(event) {
 }
 
 // Function to add a task DOM element to the lane
-function addTaskToLane(task) {
+/*function addTaskToLane(task) {
     const newTask = document.createElement("p");
     newTask.id = `task-${task.id}`;
     newTask.classList.add("task");
@@ -111,6 +111,29 @@ function addTaskToLane(task) {
     });
     resetFormInputs();
     document.querySelector(".modal_background").style.display = "none";
+}*/
+
+function addTaskToLane(task) {
+	const newTask = document.createElement("p");
+	newTask.id = `task-${task.id}`;
+	newTask.classList.add("task");
+	newTask.setAttribute("draggable", "true");
+	newTask.innerText = taskName.value;
+	
+	const lane = document.getElementById(task.laneId);
+	lane.appendChild(newTask);
+	
+	newTask.dataset.taskId = task.id;
+	addAndUpdateDatasets(newTask, task);
+	addTaskClickListener(newTask);
+	newTask.addEventListener("dragstart", () => {
+		newTask.classList.add("is_dragging");
+	});
+	newTask.addEventListener("dragend", () => {
+	    newTask.classList.remove("is_dragging");
+	});
+	 resetFormInputs();
+	 document.querySelector(".modal_background").style.display = "none";
 }
 
 window.addEventListener('load', function() {
@@ -209,11 +232,34 @@ function addAndUpdateDatasets(taskElement, task) {
     }
 }
 
-function formatDate(dateObj) {
+/*function formatDate(dateObj) {
     const { year, month, day } = dateObj;
     const formattedMonth = month.toString().padStart(2, '0');
     const formattedDay = day.toString().padStart(2, '0');
     return `${year}-${formattedMonth}-${formattedDay}`;
+}*/
+
+function formatDate(dateString) {
+    // Parse the date string into a Date object
+    let date = new Date(dateString);
+
+    // Check if the date is valid
+    if (isNaN(date)) {
+        console.error("Invalid date:", dateString);
+        return "";
+    }
+
+    // Get the month, day, and year from the Date object
+    let month = date.getMonth() + 1; // getMonth() returns 0-11
+    let day = date.getDate();
+    let year = date.getFullYear();
+
+    // Pad month and day with leading zeros if necessary
+    month = month < 10 ? "0" + month : month;
+    day = day < 10 ? "0" + day : day;
+
+    // Return the formatted date string (e.g., "YYYY-MM-DD")
+    return `${year}-${month}-${day}`;
 }
 
 function openDropDown() {
