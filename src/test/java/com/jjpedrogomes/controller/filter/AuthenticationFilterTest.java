@@ -52,7 +52,7 @@ class AuthenticationFilterTest {
 		// Act
 		authenticationFilter.doFilter(requestMock, responseMock, filterChainMock);
 		// Assert
-		verify(responseMock).sendRedirect(requestMock.getContextPath() + "/main");
+		verify(responseMock).sendRedirect(requestMock.getContextPath() + "/board");
 		verify(filterChainMock, never()).doFilter(requestMock, responseMock);
 	}
 	

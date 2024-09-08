@@ -59,7 +59,7 @@ class LoginServletTest {
         verify(session).setAttribute("user", email);
         verify(session).setAttribute("displayName", user.getName());
         verify(session).setMaxInactiveInterval(30 * 60);
-        verify(response).sendRedirect(request.getContextPath() + "/main");
+        verify(response).sendRedirect(request.getContextPath() + "/board");
 	}
 	
 	@Test

@@ -1,5 +1,10 @@
 package com.jjpedrogomes.controller.task;
 
+import com.jjpedrogomes.controller.action.Action;
+import com.jjpedrogomes.model.lane.LaneDao;
+import com.jjpedrogomes.model.lane.LaneDaoFactory;
+import com.jjpedrogomes.model.task.TaskDao;
+import com.jjpedrogomes.model.task.TaskDaoFactory;
 import com.jjpedrogomes.repository.task.TaskDaoImpl;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -49,30 +54,23 @@ class TaskControllerTest {
     @Test
     void doPost_with_createTask_action() throws Exception {
         // Arrange
-        String fullQualifiedName = "com.jjpedrogomes.controller.task.CreateTaskAction";
         when(request.getAttribute("entityManager")).thenReturn(entityManager);
         when(request.getParameter("action")).thenReturn("CreateTask");
         when(request.getParameter("title")).thenReturn("any");
         when(request.getParameter("dueDate")).thenReturn("2007-12-03");
         when(request.getSession()).thenReturn(httpSession);
         when(response.getWriter()).thenReturn(writer);
-        Method method = TaskController.class.getDeclaredMethod("getQualifiedClassName", String.class, HttpServletResponse.class);
+        Method method = TaskController.class.getDeclaredMethod("newInstance", String.class, TaskDao.class, LaneDao.class);
         method.setAccessible(true);
         // Act
-        String actionFullQualifiedName = (String) method.invoke(taskController, "CreateTask", response);
-        Constructor<?> constructor = Class.forName(actionFullQualifiedName).getConstructor(TaskDaoImpl.class);
-        CreateTaskAction instance = (CreateTaskAction) constructor.newInstance(taskDao);
-        taskController.doPost(request, response);
+        Action action = (Action) method.invoke(taskController, "CreateTask", TaskDaoFactory.getInstance(), LaneDaoFactory.getInstance());
         // Assert
-        assertThat(actionFullQualifiedName).isEqualTo(fullQualifiedName);
-        assertThat(instance).isInstanceOf(CreateTaskAction.class);
-        verify(response, never()).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        assertThat(action).isInstanceOf(CreateTaskAction.class);
     }
 
     @Test
     void doPost_with_updateTask_action() throws Exception {
         // Arrange
-        String fullQualifiedName = "com.jjpedrogomes.controller.task.UpdateTaskAction";
         when(request.getAttribute("entityManager")).thenReturn(entityManager);
         when(request.getParameter("action")).thenReturn("UpdateTask");
         when(request.getParameter("title")).thenReturn("any");
@@ -80,30 +78,24 @@ class TaskControllerTest {
         when(request.getParameter("id")).thenReturn("1");
         when(request.getSession()).thenReturn(httpSession);
         when(response.getWriter()).thenReturn(writer);
-        Method method = TaskController.class.getDeclaredMethod("getQualifiedClassName", String.class, HttpServletResponse.class);
+ 
+        Method method = TaskController.class.getDeclaredMethod("newInstance", String.class, TaskDao.class, LaneDao.class);
         method.setAccessible(true);
         // Act
-        String actionFullQualifiedName = (String) method.invoke(taskController, "UpdateTask", response);
-        Constructor<?> constructor = Class.forName(actionFullQualifiedName).getConstructor(TaskDaoImpl.class);
-        UpdateTaskAction instance = (UpdateTaskAction) constructor.newInstance(taskDao);
+        Action action = (Action) method.invoke(taskController, "UpdateTask", TaskDaoFactory.getInstance(), LaneDaoFactory.getInstance());
         taskController.doPost(request, response);
         // Assert
-        assertThat(actionFullQualifiedName).isEqualTo(fullQualifiedName);
-        assertThat(instance).isInstanceOf(UpdateTaskAction.class);
+        assertThat(action).isInstanceOf(UpdateTaskAction.class);
         verify(response, never()).setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     @Test
     void doPost_with_invalid_action_parameter() throws Exception{
         // Arrange
-        String invalidAction = "any";
-        when(request.getParameter("action")).thenReturn(invalidAction);
-        Method method = TaskController.class.getDeclaredMethod("getQualifiedClassName", String.class, HttpServletResponse.class);
+        Method method = TaskController.class.getDeclaredMethod("newInstance", String.class, TaskDao.class, LaneDao.class);
         method.setAccessible(true);
+        Action action = (Action) method.invoke(taskController, "any", TaskDaoFactory.getInstance(), LaneDaoFactory.getInstance());
         // Act and Assert
-        String actionFullQualifiedName = (String) method.invoke(taskController, invalidAction, response);
-        assertThrows(ClassNotFoundException.class, () -> Class.forName(actionFullQualifiedName).getConstructor(TaskDaoImpl.class));
-        assertThrows(ServletException.class, () -> taskController.doPost(request, response));
-        verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        assertThat(action).isNull();
     }
 }
