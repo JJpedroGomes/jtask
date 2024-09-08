@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet{
 			// Set session expiration time to 30 minutes
             session.setMaxInactiveInterval(30 * 60);
             
-            response.sendRedirect(request.getContextPath() + "/main");
+            response.sendRedirect(request.getContextPath() + "/board");
 		} else {
 			response.sendRedirect(request.getContextPath() + PathConstants.LOGIN_SCREEN.getPath() + "?error=Invalid credentials");
 		}

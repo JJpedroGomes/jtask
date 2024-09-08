@@ -1,5 +1,7 @@
 package com.jjpedrogomes.model.lane;
 
+import java.util.List;
+
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.model.user.User;
 
@@ -16,4 +18,6 @@ public interface LaneService {
 	void addNewTaskLastToLane(Long id, Task task);
 	
 	void changeTaskPositionInLanes(Long currentLaneId, Long desiredLaneId, Long taskId, int desiredIndex);
+
+	List<Lane> getAllLaneForUser(User user);
 }

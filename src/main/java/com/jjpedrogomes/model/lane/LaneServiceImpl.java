@@ -1,5 +1,8 @@
 package com.jjpedrogomes.model.lane;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -61,6 +64,11 @@ public class LaneServiceImpl implements LaneService {
 	public void changeTaskPositionInLanes(Long currentLaneId, Long desiredLaneId, Long taskId, int desiredIndex) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<Lane> getAllLaneForUser(User user) {
+		return new ArrayList<Lane>(user.getLanes());
 	}
 
 }

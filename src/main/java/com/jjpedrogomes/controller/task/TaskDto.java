@@ -18,7 +18,7 @@ public class TaskDto {
 		this.title = task.getTitle();
 		this.description = task.getDescription();
 		this.dueDate = task.getDueDate().toString();
-		this.conclusionDate = task.getDueDate().toString();
+		this.conclusionDate = task.getConclusionDate() != null ? task.getConclusionDate().toString() : null; 
 		this.status = task.getStatus();
 		this.laneId = task.getLane().getId().toString();
 	}
