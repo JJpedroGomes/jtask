@@ -55,13 +55,13 @@ public class LaneController extends HttpServlet{
 	            Class<?>[] parameterTypes = constructor.getParameterTypes();
 
 	            // Check if the constructor matches the required parameters
+	            UserDao<User> instance = UserDaoFactory.getInstance();
 	            if (parameterTypes.length == 2 
 	                    && parameterTypes[0].equals(LaneService.class) 
 	                    && parameterTypes[1].equals(UserDao.class)) {
-	            	UserDao<User> instance = UserDaoFactory.getInstance();
 	                return (Action) constructor.newInstance(LaneServiceFactory.getInstance(instance), instance);
 	            } else if (parameterTypes.length == 1 && parameterTypes[0].equals(LaneService.class)) {
-	                return (Action) constructor.newInstance(LaneServiceFactory.getInstance());
+	                return (Action) constructor.newInstance(LaneServiceFactory.getInstance(instance));
 	            }
 	        }
 			

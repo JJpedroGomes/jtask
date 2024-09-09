@@ -9,7 +9,7 @@ public interface LaneService {
 	
 	Lane createLane(String name, User user);
 	
-	Lane updateLaneName(Long id, String name);
+	void updateLaneName(Long id, String name, String email);
 	
 	void switchLanePosition(Long id, int desiredIndex);
 	

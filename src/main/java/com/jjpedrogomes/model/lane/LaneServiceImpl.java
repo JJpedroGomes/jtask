@@ -35,9 +35,15 @@ public class LaneServiceImpl implements LaneService {
 	}
 
 	@Override
-	public Lane updateLaneName(Long id, String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public void updateLaneName(Long id, String name, String email) {
+		Lane lane = laneDao.get(id).orElseThrow(() -> new RuntimeException("Lane not found for id: " + id));
+		
+		userDao.getUserByEmail(email).ifPresent(user -> {
+			if(lane.getUser().equals(user)) {				
+				lane.setName(name);
+				laneDao.update(lane);
+			} else throw new IllegalArgumentException();
+		});
 	}
 
 	@Override
@@ -70,5 +76,4 @@ public class LaneServiceImpl implements LaneService {
 	public List<Lane> getAllLaneForUser(User user) {
 		return new ArrayList<Lane>(user.getLanes());
 	}
-
 }
