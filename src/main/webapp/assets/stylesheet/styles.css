@@ -191,6 +191,7 @@ body {
     color: #FFFFFF;
     font-size: 22px;
     cursor: pointer;
+    width:230px;
 }
 
 .board_container #modal_button_lane .fas {

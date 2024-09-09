@@ -78,17 +78,6 @@
                 </div>
                 <!--End: Lanes section -->
             </div>
-            <script>
-			document.addEventListener('DOMContentLoaded', () => {
-			    document.querySelectorAll('.lane_heading').forEach(laneHeading => {
-			        laneHeading.addEventListener('keydown', (evt) => {
-			            if (evt.which === 13) { // Check if the key pressed is Enter
-			                evt.preventDefault(); // Prevent the default behavior of Enter key
-			            }
-			        });
-			    });
-			});
-			</script>
         </section>
         <!--End: Board -->
         <footer></footer>

@@ -334,4 +334,48 @@ function createNewLane(laneId, laneName) {
 }
 
 
+let originalLaneTitle = "";
+
+document.querySelectorAll('.lane_heading').forEach(laneHeading => {
+					laneHeading.addEventListener("focus", (event) => {
+						originalLaneTitle = event.target.innerText.trim();
+					});
+	
+					laneHeading.addEventListener("keydown", (event) => {
+						if(event.which === 13) {
+							event.preventDefault();
+							event.target.blur();
+						}
+					});
+	
+					laneHeading.addEventListener("blur", async (event) => {
+						const newTitle = event.target.innerText.trim();
+						
+						if(newTitle != originalLaneTitle) {
+							const laneId = laneHeading.parentElement.id;
+							const data = new URLSearchParams({action: "UpdateLaneName", newTitle:newTitle, laneId: laneId});
+							
+							try {
+								const response = await fetch("/jtask/lane", {
+									method: "post",
+									body: data
+								});
+								if(!response.ok) {
+									throw new Error();
+								}
+							} catch(error) {
+								laneHeading.innerText = originalLaneTitle;
+								alert("Error occurred saving")
+							}
+						}
+					});
+			    });
+
+
+
+
+
+
+
+
 
