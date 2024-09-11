@@ -57,7 +57,7 @@
                 <c:set var="taskList" value="${sessionScope.taskList}" scope="session"/>            
                 <div class="lane_wrapper">
 	                <c:forEach items="${lanes}" var="lane">
-	                	<div class="lane" id="${lane.getId()}">
+	                	<div class="lane" id="${lane.getId()}" draggable="true">
 	                		<h3 class="lane_heading" contenteditable="true">
 	                			${lane.getName()}
 	                		</h3>
@@ -83,6 +83,7 @@
         <footer></footer>
         <script src="${pageContext.request.contextPath}/js/drag.js" defer></script>
         <script src="${pageContext.request.contextPath}/js/todo.js" defer></script>
+        <script src="${pageContext.request.contextPath}/js/dragLane.js" defer></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     </body>
 </html>
