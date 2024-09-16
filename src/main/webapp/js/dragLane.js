@@ -1,33 +1,40 @@
 const lanes = document.querySelectorAll('.lane');
 const board = document.querySelector('.lane_wrapper');
+const dragModal = document.querySelector('.drag_modal_container');
+
+let dragginLane;
 
 lanes.forEach((lane) => {
 	lane.addEventListener("dragstart", (event) => {
 		if (event.target.classList.contains("task")) {
 			return; // Ignora o evento de drag na lane se for uma task
 		}
+		console.log("Dragging", lane);
 		lane.classList.add("is_dragging_lane");
+		dragginLane = lane;
+		dragModal.style.display = "flex";
 	});
 	lane.addEventListener("dragend", () => {
 		lane.classList.remove("is_dragging_lane");
+		dragginLane = "";
+		dragModal.style.display = "none";
 	});
 });
 
 board.addEventListener("dragover", (event) => {
-	event.preventDefault;
-	const draggingLane = document.querySelector(".is_dragging_lane");
-	
+	event.preventDefault;	
+	if(!dragginLane) return;
+
 	const afterLane = getLaneAfterMouse(board, event.clientX);
 	if (!afterLane) {
-		board.appendChild(draggingLane);
+		board.appendChild(dragginLane);
 	} else {
-	    board.insertBefore(draggingLane, afterLane);
+	    board.insertBefore(dragginLane, afterLane);
 	}
 });
 
 const getLaneAfterMouse = (board, mouseX) => {
-	const lanesInBoard = [...board.querySelectorAll(".lane:not(.is_dragging_lane)")];
-	console.log(lanesInBoard);
+	const lanesInBoard = board.querySelectorAll(".lane:not(.is_dragging_lane)");
 	
 	let closestLane = null;
 	let closestOffset = Number.NEGATIVE_INFINITY;
