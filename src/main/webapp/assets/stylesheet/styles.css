@@ -186,6 +186,25 @@ body {
     cursor: pointer;
 }
 
+.drag_modal_container {
+	bottom: 0;
+	width: 85%;
+	height: 20%;
+	position: fixed;
+	background-color: rgba(0,0,0,0.3);
+	justify-content: center;
+	display: flex;
+	align-items: center;
+	pointer-events: none;
+	display: none;
+}
+
+.trash_icon {
+	font-size: 3rem;
+	cursor: pointer;
+	color: red;
+}
+
 .board_container #modal_button_lane {
     display: block;
     height: 100px;

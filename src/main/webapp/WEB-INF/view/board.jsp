@@ -75,8 +75,15 @@
 	                		</c:if>
 	                	</div>
 	                </c:forEach>
-                </div>
+	                </div>
                 <!--End: Lanes section -->
+                <!--Start: Drag modal section --> 
+	                <div class="drag_modal_container">
+	                	<div class="trash_icon">
+	                		<i class="fas fa-trash"></i>
+	                	</div>
+	                </div>
+	            <!--End: Drag modal section --> 
             </div>
         </section>
         <!--End: Board -->
