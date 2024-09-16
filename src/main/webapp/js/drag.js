@@ -13,8 +13,11 @@ draggables.forEach((task) => {
 droppables.forEach((lane) => {
     lane.addEventListener("dragover", (event) => {
         event.preventDefault();
+		const curtTask = document.querySelector(".is_dragging");
+		if(!curtTask) return;
+		
         const bottomTask = insertAboveTask(lane, event.clientY);
-        const curtTask = document.querySelector(".is_dragging");
+       
         if (!bottomTask) {
             lane.appendChild(curtTask);
         } else {
