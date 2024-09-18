@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -51,15 +53,20 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	 *                      the task will be moved to the last position.
 	 */
 	public void switchLanePositionForUser(Integer desiredIndex) {	
-//		Set<Lane> lanes = this.user.getLanes();
-		int size = this.user.getLanes().size();
-		this.user.removeLane(this);
+		this.user.removeLaneAndReorganizePositions(this);
 		
-		// if desired position is greater than lanes size, put it in last
-		if(desiredIndex > size) {
+		TreeSet<Lane> lanes = this.user.getLanes();
+		int size = lanes.size();
+		if(desiredIndex >= size) {
 			desiredIndex = size;
 		}
-			
+		
+		for (Lane lane : lanes) {
+	        if (lane.getPosition() >= desiredIndex) {
+	            lane.setPosition(lane.getPosition() + 1);
+	        }
+	    }
+		
 		this.setPosition(desiredIndex);
 		this.user.setLaneToUser(this);
 	}
@@ -178,9 +185,9 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 		// Regular comparison based on position
 	    int positionComparison = Integer.compare(this.position, other.getPosition());
 	    
-//	    if(this.id != other.getId() && positionComparison == 0) {
-//	    	other.setPosition(other.getPosition() + 1);
-//	    }
+	    if (positionComparison == 0) {
+	        return Long.compare(this.id, other.getId()); // Comparando pelo ID quando as posições são iguais
+	    }
 	    
 	    if(this.equals(other) && positionComparison == 0) {
 	    	return positionComparison;

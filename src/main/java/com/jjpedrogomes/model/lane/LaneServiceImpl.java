@@ -31,7 +31,7 @@ public class LaneServiceImpl implements LaneService {
 		Lane lane = LaneFactory.createLane(name, user);
 		
 		this.userDao.update(user);
-		return lane;
+		return user.getLanes().last();
 	}
 
 	@Override

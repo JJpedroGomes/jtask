@@ -130,20 +130,33 @@ public class User implements com.jjpedrogomes.model.shared.Entity<User> {
 		return new TreeSet<Lane>(this.lanes);
 	}
 	
-	public void setLaneToUser(Lane lane) {
-		this.lanes.add(lane);
-		
-		Iterator<Lane> iterator = lanes.iterator();
-	    while (iterator.hasNext()) {
-	        Lane currentLane = iterator.next();
-	      
-	        if (iterator.hasNext()) {
-	            Lane nextLane = iterator.next();
-	            if (nextLane.getPosition() == currentLane.getPosition()) {
-	                nextLane.setPosition(nextLane.getPosition() + 1);
-	            }
+	public void removeLaneAndReorganizePositions(Lane laneToRemove) {
+	    int positionToRemove = laneToRemove.getPosition();
+	    this.removeLane(laneToRemove);
+	    
+	    for (Lane lane : lanes) {
+	        if (lane.getPosition() > positionToRemove) {
+	            lane.setPosition(lane.getPosition() - 1);
 	        }
 	    }
+	}
+	
+	public void setLaneToUser(Lane lane) {		
+		this.lanes.add(lane);
+		
+		/*
+		 * this.lanes.add(lane);
+		 * 
+		 * Iterator<Lane> iterator = lanes.iterator(); while (iterator.hasNext()) { Lane
+		 * currentLane = iterator.next();
+		 * 
+		 * if (iterator.hasNext()) { Lane nextLane = iterator.next(); if
+		 * (lane.getPosition() == currentLane.getPosition() &&
+		 * !currentLane.equals(lane)) {
+		 * currentLane.setPosition(currentLane.getPosition() + 1); } if
+		 * (currentLane.getPosition() == nextLane.getPosition()) {
+		 * nextLane.setPosition(nextLane.getPosition() + 1); } } }
+		 */
 	}
 	
 	public void removeLane(Lane lane) {
