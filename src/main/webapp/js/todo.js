@@ -301,6 +301,7 @@ function createNewLane(laneId, laneName) {
 	// Create the new lane div
 	const newLane = document.createElement("div");
 	newLane.classList.add("lane");
+	newLane.id = laneId;
 	
 	// Create the new lane title
 	const laneTitle = document.createElement("h3");
@@ -326,53 +327,54 @@ function createNewLane(laneId, laneName) {
 	// Append new lane to div lane_wrapper
 	document.querySelector(".lane_wrapper").appendChild(newLane);
 	
-	// Block user from break lines on lane title
-	document.querySelector('.lane_heading').addEventListener('keydown', (evt) => {
-	if (evt.which === 13) {
-		evt.preventDefault();
-	}});
+	configLaneHeader(laneTitle);
+	newLane.setAttribute("draggable", "true");
+	setDragAndDropListeners(newLane);
 }
 
 
-let originalLaneTitle = "";
+/*let originalLaneTitle = "";*/
 
 document.querySelectorAll('.lane_heading').forEach(laneHeading => {
-					laneHeading.addEventListener("focus", (event) => {
-						originalLaneTitle = event.target.innerText.trim();
-					});
+	configLaneHeader(laneHeading);	
+});
+
+
+function configLaneHeader(laneHeading) {
+	laneHeading.addEventListener("keydown", (event) => {
+		if(event.which === 13) {
+			event.preventDefault();
+			event.target.blur();
+		}
+	});
 	
-					laneHeading.addEventListener("keydown", (event) => {
-						if(event.which === 13) {
-							event.preventDefault();
-							event.target.blur();
-						}
-					});
+	let originalLaneTitle = ""
+	laneHeading.addEventListener("focus", (event) => {
+		originalLaneTitle = event.target.innerText.trim();
+	});
 	
-					laneHeading.addEventListener("blur", async (event) => {
-						const newTitle = event.target.innerText.trim();
-						
-						if(newTitle != originalLaneTitle) {
-							const laneId = laneHeading.parentElement.id;
-							const data = new URLSearchParams({action: "UpdateLaneName", newTitle:newTitle, laneId: laneId});
-							
-							try {
-								const response = await fetch("/jtask/lane", {
-									method: "post",
-									body: data
-								});
-								if(!response.ok) {
-									throw new Error();
-								}
-							} catch(error) {
-								laneHeading.innerText = originalLaneTitle;
-								alert("Error occurred saving")
-							}
-						}
-					});
-			    });
+	laneHeading.addEventListener("blur", async (event) => {
+		const newTitle = event.target.innerText.trim();
 
+		if (newTitle != originalLaneTitle) {
+			const laneId = laneHeading.parentElement.id;
+			const data = new URLSearchParams({ action: "UpdateLaneName", newTitle: newTitle, laneId: laneId });
 
-
+			try {
+				const response = await fetch("/jtask/lane", {
+					method: "post",
+					body: data
+				});
+				if (!response.ok) {
+					throw new Error();
+				}
+			} catch (error) {
+				laneHeading.innerText = originalLaneTitle;
+				alert("Error occurred saving new title")
+			}
+		}
+	});
+}
 
 
 

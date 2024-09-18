@@ -3,23 +3,35 @@ const board = document.querySelector('.lane_wrapper');
 const dragModal = document.querySelector('.drag_modal_container');
 
 let dragginLane;
+let laneOriginalPosition;
 
 lanes.forEach((lane) => {
+	setDragAndDropListeners(lane);
+});
+
+function setDragAndDropListeners(lane) {
 	lane.addEventListener("dragstart", (event) => {
 		if (event.target.classList.contains("task")) {
 			return; // Ignora o evento de drag na lane se for uma task
 		}
-		console.log("Dragging", lane);
 		lane.classList.add("is_dragging_lane");
 		dragginLane = lane;
-		dragModal.style.display = "flex";
+
+		laneOriginalPosition = [...board.children].indexOf(dragginLane);
+
+		showDiv();
 	});
+
 	lane.addEventListener("dragend", () => {
 		lane.classList.remove("is_dragging_lane");
+
+		const newPosition = [...board.children].indexOf(dragginLane);
+		updateLanePositionOnBackend(dragginLane, newPosition);
+
 		dragginLane = "";
-		dragModal.style.display = "none";
+		hideDiv();
 	});
-});
+}
 
 board.addEventListener("dragover", (event) => {
 	event.preventDefault;	
@@ -50,3 +62,45 @@ const getLaneAfterMouse = (board, mouseX) => {
 	});
 	return closestLane;
 };
+
+function showDiv() {
+    dragModal.style.display = "flex";  // Make sure the div is in the layout
+    setTimeout(() => {
+        dragModal.classList.add("visible");
+    }, 10); // Small timeout to allow the transition to happen
+}
+
+function hideDiv() {
+    dragModal.classList.remove("visible"); // Transition out
+    setTimeout(() => {
+        dragModal.style.display = "none";  // Hide the div after transition
+    }, 500); // Delay to match the transition duration (0.5s)
+}
+
+async function updateLanePositionOnBackend(draggingLane, newPositionIndex) {
+	const data = new URLSearchParams({action: "SwitchLanePosition", laneId: draggingLane.id, newPositionIndex: newPositionIndex});
+	
+	try {	
+		const response = await fetch("/jtask/lane", {
+			method: "post",
+			body: data
+		});
+		
+		if(!response.ok) {
+			throw new Error();
+		}
+	} catch(error) {
+		alert("Error occurred saving lane position");
+		revertLanePosition(draggingLane, laneOriginalPosition);
+	}
+}
+
+function revertLanePosition(lane, laneOriginalPosition) {
+	const lanes = [...board.children];
+	if (lanes[laneOriginalPosition]) {
+		board.insertBefore(lane, lanes[laneOriginalPosition]);
+	} else {
+	    board.appendChild(lane);
+	}
+}
+
