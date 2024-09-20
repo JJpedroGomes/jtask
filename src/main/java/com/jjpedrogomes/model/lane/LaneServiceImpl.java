@@ -76,4 +76,15 @@ public class LaneServiceImpl implements LaneService {
 	public List<Lane> getAllLaneForUser(User user) {
 		return new ArrayList<Lane>(user.getLanes());
 	}
+
+	@Override
+	public void deleteLane(Long id) {
+		Lane lane = laneDao.get(id).orElseThrow(() -> new RuntimeException("Lane not found for id: " + id));
+		
+		userDao.getUserByEmail(lane.getUser().getEmail().toString()).ifPresent(user -> {
+			user.removeLane(lane);
+			userDao.update(user);
+			laneDao.delete(lane);
+		});
+	}
 }

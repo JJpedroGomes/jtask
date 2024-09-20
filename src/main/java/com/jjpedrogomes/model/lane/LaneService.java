@@ -20,4 +20,6 @@ public interface LaneService {
 	void changeTaskPositionInLanes(Long currentLaneId, Long desiredLaneId, Long taskId, int desiredIndex);
 
 	List<Lane> getAllLaneForUser(User user);
+	
+	void deleteLane(Long id);
 }

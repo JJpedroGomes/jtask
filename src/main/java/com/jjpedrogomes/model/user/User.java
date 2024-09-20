@@ -132,7 +132,8 @@ public class User implements com.jjpedrogomes.model.shared.Entity<User> {
 	
 	public void removeLaneAndReorganizePositions(Lane laneToRemove) {
 	    int positionToRemove = laneToRemove.getPosition();
-	    this.removeLane(laneToRemove);
+	    //this.removeLane(laneToRemove);
+	    this.lanes.remove(laneToRemove);
 	    
 	    for (Lane lane : lanes) {
 	        if (lane.getPosition() > positionToRemove) {
@@ -143,24 +144,11 @@ public class User implements com.jjpedrogomes.model.shared.Entity<User> {
 	
 	public void setLaneToUser(Lane lane) {		
 		this.lanes.add(lane);
-		
-		/*
-		 * this.lanes.add(lane);
-		 * 
-		 * Iterator<Lane> iterator = lanes.iterator(); while (iterator.hasNext()) { Lane
-		 * currentLane = iterator.next();
-		 * 
-		 * if (iterator.hasNext()) { Lane nextLane = iterator.next(); if
-		 * (lane.getPosition() == currentLane.getPosition() &&
-		 * !currentLane.equals(lane)) {
-		 * currentLane.setPosition(currentLane.getPosition() + 1); } if
-		 * (currentLane.getPosition() == nextLane.getPosition()) {
-		 * nextLane.setPosition(nextLane.getPosition() + 1); } } }
-		 */
 	}
 	
 	public void removeLane(Lane lane) {
-		this.lanes.remove(lane);
+		//this.lanes.remove(lane);
+		removeLaneAndReorganizePositions(lane);
 	}
 	
 	private void validateName(String name) {
