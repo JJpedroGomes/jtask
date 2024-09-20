@@ -2,8 +2,10 @@ const lanes = document.querySelectorAll('.lane');
 const board = document.querySelector('.lane_wrapper');
 const dragModal = document.querySelector('.drag_modal_container');
 
+
 let dragginLane;
 let laneOriginalPosition;
+let isDeleting = false;
 
 lanes.forEach((lane) => {
 	setDragAndDropListeners(lane);
@@ -22,19 +24,22 @@ function setDragAndDropListeners(lane) {
 		showDiv();
 	});
 
-	lane.addEventListener("dragend", () => {
+	lane.addEventListener("dragend", (event) => {
 		lane.classList.remove("is_dragging_lane");
-
 		const newPosition = [...board.children].indexOf(dragginLane);
-		updateLanePositionOnBackend(dragginLane, newPosition);
+		
+		if(!isDeleting && laneOriginalPosition != newPosition) {	
+			updateLanePositionOnBackend(dragginLane, newPosition);
+		}
 
 		dragginLane = "";
+		isDeleting = false;
 		hideDiv();
 	});
 }
 
 board.addEventListener("dragover", (event) => {
-	event.preventDefault;	
+	event.preventDefault();
 	if(!dragginLane) return;
 
 	const afterLane = getLaneAfterMouse(board, event.clientX);
@@ -43,6 +48,37 @@ board.addEventListener("dragover", (event) => {
 	} else {
 	    board.insertBefore(dragginLane, afterLane);
 	}
+});
+
+dragModal.addEventListener("dragover", (event) => {
+	event.preventDefault();
+});
+
+const target = document.getElementById("droptarget");
+target.addEventListener("drop", async (event) => {
+  event.preventDefault();
+  
+  isDeleting = true;
+  const managedLane = dragginLane;
+
+  if (event.target.className === "drag_modal_container visible") {
+	  board.removeChild(managedLane);
+
+	  const data = new URLSearchParams({ action: "DeleteLane", laneId: managedLane.id });
+	  try {
+		  const response = await fetch("/jtask/lane", {
+			  method: "post",
+			  body: data
+		  });
+
+		  if (!response.ok) {
+			  throw new Error();
+		  }
+	  } catch (error) {
+		  alert("Error occurred deleting lane");
+		  revertLanePosition(managedLane, laneOriginalPosition);
+	  }
+  }
 });
 
 const getLaneAfterMouse = (board, mouseX) => {

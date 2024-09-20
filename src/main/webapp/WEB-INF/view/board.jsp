@@ -78,7 +78,7 @@
 	                </div>
                 <!--End: Lanes section -->
                 <!--Start: Drag modal section --> 
-	                <div class="drag_modal_container">
+	                <div class="drag_modal_container" id="droptarget">
 	                	<div class="trash_icon">
 	                		<i class="fas fa-trash"></i>
 	                	</div>
