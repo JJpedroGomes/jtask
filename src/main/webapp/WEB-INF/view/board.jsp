@@ -64,14 +64,28 @@
 	                		<a id="new_task_for_lane_${lane.getId()}">
 	                			<i class="fas fa-plus-circle modal_button"></i>
 	                		</a>
+	                		<div class="task">
+								<p id="task-${task.id}" draggable="true"
+									data-task-id="${task.id}" data-task-title="${task.title}"
+									data-task-description="${task.description}"
+									data-task-duedate="${task.dueDate}">Teste
+								</p>
+								<input type="checkbox" id="conclude_button" class="hidden"/>
+								<div class="button_checkmark">
+									<img src="${pageContext.request.contextPath}/assets/img/checkmark.png" alt="" />
+								</div>
+								<svg class="circle">
+							    	<circle cx="12" cy="12" r="10" />
+							    </svg>
+							</div>
 	                		<c:if test="${not empty lane.getTasks()}">
-		                		<c:forEach items="${lane.getTasks()}" var="task">
+		                		<%-- <c:forEach items="${lane.getTasks()}" var="task">
 		                			<p id="task-${task.id}" class="task" draggable="true" data-task-id="${task.id}"
 		                			data-task-title="${task.title}" data-task-description="${task.description}"
 		                			data-task-duedate="${task.dueDate}">
 		                			${task.title}
 		                			</p>
-		                		</c:forEach>
+		                		</c:forEach> --%>
 	                		</c:if>
 	                	</div>
 	                </c:forEach>

@@ -288,12 +288,123 @@ body {
 
 .lane_wrapper .lane .task {
     background: white;
-    color: black;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
-    padding: 12px;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
+	box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
+	border-radius: 6px;
+	font-size: 16px;
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 20px;
+	position: relative;
+}
+
+.lane_wrapper .lane .task .hidden {
+    position: absolute;
+	right: 20;
+	height: 21px;
+	width: 21px;
+	opacity: 0;
+	z-index: 3;
+}
+
+.lane_wrapper .lane .task .button_checkmark {
+	height: 21px;
+	width: 21px;
+	border-radius: 50%;
+	border:1px solid black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1px 1px 0 0;
+	transition: all 0.3s ease-in-out;
+  	cursor: pointer;
+}
+
+.lane_wrapper .lane .task .button_checkmark img {
+	height: 11px;
+	width: 11px;
+	z-index: 2;
+	position: absolute;
+	opacity: 0;
+}
+
+.lane_wrapper .lane .task .circle {
+	height: 23px;
+	width: 23px;
+	z-index: 2;
+	pointer-events: none;
+	right: 20;
+	position: absolute;
+	fill: none;
+	stroke: black;
+	stroke-linecap: round;
+	stroke-dasharray: 183 183;
+  	stroke-dashoffset: 183;
+	transform: rotate(-90deg);
+}
+
+input:checked ~ .button_checkmark {
+  animation: button 0.5s ease both, fill 0.5s ease-out 1.5s forwards;
+}
+
+input:checked ~ .button_checkmark img {
+  animation: check 0.5s ease-out 1.5s both;
+}
+
+input:checked ~ .circle {
+  animation: circle 2s ease-out 0.5s both;
+}
+
+@keyframes button {
+  0% {
+    border-color: #fff;
+    color: #fff;
+  }
+  50% {
+    color: transparent;
+  }
+  100% {
+    border-color: #fff;
+    background: transparent;
+    color: transparent;
+  }
+}
+
+@keyframes fill {
+  0% {
+    background: transparent;
+    border-color: #fff;
+  }
+  100% {
+    background: #D8D2C2;
+  }
+}
+
+@keyframes check {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes circle {
+  0% {
+    stroke-dashoffset: 183;
+  }
+  50% {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 183;
+    transform: rotate(-90deg) scale(1);
+  }
+  90%,
+  100% {
+    stroke-dasharray: 500 500;
+    transform: rotate(-90deg) scale(2);
+    opacity: 0;
+  }
 }
 
 .lane_wrapper .lane.is_dragging_lane, .lane_wrapper .lane .task.is_dragging {
