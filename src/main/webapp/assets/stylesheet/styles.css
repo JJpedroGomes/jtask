@@ -43,6 +43,7 @@ body {
     display: none;
     align-items: center;
     justify-content: center;
+    z-index: 1000;
 }    
 
 .board_container .modal_background .modal_wrapper {
@@ -299,6 +300,10 @@ body {
 	position: relative;
 }
 
+.lane_wrapper .lane .task:hover {
+	opacity: 0.7;
+}
+
 .lane_wrapper .lane .task .hidden {
     position: absolute;
 	right: 20;
@@ -363,7 +368,7 @@ input:checked ~ .circle {
   }
   50% {
     color: transparent;
-  }
+    }
   100% {
     border-color: #fff;
     background: transparent;

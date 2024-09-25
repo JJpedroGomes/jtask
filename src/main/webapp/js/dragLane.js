@@ -25,6 +25,8 @@ function setDragAndDropListeners(lane) {
 	});
 
 	lane.addEventListener("dragend", (event) => {
+		if(!dragginLane) return;
+		
 		lane.classList.remove("is_dragging_lane");
 		const newPosition = [...board.children].indexOf(dragginLane);
 		

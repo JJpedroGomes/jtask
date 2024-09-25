@@ -1,4 +1,4 @@
-let form = document.getElementById("modal_form");
+ let form = document.getElementById("modal_form");
 const taskName = document.getElementById("task_title");
 const taskDescription = document.getElementById("task_description");
 const taskDueDate = document.getElementById("task_due_date");
@@ -13,7 +13,6 @@ let currentTaskId = null;
 
 document.querySelectorAll('.modal_button').forEach(button => {
 	button.addEventListener('click', () => {
-		console.log(button.parentElement.id.split("_").pop());
 		laneId = button.parentElement.id.split("_").pop();
 		openModalForCreate();
 	});
@@ -90,18 +89,51 @@ function handleCreateTask(event) {
 }
 
 function addTaskToLane(task) {
-	const newTask = document.createElement("p");
+	const newTask = document.createElement("div");
 	newTask.id = `task-${task.id}`;
 	newTask.classList.add("task");
 	newTask.setAttribute("draggable", "true");
-	newTask.innerText = taskName.value;
+
+	addAndUpdateDatasets(newTask, task);
+	addTaskClickListener(newTask);
+	
+	const taskTitle = document.createElement("p");
+	taskTitle.innerText = taskName.value;
+	newTask.appendChild(taskTitle);
+	
+	const checkboxInput = document.createElement("input");
+	checkboxInput.type = "checkbox"
+	checkboxInput.id = "conclude_button";
+	checkboxInput.classList.add("hidden");
+	stopPropagation(checkboxInput);
+
+	newTask.appendChild(checkboxInput)
+	
+	const buttonCheckMark = document.createElement("div");
+	buttonCheckMark.classList.add("button_checkmark");
+	
+	const imgCheckmark = document.createElement('img');
+	imgCheckmark.src = '/jtask/assets/img/checkmark.png';
+	imgCheckmark.alt = '';
+	
+	buttonCheckMark.appendChild(imgCheckmark);
+	newTask.appendChild(buttonCheckMark);
+	
+	const svgCircle = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	svgCircle.classList.add("circle"); 
+
+	const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+	circle.setAttribute('cx', '12');
+	circle.setAttribute('cy', '12');
+	circle.setAttribute('r', '10');
+	
+	svgCircle.appendChild(circle);
+	newTask.appendChild(svgCircle);
 	
 	const lane = document.getElementById(task.laneId);
 	lane.appendChild(newTask);
 	
 	newTask.dataset.taskId = task.id;
-	addAndUpdateDatasets(newTask, task);
-	addTaskClickListener(newTask);
 	newTask.addEventListener("dragstart", () => {
 		newTask.classList.add("is_dragging");
 	});
@@ -116,7 +148,17 @@ window.addEventListener('load', function() {
     document.querySelectorAll('.task').forEach(function(taskElement) {
         addTaskClickListener(taskElement);
     });
+	
+	document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+		stopPropagation(checkbox);
+	});
 });
+
+function stopPropagation(checkbox) {
+	checkbox.addEventListener('click', (event) => {
+		event.stopPropagation();
+	});
+}
 
 function addTaskClickListener(taskElement) {
     taskElement.addEventListener('click', function() {
@@ -168,7 +210,7 @@ function handleUpdateTask(event) {
         type: "POST",
         url: "main",
         data: formData,
-        success: function (response) {
+        success: function (response) {{}{}
             updateTaskElement(response, taskElement);
             closeModal();
         },
@@ -193,7 +235,7 @@ function updateTaskElement(response, taskElement) {
     if (!taskElement) {
         return;
     }
-    taskElement.textContent = response.title;
+	taskElement.children[0].innerText = response.title;
     taskElement.removeEventListener('click', showDetails);
 
     addAndUpdateDatasets(taskElement, response);
