@@ -54,7 +54,7 @@ public class UpdateTaskAction implements Action {
             logger.info("Updating task...");
             taskDao.update(task);
 
-            GsonUtil.convertObjectToJson(response, task);
+            GsonUtil.convertObjectToJson(response, new TaskDto(task));
         });
     }
 
