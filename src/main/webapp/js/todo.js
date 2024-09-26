@@ -12,11 +12,19 @@ let laneId;
 let currentTaskId = null;
 
 document.querySelectorAll('.modal_button').forEach(button => {
+	/*button.addEventListener('click', () => {
+		laneId = button.parentElement.id.split("_").pop();
+		openModalForCreate();
+	});*/
+	addCreationBehavionToButton(button);
+});
+
+function addCreationBehavionToButton(button) {
 	button.addEventListener('click', () => {
 		laneId = button.parentElement.id.split("_").pop();
 		openModalForCreate();
 	});
-});
+}
 
 // Function to open modal for creating a task
 function openModalForCreate() {
@@ -74,6 +82,8 @@ function handleCreateTask(event) {
 		laneId: laneId
     };
 
+	console.log(formData);
+	
     $.ajax({
         type: "POST",
         url: "main",
@@ -358,6 +368,9 @@ function createNewLane(laneId, laneName) {
 	// Create and configure the <i> element
 	const icon = document.createElement("i");
 	icon.classList.add("fas", "fa-plus-circle");
+	icon.classList.add("fas", "modal_button");
+	
+	addCreationBehavionToButton(icon);
 	
 	// Append <i> to <a>
 	newTaskButton.appendChild(icon);
