@@ -349,17 +349,49 @@ body {
 	transform: rotate(-90deg);
 }
 
-input:checked ~ .button_checkmark {
+.button_checkmark.animated {
   animation: button 0.5s ease both, fill 0.5s ease-out 1.5s forwards;
 }
 
-input:checked ~ .button_checkmark img {
+.button_checkmark img.animated {
   animation: check 0.5s ease-out 1.5s both;
 }
 
-input:checked ~ .circle {
+.circle.animated {
   animation: circle 2s ease-out 0.5s both;
 }
+
+.lane_wrapper .lane .task .button_checkmark.completed {
+  border-color: #fff;
+  background: #D8D2C2;
+  color: transparent;
+}
+
+.lane_wrapper .lane .task .button_checkmark img.completed {
+  opacity: 1;
+}
+
+.lane_wrapper .lane .task .circle.completed {
+   stroke-dasharray: 500 500;
+   transform: rotate(-90deg) scale(2);
+   opacity: 0;
+}
+
+/* input:checked ~ .button_checkmark  {
+	border-color: #fff;
+	color: transparent;
+	background: #D8D2C2;
+}
+
+input:checked ~ .button_checkmark img {
+  	opacity: 1;
+}
+
+input:checked ~ .circle {
+  	stroke-dasharray: 500 500;
+    transform: rotate(-90deg) scale(2);
+    opacity: 0;
+} */
 
 @keyframes button {
   0% {

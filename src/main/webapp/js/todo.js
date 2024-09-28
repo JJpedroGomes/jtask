@@ -117,7 +117,7 @@ function addTaskToLane(task) {
 	checkboxInput.classList.add("hidden");
 	stopPropagation(checkboxInput);
 
-	newTask.appendChild(checkboxInput)
+	newTask.appendChild(checkboxInput);
 	
 	const buttonCheckMark = document.createElement("div");
 	buttonCheckMark.classList.add("button_checkmark");
@@ -125,6 +125,7 @@ function addTaskToLane(task) {
 	const imgCheckmark = document.createElement('img');
 	imgCheckmark.src = '/jtask/assets/img/checkmark.png';
 	imgCheckmark.alt = '';
+	imgCheckmark.classList.add('check_img');
 	
 	buttonCheckMark.appendChild(imgCheckmark);
 	newTask.appendChild(buttonCheckMark);
@@ -152,6 +153,54 @@ function addTaskToLane(task) {
 	});
 	 resetFormInputs();
 	 document.querySelector(".modal_background").style.display = "none";
+	 addListenerToInput(checkboxInput);
+}
+
+
+document.querySelectorAll('.conclude_button').forEach((input) => {
+	addListenerToInput(input);
+});
+
+function addListenerToInput(input) {
+	input.addEventListener('change', function() {
+		const task = input.closest('.task');
+		const buttonCheckmark = task.querySelector('.button_checkmark');
+		const circle = task.querySelector('.circle');
+		const img = buttonCheckmark.querySelector('.check_img');
+
+		if (input.checked) {
+			buttonCheckmark.classList.add('animated');
+			circle.classList.add('animated');
+			img.classList.add('animated');
+			
+			completeTask(task.dataset.taskId)
+		} else {
+			buttonCheckmark.classList.remove('animated');
+			circle.classList.remove('animated');
+			img.classList.remove('animated');
+
+			buttonCheckmark.classList.remove('completed');
+			circle.classList.remove('completed');
+			img.classList.remove('completed');
+		}
+	});
+}
+
+async function completeTask(taskId) {
+	const data = new URLSearchParams({ action: "ConcludeTask", id:taskId});
+
+	try {
+		const response = await fetch("/jtask/main", {
+			method: "post",
+			body: data
+		});
+		if (!response.ok) {
+			throw new Error();
+		}
+	} catch (error) {
+		laneHeading.innerText = originalLaneTitle;
+		alert("Error occurred concluding task")
+	}
 }
 
 window.addEventListener('load', function() {
