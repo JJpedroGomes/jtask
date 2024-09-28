@@ -153,6 +153,10 @@ public class Task implements Entity<Task> {
     public Lane getLane() {
     	return this.lane;
     }
+    
+    public boolean isCompleted() {
+        return this.getStatus().equals(Status.COMPLETED);
+    }
 
     @Override
     public boolean sameIdentityAs(final Task other) {
