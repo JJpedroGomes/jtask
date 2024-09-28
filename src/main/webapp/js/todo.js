@@ -182,12 +182,31 @@ function addListenerToInput(input) {
 			buttonCheckmark.classList.remove('completed');
 			circle.classList.remove('completed');
 			img.classList.remove('completed');
+			
+			setInProgress(task.dataset.taskId);
 		}
 	});
 }
 
 async function completeTask(taskId) {
 	const data = new URLSearchParams({ action: "ConcludeTask", id:taskId});
+
+	try {
+		const response = await fetch("/jtask/main", {
+			method: "post",
+			body: data
+		});
+		if (!response.ok) {
+			throw new Error();
+		}
+	} catch (error) {
+		laneHeading.innerText = originalLaneTitle;
+		alert("Error occurred concluding task")
+	}
+}
+
+async function setInProgress(taskId) {
+	const data = new URLSearchParams({ action: "SetInProgressTask", id:taskId});
 
 	try {
 		const response = await fetch("/jtask/main", {
