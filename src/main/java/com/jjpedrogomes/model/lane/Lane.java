@@ -2,6 +2,7 @@ package com.jjpedrogomes.model.lane;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -32,7 +33,7 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	private Long id;
 	@Column(nullable = false)
 	private String name;
-	@OneToMany(mappedBy = "lane", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "lane", cascade = CascadeType.MERGE, orphanRemoval = true)
 	private List<Task> tasks = new ArrayList<Task>();
 	@ManyToOne
 	@JoinColumn(name = "users_id")
@@ -79,12 +80,19 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	 * @throws UnsupportedOperationException if the task is not found in the list of tasks.
 	 */
 	public void switchTaskPositionInsideLane(int desiredIndex, Task task) {
+		Collections.sort(this.tasks, Comparator.comparingInt(Task::getPosition));
+		
 		int currentIndex = this.tasks.indexOf(task);
 		if (currentIndex == -1) {
-	        throw new UnsupportedOperationException();
+			throw new UnsupportedOperationException("Task not found in the list.");
 	    }
+		
 		this.tasks.remove(currentIndex);
 		this.tasks.add(desiredIndex, task);
+		
+		for (Task otherTask : this.tasks) {
+			otherTask.setPosition(tasks.indexOf(otherTask));
+		}
 	}
 	
 	/**
@@ -107,6 +115,7 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	 */
 	public void addTaskLastToLane(Task newTask) {
 		this.tasks.add(newTask);
+		newTask.setPosition(this.tasks.size() - 1);
 		newTask.setLane(this);
 	}
 	
@@ -117,8 +126,13 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	 * @param newTask the task to be added at the specified index.
 	 */
 	public void addTaskIntoLanesPosition(int index, Task newTask) {
+		Collections.sort(this.tasks, Comparator.comparingInt(Task::getPosition));
 		this.tasks.add(index, newTask);
 		newTask.setLane(this);
+		
+		for (Task task : this.tasks) {
+			task.setPosition(tasks.indexOf(task));
+		}
 	}
 	
 	public Integer getPosition() {
@@ -147,6 +161,15 @@ public class Lane implements com.jjpedrogomes.model.shared.Entity<Lane>, Compara
 	
 	public List<Task> getTasks() {
 		return Collections.unmodifiableList(this.tasks);
+	}
+	
+	public List<Task> getTasksInOrder() {
+	    // Sort tasks by the 'position' attribute
+	    List<Task> sortedTasks = new ArrayList<>(this.tasks); // Create a copy of the list to avoid modifying the original
+	    Collections.sort(sortedTasks, Comparator.comparingInt(Task::getPosition));
+	    
+	    // Return an unmodifiable list to ensure it can't be changed
+	    return Collections.unmodifiableList(sortedTasks);
 	}
 	
 	public Long getId() {

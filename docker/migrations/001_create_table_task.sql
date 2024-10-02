@@ -9,5 +9,6 @@ CREATE TABLE task (
     conclusion_date DATE,
     status VARCHAR(255) NOT NULL,
     lane_id BIGINT NOT NULL,
+    position INTEGER NOT NULL,
     CONSTRAINT PK_task PRIMARY KEY (id)
 );

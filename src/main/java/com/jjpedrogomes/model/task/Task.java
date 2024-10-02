@@ -46,6 +46,8 @@ public class Task implements Entity<Task> {
     @ManyToOne
     @JoinColumn(name = "lane_id", nullable = false)
     private Lane lane;
+    @Column(nullable = false)
+	private Integer position;
 
     @Transient
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -64,14 +66,15 @@ public class Task implements Entity<Task> {
      *           - If the due date is in the past, the task status is set to PENDING.
      *           - Otherwise, the task status is IN_PROGRESS.
      */
-    public Task(String title, String description, LocalDate dueDate, Lane lane) {
+    public Task(String title, String description, LocalDate dueDate) {
         this.title = title;
         this.description = description;
         this.creationDate = LocalDate.now();
         this.dueDate = dueDate;
         this.status = (dueDate == null ? new Status() : new Status(dueDate));
-        this.lane = lane;
-        lane.addTaskLastToLane(this);
+        this.position = 0;
+        //this.lane = lane;
+        //lane.addTaskLastToLane(this);
     }
 
     /**
@@ -156,6 +159,14 @@ public class Task implements Entity<Task> {
     
     public boolean isCompleted() {
         return this.getStatus().equals(Status.COMPLETED);
+    }
+    
+    public void setPosition(int position) {
+    	this.position = position;
+    }
+    
+    public Integer getPosition() {
+    	return this.position;
     }
 
     @Override
