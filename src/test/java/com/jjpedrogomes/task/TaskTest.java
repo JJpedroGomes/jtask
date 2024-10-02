@@ -1,5 +1,6 @@
 package com.jjpedrogomes.task;
 
+import com.jjpedrogomes.model.lane.Lane;
 import com.jjpedrogomes.model.task.Status;
 import com.jjpedrogomes.model.task.Task;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -12,25 +13,28 @@ import org.mockito.Mockito;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.mock;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class TaskTest {
+	
+	private static Lane lane = mock(Lane.class);
 
     //Builds a new task with conclusionDate = LocalDate.now() and status COMPLETED
     public static Task buildCompletedTask() {
-        Task task = new Task("Test Task", null, null);
+        Task task = new Task("Test Task", null, null, lane);
         task.setTaskCompleted();
         return task;
     }
 
     //Builds a new task with status IN_PROGRESS
     public static Task buildInProgressTask() {
-        return new Task("Test Task", null, null);
+        return new Task("Test Task", null, null, lane);
     }
 
     //Builds a new task with status PENDING
     public static Task buildPendingTask() {
-        return new Task("Test Task", null, LocalDate.now().minusDays(1));
+        return new Task("Test Task", null, LocalDate.now().minusDays(1), lane);
     }
 
     @Nested

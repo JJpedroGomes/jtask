@@ -1,17 +1,24 @@
 package com.jjpedrogomes.model.user;
 
 import java.time.LocalDate;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.jjpedrogomes.model.lane.Lane;
 
 
 @Entity
@@ -36,9 +43,12 @@ public class User implements com.jjpedrogomes.model.shared.Entity<User> {
 	private LocalDate creationDate;
 	@Column(name = "is_active" ,nullable = false)
 	private boolean isActive;
+//	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.MERGE, orphanRemoval = true)
+	private Set<Lane> lanes = new TreeSet<Lane>();
 	@Transient
 	private static final String REGEX_NAME = "[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+"; 
-	
+		
 	public User (String name, Email email, Password password, LocalDate birthDate) {
 		validateName(name);
 		if (birthDate == null) throw new RuntimeException("Birth date can not be null");
@@ -114,6 +124,31 @@ public class User implements com.jjpedrogomes.model.shared.Entity<User> {
 	
 	public boolean getIsActive() {
 		return isActive;
+	}
+	
+	public TreeSet<Lane> getLanes() {
+		return new TreeSet<Lane>(this.lanes);
+	}
+	
+	public void removeLaneAndReorganizePositions(Lane laneToRemove) {
+	    int positionToRemove = laneToRemove.getPosition();
+	    //this.removeLane(laneToRemove);
+	    this.lanes.remove(laneToRemove);
+	    
+	    for (Lane lane : lanes) {
+	        if (lane.getPosition() > positionToRemove) {
+	            lane.setPosition(lane.getPosition() - 1);
+	        }
+	    }
+	}
+	
+	public void setLaneToUser(Lane lane) {		
+		this.lanes.add(lane);
+	}
+	
+	public void removeLane(Lane lane) {
+		//this.lanes.remove(lane);
+		removeLaneAndReorganizePositions(lane);
 	}
 	
 	private void validateName(String name) {

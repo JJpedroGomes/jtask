@@ -8,25 +8,27 @@
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
     list-style: none;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    scrollbar-width: auto;
 }
 
-*::-webkit-scrollbar {
+/* *::-webkit-scrollbar {
     display: none;
-}
+} */
 
 /* Side navigation bar styles */
 body {
     display: flex;
     background-color: #5D6770;
+    overflow-y: hidden;
 }
 
 /* Board form styles */
 .board_container {
-    width: 85vw;
+    width: 100%;
     height: 100vh;
-    overflow: scroll;
+    overflow-x: auto;
+    white-space: nowrap;
+    overflow-y: hidden;
 }
 
 
@@ -41,6 +43,7 @@ body {
     display: none;
     align-items: center;
     justify-content: center;
+    z-index: 1000;
 }    
 
 .board_container .modal_background .modal_wrapper {
@@ -184,17 +187,54 @@ body {
     cursor: pointer;
 }
 
-.board_container #modal_button {
+.drag_modal_container {
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transform: translateY(-10px);
+	transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s, pointer-events 0s 0.3s;
+	
+	
+	bottom: 0;
+	width: 85%;
+	height: 20%;
+	position: fixed;
+	background-color: rgba(0,0,0,0.3);
+	justify-content: center;
+	align-items: center;
+	display: none;
+}
+
+.drag_modal_container.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0); 
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s, pointer-events 0s;
+} 
+
+.trash_icon {
+	font-size: 3rem;
+	cursor: pointer;
+	color: #E4003A;
+}
+
+.board_container #modal_button_lane {
     display: block;
     height: 100px;
     padding: 50px 50px;
     color: #FFFFFF;
     font-size: 22px;
     cursor: pointer;
+    width:230px;
 }
 
-.board_container #modal_button .fas {
+.board_container #modal_button_lane .fas {
     width: 30px;
+}
+
+.modal_button {
+	cursor: pointer;
 }
 
 /* Board lanes styles */
@@ -204,7 +244,6 @@ body {
     padding: 35px 50px;
     align-items: flex-start;
     justify-content: start;
-    overflow: scroll;
     height: 100%;
 }
 
@@ -219,25 +258,193 @@ body {
     flex-shrink: 0;
     min-height: 120px;
     width: 275px;
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
 }
 
+.lane_wrapper .lane:active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+/*
 .lane_wrapper .lane .lane_heading {
     font-size: 22px;
     font-weight: bold;
     margin-bottom: 8px;
 }
+*/
+
+.lane_wrapper .lane .lane_heading[contenteditable="true"] {
+    border: 1px dashed #ccc; /* Optional: to indicate it's editable */
+    padding: 5px;
+    cursor: text;
+    white-space: nowrap; /* Prevent line breaks */
+    overflow: hidden;    /* Hide overflowed content */
+    text-overflow: ellipsis; /* Show ellipsis for overflowed content */
+}
 
 .lane_wrapper .lane .task {
     background: white;
-    color: black;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
-    padding: 12px;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
+	box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
+	border-radius: 6px;
+	font-size: 16px;
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 20px;
+	position: relative;
 }
 
-.lane_wrapper .lane .task.is_dragging {
+.lane_wrapper .lane .task:hover {
+	opacity: 0.7;
+}
+
+.lane_wrapper .lane .task .hidden {
+    position: absolute;
+	right: 20;
+	height: 21px;
+	width: 21px;
+	opacity: 0;
+	z-index: 3;
+}
+
+.lane_wrapper .lane .task .button_checkmark {
+	height: 21px;
+	width: 21px;
+	border-radius: 50%;
+	border:1px solid black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1px 1px 0 0;
+	transition: all 0.3s ease-in-out;
+  	cursor: pointer;
+}
+
+.lane_wrapper .lane .task .button_checkmark img {
+	height: 11px;
+	width: 11px;
+	z-index: 2;
+	position: absolute;
+	opacity: 0;
+}
+
+.lane_wrapper .lane .task .circle {
+	height: 23px;
+	width: 23px;
+	z-index: 2;
+	pointer-events: none;
+	right: 20;
+	position: absolute;
+	fill: none;
+	stroke: black;
+	stroke-linecap: round;
+	stroke-dasharray: 183 183;
+  	stroke-dashoffset: 183;
+	transform: rotate(-90deg);
+}
+
+.button_checkmark.animated {
+  animation: button 0.5s ease both, fill 0.5s ease-out 1.5s forwards;
+}
+
+.button_checkmark img.animated {
+  animation: check 0.5s ease-out 1.5s both;
+}
+
+.circle.animated {
+  animation: circle 2s ease-out 0.5s both;
+}
+
+.lane_wrapper .lane .task .button_checkmark.completed {
+  border-color: #fff;
+  background: #D8D2C2;
+  color: transparent;
+}
+
+.lane_wrapper .lane .task .button_checkmark img.completed {
+  opacity: 1;
+}
+
+.lane_wrapper .lane .task .circle.completed {
+   stroke-dasharray: 500 500;
+   transform: rotate(-90deg) scale(2);
+   opacity: 0;
+}
+
+/* input:checked ~ .button_checkmark  {
+	border-color: #fff;
+	color: transparent;
+	background: #D8D2C2;
+}
+
+input:checked ~ .button_checkmark img {
+  	opacity: 1;
+}
+
+input:checked ~ .circle {
+  	stroke-dasharray: 500 500;
+    transform: rotate(-90deg) scale(2);
+    opacity: 0;
+} */
+
+@keyframes button {
+  0% {
+    border-color: #fff;
+    color: #fff;
+  }
+  50% {
+    color: transparent;
+    }
+  100% {
+    border-color: #fff;
+    background: transparent;
+    color: transparent;
+  }
+}
+
+@keyframes fill {
+  0% {
+    background: transparent;
+    border-color: #fff;
+  }
+  100% {
+    background: #D8D2C2;
+  }
+}
+
+@keyframes check {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes circle {
+  0% {
+    stroke-dashoffset: 183;
+  }
+  50% {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 183;
+    transform: rotate(-90deg) scale(1);
+  }
+  90%,
+  100% {
+    stroke-dasharray: 500 500;
+    transform: rotate(-90deg) scale(2);
+    opacity: 0;
+  }
+}
+
+.lane_wrapper .lane.is_dragging_lane, .lane_wrapper .lane .task.is_dragging {
     scale: 1.05;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
     background: #7286A0;

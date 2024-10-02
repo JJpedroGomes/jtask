@@ -1,21 +1,22 @@
 package com.jjpedrogomes.controller.task;
 
-import com.jjpedrogomes.controller.action.Action;
-import com.jjpedrogomes.controller.util.GsonUtil;
-import com.jjpedrogomes.repository.task.TaskDaoImpl;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.jjpedrogomes.controller.action.Action;
+import com.jjpedrogomes.controller.util.GsonUtil;
+import com.jjpedrogomes.model.task.Task;
+import com.jjpedrogomes.model.task.TaskDao;
 
 public class DeleteTaskAction implements Action {
 
-    private final TaskDaoImpl taskDao;
+    private final TaskDao taskDao;
     private static final Logger logger = LogManager.getLogger(DeleteTaskAction.class);
 
-    public DeleteTaskAction(TaskDaoImpl taskDao) {
+    public DeleteTaskAction(TaskDao taskDao) {
         this.taskDao = taskDao;
     }
 
@@ -39,7 +40,7 @@ public class DeleteTaskAction implements Action {
         }
         taskDao.get(id).ifPresent(task -> {
         	taskDao.delete(task);
-        	GsonUtil.convertObjectToJson(response, task);
+        	GsonUtil.convertObjectToJson(response, new TaskDto((Task) task));
         });
     }
 }

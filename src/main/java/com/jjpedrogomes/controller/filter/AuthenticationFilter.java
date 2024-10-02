@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 @WebFilter("/*")
 public class AuthenticationFilter implements Filter{
 	
-	private final Set<String> loginRequiredUrls = Stream.of("/main", "/logout", "/user")
+	private final Set<String> loginRequiredUrls = Stream.of("/board", "/logout", "/user", "/main")
 			.collect(Collectors.toCollection(HashSet::new));
 
 	@Override
@@ -42,7 +42,7 @@ public class AuthenticationFilter implements Filter{
 		
 		if (isLoggedIn && (isLoginRequest || isLoginPage)) {
             // the user is already logged in and he's trying to login again
-			httpReponse.sendRedirect(httpRequest.getContextPath() + "/main");
+			httpReponse.sendRedirect(httpRequest.getContextPath() + "/board");
 		} else if (!isLoggedIn && isLoginRequired(httpRequest)) {
 			// the user is not logged in, and the requested page requires
             // authentication, then forward to the login page
@@ -77,5 +77,4 @@ public class AuthenticationFilter implements Filter{
 
 	@Override
 	public void destroy() {}
-
 }

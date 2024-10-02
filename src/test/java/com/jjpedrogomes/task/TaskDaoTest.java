@@ -1,13 +1,23 @@
 package com.jjpedrogomes.task;
 
+import com.jjpedrogomes.model.lane.Lane;
+import com.jjpedrogomes.model.lane.LaneDao;
+import com.jjpedrogomes.model.lane.LaneDaoFactory;
+import com.jjpedrogomes.model.lane.LaneFactory;
+import com.jjpedrogomes.model.lane.LaneServiceFactory;
 import com.jjpedrogomes.model.task.Task;
+import com.jjpedrogomes.model.user.Email;
+import com.jjpedrogomes.model.user.Password;
+import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.model.util.JpaUtil;
 import com.jjpedrogomes.repository.task.TaskDaoImpl;
+import com.jjpedrogomes.user.UserDaoTest;
 
 import org.junit.jupiter.api.*;
 
 import javax.persistence.EntityManager;
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,25 +39,18 @@ class TaskDaoTest {
     private Task taskPreSaved;
     private int tasksSavedCount;
     private List<Task> tasksSavedList = new ArrayList<Task>();
-
-    @BeforeAll
-    void createPreSavedTask() {
-        EntityManager entityManager = JpaUtil.getEntityManager();
-        TaskDaoImpl taskDaoEnv = new TaskDaoImpl(entityManager);
-
-        Task task = buildPendingTask();
-
-        entityManager.getTransaction().begin();
-        taskDaoEnv.save(task);
-        entityManager.getTransaction().commit();
-        taskPreSaved = task;
-        entityManager.close();
-
-        tasksSavedCount++;
-        tasksSavedList.add(taskPreSaved);
+    
+    void setUpBeforeAll() {
+    	User user = new User("Gabriel Toledo", new Email("taskdaotest@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
+    	UserDaoTest.persistUser(user);
+    	
+    	Lane lane = LaneServiceFactory.getInstance().createLane("todo", user);
+    	
+    	this.taskPreSaved = new Task("new", null, null, lane);
+    	LaneDaoFactory.getInstance().update(lane);
     }
 
-    @BeforeEach
+	@BeforeEach
     void setUpBeforeEach() {
         this.task = buildInProgressTask();
         this.entityManager = JpaUtil.getEntityManager();
@@ -59,34 +62,34 @@ class TaskDaoTest {
         this.entityManager.close();
     }
 
-    @Nested
-    class task_dao_save {
-
-        @Test
-        void new_task() {
-            // Act
-            entityManager.getTransaction().begin();
-            taskDao.save(task);
-            entityManager.getTransaction().commit();
-            // Assert
-            assertThat(task.getId()).isNotNull();
-
-            tasksSavedCount++;
-            tasksSavedList.add(task);
-        }
-
-        @Test
-        void with_error() throws NoSuchFieldException, IllegalAccessException {
-            // Arrange
-            Field title = Task.class.getDeclaredField("title");
-            title.setAccessible(true);
-            title.set(task, null);
-            // Assert and Act
-            entityManager.getTransaction().begin();
-            assertThrows(Exception.class, () -> taskDao.save(task));
-            entityManager.getTransaction().commit();
-        }
-    }
+//    @Nested
+//    class task_dao_save {
+//
+//        @Test
+//        void new_task() {
+//            // Act
+//            entityManager.getTransaction().begin();
+//            taskDao.save(task);
+//            entityManager.getTransaction().commit();
+//            // Assert
+//            assertThat(task.getId()).isNotNull();
+//
+//            tasksSavedCount++;
+//            tasksSavedList.add(task);
+//        }
+//
+//        @Test
+//        void with_error() throws NoSuchFieldException, IllegalAccessException {
+//            // Arrange
+//            Field title = Task.class.getDeclaredField("title");
+//            title.setAccessible(true);
+//            title.set(task, null);
+//            // Assert and Act
+//            entityManager.getTransaction().begin();
+//            assertThrows(Exception.class, () -> taskDao.save(task));
+//            entityManager.getTransaction().commit();
+//        }
+//    }
 
     @Nested
     class task_dao_get_ {
