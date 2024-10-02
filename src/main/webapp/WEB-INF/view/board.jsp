@@ -26,7 +26,7 @@
                             <div class="modal_container">
                                 <div class="modal_header">
                                     <div class="modal_header_content">
-                                        <input type="text" id="task_title" name="title" placeholder="Task name" required>
+                                        <input type="text" id="task_title" name="title" placeholder="Task name" required maxlength="50">
                                     </div>
                                     <div class="dropdown">
                                         <i onclick="openDropDown()" class="fas fa-ellipsis-v" id="openDropDownBtn"></i>
