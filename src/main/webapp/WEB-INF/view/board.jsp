@@ -65,7 +65,7 @@
 	                			<i class="fas fa-plus-circle modal_button"></i>
 	                		</a>
 	                		<c:if test="${not empty lane.getTasks()}">
-							<c:forEach items="${lane.getTasks()}" var="task">
+							<c:forEach items="${lane.getTasksInOrder()}" var="task">
 								<div class="task" draggable="true" id="task-${task.id}"
 									data-task-id="${task.id}" data-task-title="${task.title}"
 									data-task-description="${task.description}"

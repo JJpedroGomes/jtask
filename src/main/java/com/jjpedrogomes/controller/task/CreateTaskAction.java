@@ -23,7 +23,7 @@ import com.jjpedrogomes.model.task.TaskDao;
 public class CreateTaskAction implements Action {
 
     private static final Logger logger = LogManager.getLogger(CreateTaskAction.class);
-    private final TaskDao taskDao;
+    private final TaskDao<Task> taskDao;
     private final LaneDao laneDao;
 
     public CreateTaskAction(TaskDao taskDao, LaneDao laneDao) {
@@ -50,17 +50,19 @@ public class CreateTaskAction implements Action {
         	throw new IllegalArgumentException();
         }
         
+        Task task = createTask(title, description, dueDate);
+        
         laneDao.get(Long.valueOf(laneIdParam)).ifPresent(lane -> {
             logger.info("Creating task...");
-            Task task = createTask(title, description, dueDate, lane);
+            lane.addTaskLastToLane(task);
+            
             laneDao.update(lane);
-//            addTaskToSession(request, task);
             GsonUtil.convertObjectToJson(response, new TaskDto(lane.getTasks().get(lane.getTasks().size() - 1)));
             response.setStatus(HttpServletResponse.SC_CREATED);
         });
     }
 
-    private Task createTask(String title, String description, String dueDateParam, Lane lane) {
+    private Task createTask(String title, String description, String dueDateParam) {
         LocalDate dueDate = null;
         if (title != null) {
             try {
@@ -69,7 +71,7 @@ public class CreateTaskAction implements Action {
                 logger.error("Due data is not valid format", exception);
                 throw exception;
             }
-          return new Task(title, description, dueDate, lane);
+          return new Task(title, description, dueDate);
             
         } else {
             IllegalArgumentException exception = new IllegalArgumentException();
@@ -77,22 +79,4 @@ public class CreateTaskAction implements Action {
             throw exception;
         }
     }
-
-//    private void addTaskToSession(HttpServletRequest request, Task task) {
-//        try {
-//            HttpSession session = request.getSession();
-//            List<Task> taskList = null;
-//            Object sessionList = session.getAttribute("taskList");
-//            if (sessionList instanceof List && !((List) sessionList).isEmpty()) {
-//                taskList = new ArrayList<Task>((ArrayList<Task>)sessionList);
-//            } else {
-//                taskList = new ArrayList<Task>();
-//            }
-//            taskList.add(task);
-//            logger.info("Adding Task to List session");
-//            session.setAttribute("taskList", taskList);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 }
