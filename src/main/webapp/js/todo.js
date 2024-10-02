@@ -144,13 +144,9 @@ function addTaskToLane(task) {
 	const lane = document.getElementById(task.laneId);
 	lane.appendChild(newTask);
 	
-	newTask.dataset.taskId = task.id;
-	newTask.addEventListener("dragstart", () => {
-		newTask.classList.add("is_dragging");
-	});
-	newTask.addEventListener("dragend", () => {
-	    newTask.classList.remove("is_dragging");
-	});
+	newTask.dataset.taskId = task.id;	
+	addDragAndDropListenerToTask(newTask);
+	
 	 resetFormInputs();
 	 document.querySelector(".modal_background").style.display = "none";
 	 addListenerToInput(checkboxInput);

@@ -38,6 +38,8 @@ function setDragAndDropListeners(lane) {
 		isDeleting = false;
 		hideDiv();
 	});
+	
+	addDragOverListenerForTasks(lane);
 }
 
 board.addEventListener("dragover", (event) => {
@@ -83,23 +85,24 @@ target.addEventListener("drop", async (event) => {
   }
 });
 
-const getLaneAfterMouse = (board, mouseX) => {
+function getLaneAfterMouse(board, mouseX) {
 	const lanesInBoard = board.querySelectorAll(".lane:not(.is_dragging_lane)");
-	
+	console.log(lanesInBoard);
+
 	let closestLane = null;
 	let closestOffset = Number.NEGATIVE_INFINITY;
-	
+
 	lanesInBoard.forEach((lane) => {
 		const { left } = lane.getBoundingClientRect();
 		const offset = mouseX - left;
-		
+
 		if (offset < 0 && offset > closestOffset) {
 			closestOffset = offset;
-		    closestLane = lane;
+			closestLane = lane;
 		}
 	});
 	return closestLane;
-};
+}
 
 function showDiv() {
     dragModal.style.display = "flex";  // Make sure the div is in the layout
