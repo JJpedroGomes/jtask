@@ -294,10 +294,26 @@ body {
 	font-size: 16px;
 	cursor: pointer;
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	flex-direction: column;
+	align-items: flex-start;
 	padding: 12px 20px;
 	position: relative;
+}
+
+.lane_wrapper .lane .task:hover {
+	opacity: 0.7;
+}
+
+.lane_wrapper .lane .task .title_wrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 200px;
+}
+
+.lane_wrapper .lane .task .due_date {
+	font-size: 12px;
+	color: gray;
 }
 
 .lane_wrapper .lane .task p {
@@ -307,11 +323,7 @@ body {
 	max-width: 150px;
 }
 
-.lane_wrapper .lane .task:hover {
-	opacity: 0.7;
-}
-
-.lane_wrapper .lane .task .hidden {
+.lane_wrapper .lane .task .title_wrapper .hidden {
     position: absolute;
 	right: 20;
 	height: 21px;
@@ -320,9 +332,9 @@ body {
 	z-index: 3;
 }
 
-.lane_wrapper .lane .task .button_checkmark {
-	height: 21px;
-	width: 21px;
+.lane_wrapper .lane .task .title_wrapper .button_checkmark {
+	height: 23px;
+	width: 23px;
 	border-radius: 50%;
 	border:1px solid black;
 	display: flex;
@@ -334,7 +346,7 @@ body {
   	flex-shrink: 0;
 }
 
-.lane_wrapper .lane .task .button_checkmark img {
+.lane_wrapper .lane .task .title_wrapper .button_checkmark img {
 	height: 11px;
 	width: 11px;
 	z-index: 2;
@@ -342,9 +354,9 @@ body {
 	opacity: 0;
 }
 
-.lane_wrapper .lane .task .circle {
-	height: 23px;
-	width: 23px;
+.lane_wrapper .lane .task .title_wrapper .circle {
+	height: 26px;
+	width: 26px;
 	z-index: 2;
 	pointer-events: none;
 	right: 20;
