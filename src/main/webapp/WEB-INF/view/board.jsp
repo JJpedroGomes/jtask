@@ -70,33 +70,39 @@
 									data-task-id="${task.id}" data-task-title="${task.title}"
 									data-task-description="${task.description}"
 									data-task-duedate="${task.dueDate}">
-									<p>${task.title}</p>
 									<c:choose>
 									    <c:when test="${task.completed}">
-									        <input type="checkbox" id="conclude_button"
-											class="conclude_button hidden" checked />
-										<div class="button_checkmark completed">
-											<img
-												src="${pageContext.request.contextPath}/assets/img/checkmark.png"
-												alt="" class="check_img completed" />
-										</div>
-										<svg class="circle completed">
-											<circle cx="12" cy="12" r="10" />
-										</svg>
+											<div class="title_wrapper">
+												<p>${task.title}</p>
+												<input type="checkbox" id="conclude_button"
+													class="conclude_button hidden" checked />
+												<div class="button_checkmark completed">
+													<img
+														src="${pageContext.request.contextPath}/assets/img/checkmark.png"
+														alt="" class="check_img completed" />
+												</div>
+												<svg class="circle completed">
+													<circle cx="12" cy="12" r="10" />
+												</svg>
+											</div>
 									    </c:when>
 										<c:otherwise>
-											<input type="checkbox" id="conclude_button"
-												class="conclude_button hidden" />
-											<div class="button_checkmark">
-												<img
-													src="${pageContext.request.contextPath}/assets/img/checkmark.png"
-													alt="" class="check_img" />
-											</div>
-											<svg class="circle">
+											<div class="title_wrapper">
+												<p>${task.title}</p>
+												<input type="checkbox" id="conclude_button"
+													class="conclude_button hidden" />
+												<div class="button_checkmark">
+													<img
+														src="${pageContext.request.contextPath}/assets/img/checkmark.png"
+														alt="" class="check_img" />
+												</div>
+												<svg class="circle">
 												<circle cx="12" cy="12" r="10" />
 											</svg>
+											</div>
 										</c:otherwise>
 									</c:choose>
+									<span class="due_date">${task.dueDate != null ? task.dueDate : ''}</span>
 								</div>
 							</c:forEach>
 						</c:if>
