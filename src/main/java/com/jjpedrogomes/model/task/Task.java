@@ -1,6 +1,8 @@
 package com.jjpedrogomes.model.task;
 
 
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -117,7 +119,6 @@ public class Task implements Entity<Task> {
      */
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
-        setTaskInProgress();
     }
 
     public LocalDate getDueDate() {
@@ -159,6 +160,10 @@ public class Task implements Entity<Task> {
     
     public boolean isCompleted() {
         return this.getStatus().equals(Status.COMPLETED);
+    }
+    
+    public boolean hasDueDate() {
+    	return this.dueDate != null;
     }
     
     public void setPosition(int position) {
