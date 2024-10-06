@@ -66,7 +66,9 @@ public class CreateTaskAction implements Action {
         LocalDate dueDate = null;
         if (title != null) {
             try {
-                dueDate = LocalDate.parse(dueDateParam);
+            	if(dueDateParam != null && !dueDateParam.isEmpty()) {            		
+            		dueDate = LocalDate.parse(dueDateParam);
+            	}
             } catch (DateTimeParseException exception) {
                 logger.error("Due data is not valid format", exception);
                 throw exception;

@@ -59,15 +59,11 @@ public class UpdateTaskAction implements Action {
     }
 
     private void updateTaskDueDate(Task task, String dueDateParam) {
-        if (dueDateParam != null) {
-            try {
-                LocalDate dueDate = LocalDate.parse(dueDateParam);
-                task.setDueDate(dueDate);
-            } catch (DateTimeParseException exception) {
-                logger.error("Due data is not valid format", exception);
-                throw exception;
-            }
-        }
+    	LocalDate dueDate = null;
+    	if (dueDateParam != null && !dueDateParam.isEmpty()) {
+    		dueDate = LocalDate.parse(dueDateParam);
+    	}
+    	task.setDueDate(dueDate);
     }
 
     private void updateTaskDescription(Task task, String description) {

@@ -99,6 +99,7 @@ function handleCreateTask(event) {
 }
 
 function addTaskToLane(task) {
+	
 	const newTask = document.createElement("div");
 	newTask.id = `task-${task.id}`;
 	newTask.classList.add("task");
@@ -107,9 +108,13 @@ function addTaskToLane(task) {
 	addAndUpdateDatasets(newTask, task);
 	addTaskClickListener(newTask);
 	
+	const titleWrapper = document.createElement("div");
+	titleWrapper.classList.add("title_wrapper");
+	newTask.appendChild(titleWrapper);
+	
 	const taskTitle = document.createElement("p");
 	taskTitle.innerText = taskName.value;
-	newTask.appendChild(taskTitle);
+	titleWrapper.appendChild(taskTitle);
 	
 	const checkboxInput = document.createElement("input");
 	checkboxInput.type = "checkbox"
@@ -117,7 +122,7 @@ function addTaskToLane(task) {
 	checkboxInput.classList.add("hidden");
 	stopPropagation(checkboxInput);
 
-	newTask.appendChild(checkboxInput);
+	titleWrapper.appendChild(checkboxInput);
 	
 	const buttonCheckMark = document.createElement("div");
 	buttonCheckMark.classList.add("button_checkmark");
@@ -128,7 +133,7 @@ function addTaskToLane(task) {
 	imgCheckmark.classList.add('check_img');
 	
 	buttonCheckMark.appendChild(imgCheckmark);
-	newTask.appendChild(buttonCheckMark);
+	titleWrapper.appendChild(buttonCheckMark);
 	
 	const svgCircle = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 	svgCircle.classList.add("circle"); 
@@ -139,7 +144,16 @@ function addTaskToLane(task) {
 	circle.setAttribute('r', '10');
 	
 	svgCircle.appendChild(circle);
-	newTask.appendChild(svgCircle);
+	titleWrapper.appendChild(svgCircle);
+	
+	let dueDate = document.createElement("span");
+	dueDate.classList.add("due_date");
+	if(task.dueDate != null) {
+		dueDate.innerText = task.dueDate;
+	}
+	
+	newTask.appendChild(dueDate);
+	
 	
 	const lane = document.getElementById(task.laneId);
 	lane.appendChild(newTask);
@@ -309,27 +323,40 @@ function updateTaskElement(response, taskElement) {
     if (!taskElement) {
         return;
     }
-	taskElement.children[0].innerText = response.title;
+	
+	let titleWrapper = taskElement.children[0];
+	titleWrapper.children[0].innerText = response.title;
+	
+	let dueDate = taskElement.children[1];
+	dueDate.innerText = null;
+	
+	if(response.dueDate != null) {		
+		dueDate.innerText = response.dueDate;
+	}
+	
     taskElement.removeEventListener('click', showDetails);
 
     addAndUpdateDatasets(taskElement, response);
 }
 
 function addAndUpdateDatasets(taskElement, task) {
+	console.log(task.dueDate);
+	console.log(formatDate(task.dueDate));
+	
     taskElement.dataset.taskTitle = task.title;
     taskElement.dataset.taskDescription = task.description;
-    taskElement.dataset.taskDuedate = formatDate(task.dueDate);
-    if (task.conclusionDate != null) {
-        taskElement.dataset.taskDuedate = formatDate(task.conclusionDate);
-    }
+	taskElement.dataset.taskDuedate = null;
+    
+/*	if (task.dueDate != null) {
+		taskElement.dataset.taskDuedate = formatDate(task.dueDate);
+	}*/
+	
+	taskElement.dataset.taskDuedate = task.dueDate;
+	
+/*	if (task.conclusionDate != null) {
+		taskElement.dataset.taskDuedate = formatDate(task.conclusionDate);
+	}*/
 }
-
-/*function formatDate(dateObj) {
-    const { year, month, day } = dateObj;
-    const formattedMonth = month.toString().padStart(2, '0');
-    const formattedDay = day.toString().padStart(2, '0');
-    return `${year}-${formattedMonth}-${formattedDay}`;
-}*/
 
 function formatDate(dateString) {
     // Parse the date string into a Date object
