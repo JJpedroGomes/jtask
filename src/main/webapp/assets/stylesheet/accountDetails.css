@@ -26,7 +26,7 @@
 }
 
 .account_details_title span {
-	color: #FFFFFF;
+	color: #121902;
 	font-size: 25px;
 }
 
@@ -87,7 +87,7 @@
 }
 
 #change_password_btn i, #change_password_btn span {
-	color: #478CCF;
+	color: green;
 }
 
 #save_button {
@@ -95,10 +95,10 @@
 	height: 40px;
 	border-radius: 8px;
 	outline: none;
-	background: #7286A0;
-	color: #FFFFFF;
 	border: none;
 	cursor: pointer;
+	background: #121902;
+	color: #a2ff00;
 }
 
 #cancel_button {

@@ -18,7 +18,7 @@
 /* Side navigation bar styles */
 body {
     display: flex;
-    background-color: #5D6770;
+    background-color: #f7fcfa;
     overflow-y: hidden;
 }
 
@@ -181,8 +181,8 @@ body {
     height: 42px;
     border-radius: 25px;
     outline: none;
-    background: #7286A0;
-    color: #FFFFFF;
+    background: #121902;
+		color: #a2ff00;
     border: none;
     cursor: pointer;
 }
@@ -199,7 +199,7 @@ body {
 	width: 85%;
 	height: 20%;
 	position: fixed;
-	background-color: rgba(0,0,0,0.3);
+	background-color:#d6e5de;
 	justify-content: center;
 	align-items: center;
 	display: none;
@@ -220,36 +220,60 @@ body {
 }
 
 .board_container #modal_button_lane {
-    display: block;
-    height: 100px;
-    padding: 50px 50px;
-    color: #FFFFFF;
-    font-size: 22px;
-    cursor: pointer;
-    width:230px;
+	display: flex;
+	height: 100px;
+	padding: 50px 50px;
+	color: #121902;
+	font-size: 22px;
+	cursor: pointer;
+	width: 230px;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 20px;
+}
+
+.board_container .background_plus_button {
+	display: inline-block; 
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 50%; 
+}
+
+.modal_button_lane {
+	height: 28px;
+	width: 28px;
+	margin-right: 10px;
 }
 
 .board_container #modal_button_lane .fas {
     width: 30px;
+    color: #a2ff00
+}
+
+.new_task {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
 }
 
 .modal_button {
 	cursor: pointer;
+	margin-right: 6px;
 }
 
 /* Board lanes styles */
 .lane_wrapper {
-    display: flex;
-    gap: 16px;
-    padding: 35px 50px;
-    align-items: flex-start;
-    justify-content: start;
-    height: 100%;
+	display: flex;
+	gap: 16px;
+	padding: 15px 50px;
+	align-items: flex-start;
+	justify-content: start;
+	height: 100%;
 }
 
 .lane_wrapper .lane {
-    background: #F4F4F4;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
+    background: #d6e5de;
+    box-shadow: 0px 5px 5px rgba(0,0,0,0.25);
     padding: 16px;
     border-radius: 4px;
     display: flex;
@@ -262,6 +286,7 @@ body {
     cursor: grab;
     cursor: -moz-grab;
     cursor: -webkit-grab;
+    border-radius: 10px;
 }
 
 .lane_wrapper .lane:active {
@@ -279,7 +304,7 @@ body {
 */
 
 .lane_wrapper .lane .lane_heading[contenteditable="true"] {
-    border: 1px dashed #ccc; /* Optional: to indicate it's editable */
+    border-bottom: 1px solid #121902;
     padding: 5px;
     cursor: text;
     white-space: nowrap; /* Prevent line breaks */
@@ -287,8 +312,13 @@ body {
     text-overflow: ellipsis; /* Show ellipsis for overflowed content */
 }
 
+.modal_button {
+	height: 22px;
+	width: 22px;
+}
+
 .lane_wrapper .lane .task {
-    background: white;
+    background: #f4f9f7;
 	box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
 	border-radius: 6px;
 	font-size: 16px;
@@ -383,7 +413,7 @@ body {
 
 .lane_wrapper .lane .task .button_checkmark.completed {
   border-color: #fff;
-  background: #D8D2C2;
+  background: #a2ff00;
   color: transparent;
 }
 
@@ -396,22 +426,6 @@ body {
    transform: rotate(-90deg) scale(2);
    opacity: 0;
 }
-
-/* input:checked ~ .button_checkmark  {
-	border-color: #fff;
-	color: transparent;
-	background: #D8D2C2;
-}
-
-input:checked ~ .button_checkmark img {
-  	opacity: 1;
-}
-
-input:checked ~ .circle {
-  	stroke-dasharray: 500 500;
-    transform: rotate(-90deg) scale(2);
-    opacity: 0;
-} */
 
 @keyframes button {
   0% {
@@ -434,7 +448,7 @@ input:checked ~ .circle {
     border-color: #fff;
   }
   100% {
-    background: #D8D2C2;
+    background: #a2ff00;
   }
 }
 
@@ -467,6 +481,6 @@ input:checked ~ .circle {
 .lane_wrapper .lane.is_dragging_lane, .lane_wrapper .lane .task.is_dragging {
     scale: 1.05;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
-    background: #7286A0;
-    color: white;
+    background: #99b3a4;
+    color: #121902;
 }

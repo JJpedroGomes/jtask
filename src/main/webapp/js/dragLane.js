@@ -87,7 +87,6 @@ target.addEventListener("drop", async (event) => {
 
 function getLaneAfterMouse(board, mouseX) {
 	const lanesInBoard = board.querySelectorAll(".lane:not(.is_dragging_lane)");
-	console.log(lanesInBoard);
 
 	let closestLane = null;
 	let closestOffset = Number.NEGATIVE_INFINITY;

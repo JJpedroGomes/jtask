@@ -11,11 +11,7 @@ const myDropdownDelete = document.getElementById("myDropdownDelete");
 let laneId;
 let currentTaskId = null;
 
-document.querySelectorAll('.modal_button').forEach(button => {
-	/*button.addEventListener('click', () => {
-		laneId = button.parentElement.id.split("_").pop();
-		openModalForCreate();
-	});*/
+document.querySelectorAll('.new_task').forEach(button => {
 	addCreationBehavionToButton(button);
 });
 
@@ -455,16 +451,26 @@ function createNewLane(laneId, laneName) {
 	// Create the button new task
 	const newTaskButton = document.createElement("a");
 	newTaskButton.id = "new_task_for_lane_" + laneId;
+	newTaskButton.classList.add("new_task");
 	
 	// Create and configure the <i> element
-	const icon = document.createElement("i");
+	/*const icon = document.createElement("i");
 	icon.classList.add("fas", "fa-plus-circle");
-	icon.classList.add("fas", "modal_button");
+	icon.classList.add("fas", "modal_button");*/
 	
-	addCreationBehavionToButton(icon);
+	const icon = document.createElement("img");
+	icon.classList.add("modal_button");
+	icon.src = '/jtask/assets/img/plus-circle.png';
+	icon.alt = '';
+	
+	const iconName = document.createElement("span");
+	iconName.textContent = "add task"
+	
+	addCreationBehavionToButton(newTaskButton);
 	
 	// Append <i> to <a>
 	newTaskButton.appendChild(icon);
+	newTaskButton.appendChild(iconName);
 	
 	// Append <h3> and <a> to the newLane
 	newLane.appendChild(laneTitle);

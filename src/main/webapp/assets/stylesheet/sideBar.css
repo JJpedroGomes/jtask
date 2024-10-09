@@ -13,7 +13,7 @@
 /* Side navigation bar styles */
 body {
     display: flex;
-    background-color: #5D6770;
+    background-color: #f7fcfa;
 }
 
 .sidebar_container .column_wrapper {
@@ -27,7 +27,7 @@ body {
     width: 15%;
 	height: 100vh;
 	padding: 30px 0px;
-	background-color: #7286A0;
+	background-color: #99b3a4;
 	box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
 	position: fixed;
 	z-index: 1000;
@@ -72,23 +72,28 @@ body {
 
 .sidebar_container .column_wrapper .sidebar ul li a .fas {
     width: 25px;
+    color: #121902;
 }
 
 .sidebar_container .column_wrapper .sidebar ul .menu-button.selected {
-    background-color: white;
+    background-color:#f7fcfa;
 }
 
 .menu-button.selected span, .menu-button.selected i {
-    color: #5d6770
+    color: #121902;;
 }
 
 
 .sidebar_container .column_wrapper .sidebar ul .menu-button:hover {
-    background-color: white;
+    background-color: #f7fcfa;
+}
+
+.menu-button span {
+	color: #121902;
 }
 
 .menu-button:hover span, .menu-button:hover i {
-    color: #5d6770
+    color: #121902;
 }
 
 .sidebar_container .column_wrapper .sidebar ul .bottom_links_container {

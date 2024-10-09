@@ -18,7 +18,11 @@
             <div class="board_container">
                 <!--Start: New task modal form section -->              
                 <a id="modal_button_lane">
-                    <i class="fas fa-plus-circle"></i>Add lane
+                    <!-- <i class="fas fa-plus-circle"></i> -->
+                    <img
+					src="${pageContext.request.contextPath}/assets/img/plus-circle.png"
+					alt="" class="modal_button_lane"/>
+                    <span>Add lane</span>
                 </a>                
                 <div class="modal_background">
                     <form id="modal_form">
@@ -61,10 +65,13 @@
 	                		<h3 class="lane_heading" contenteditable="true">
 	                			${lane.getName()}
 	                		</h3>
-	                		<a id="new_task_for_lane_${lane.getId()}">
-	                			<i class="fas fa-plus-circle modal_button"></i>
-	                		</a>
-	                		<c:if test="${not empty lane.getTasks()}">
+						<a class="new_task" id="new_task_for_lane_${lane.getId()}"> <!-- <i class="fas fa-plus-circle modal_button"></i> -->
+							<img
+							src="${pageContext.request.contextPath}/assets/img/plus-circle.png"
+							alt="" class="modal_button"/>
+							<span>add task</span>
+						</a>
+						<c:if test="${not empty lane.getTasks()}">
 							<c:forEach items="${lane.getTasksInOrder()}" var="task">
 								<div class="task" draggable="true" id="task-${task.id}"
 									data-task-id="${task.id}" data-task-title="${task.title}"
