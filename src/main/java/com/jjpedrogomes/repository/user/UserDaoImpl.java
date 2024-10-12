@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
@@ -13,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.jjpedrogomes.model.user.Password;
 import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.model.user.UserDao;
 
@@ -61,7 +59,6 @@ public class UserDaoImpl implements UserDao<User>{
 			transaction.begin();
 		}
 		try {
-			encryptUserPassword(user);
 			entityManager.persist(user);
 			transaction.commit();
 			logger.info("User saved successfully.");
@@ -74,7 +71,6 @@ public class UserDaoImpl implements UserDao<User>{
 
 	@Override
 	public User update(User user) {
-		encryptUserPassword(user);
 		return entityManager.merge(user);
 	}
 
@@ -82,12 +78,6 @@ public class UserDaoImpl implements UserDao<User>{
 	public void delete(User user) {
 		User managedUser = entityManager.merge(user);
 		managedUser.inactivateUser();
-	}
-	
-	private User encryptUserPassword(User user) {
-		String encryptedPassword = passwordEncoder.encode(user.getPassword().getContent());
-		user.setPassword(new Password(encryptedPassword));
-		return user;
 	}
 
 	public Optional<User> getUserByCredentials(String email, String password) {
