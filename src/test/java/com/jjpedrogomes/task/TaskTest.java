@@ -1,8 +1,9 @@
 package com.jjpedrogomes.task;
 
-import com.jjpedrogomes.model.lane.Lane;
-import com.jjpedrogomes.model.task.Status;
-import com.jjpedrogomes.model.task.Task;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
@@ -10,31 +11,27 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import java.time.LocalDate;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.mock;
+import com.jjpedrogomes.model.task.Status;
+import com.jjpedrogomes.model.task.Task;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class TaskTest {
-	
-	private static Lane lane = mock(Lane.class);
 
     //Builds a new task with conclusionDate = LocalDate.now() and status COMPLETED
     public static Task buildCompletedTask() {
-        Task task = new Task("Test Task", null, null, lane);
+        Task task = new Task("Test Task", null, null);
         task.setTaskCompleted();
         return task;
     }
 
     //Builds a new task with status IN_PROGRESS
     public static Task buildInProgressTask() {
-        return new Task("Test Task", null, null, lane);
+        return new Task("Test Task", null, null);
     }
 
     //Builds a new task with status PENDING
     public static Task buildPendingTask() {
-        return new Task("Test Task", null, LocalDate.now().minusDays(1), lane);
+        return new Task("Test Task", null, LocalDate.now().minusDays(1));
     }
 
     @Nested

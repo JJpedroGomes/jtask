@@ -48,15 +48,15 @@ body {
 
 .sidebar_container .column_wrapper .sidebar ul li .logo {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+	margin-bottom: 20px;
+	height: 50px;
 }
 
 .sidebar_container .column_wrapper .sidebar ul li .logo img {
-    width: 3vw;
+    width: 150px;
     height: auto;
 }
 

@@ -1,9 +1,35 @@
 package com.jjpedrogomes.task;
 
+import static com.jjpedrogomes.task.TaskTest.buildInProgressTask;
+import static com.jjpedrogomes.task.TaskTest.buildPendingTask;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+
 import com.jjpedrogomes.model.lane.Lane;
-import com.jjpedrogomes.model.lane.LaneDao;
 import com.jjpedrogomes.model.lane.LaneDaoFactory;
-import com.jjpedrogomes.model.lane.LaneFactory;
 import com.jjpedrogomes.model.lane.LaneServiceFactory;
 import com.jjpedrogomes.model.task.Task;
 import com.jjpedrogomes.model.user.Email;
@@ -12,21 +38,6 @@ import com.jjpedrogomes.model.user.User;
 import com.jjpedrogomes.model.util.JpaUtil;
 import com.jjpedrogomes.repository.task.TaskDaoImpl;
 import com.jjpedrogomes.user.UserDaoTest;
-
-import org.junit.jupiter.api.*;
-
-import javax.persistence.EntityManager;
-import java.lang.reflect.Field;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static com.jjpedrogomes.task.TaskTest.buildInProgressTask;
-import static com.jjpedrogomes.task.TaskTest.buildPendingTask;
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
 
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -46,7 +57,7 @@ class TaskDaoTest {
     	
     	Lane lane = LaneServiceFactory.getInstance().createLane("todo", user);
     	
-    	this.taskPreSaved = new Task("new", null, null, lane);
+    	this.taskPreSaved = new Task("new", null, null);
     	LaneDaoFactory.getInstance().update(lane);
     }
 

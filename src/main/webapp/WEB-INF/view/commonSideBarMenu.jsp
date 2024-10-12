@@ -17,8 +17,7 @@
                         <li class="logo_container">
                             <!--Todo Change logo-->
                             <div class="logo">
-                                <img src="${pageContext.request.contextPath}/assets/img/logo.png" alt="">
-                                <span>Jtask</span>
+                                <img src="${pageContext.request.contextPath}/assets/img/logo.png" alt="" class="logo_img">
                             </div>
                         </li>
                         <!--End: navigation bar logo -->

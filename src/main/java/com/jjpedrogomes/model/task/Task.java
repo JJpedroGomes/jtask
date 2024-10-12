@@ -118,6 +118,14 @@ public class Task implements Entity<Task> {
      * @param dueDate The due date to be set for the task.
      */
     public void setDueDate(LocalDate dueDate) {
+    	String current = this.status.getCurrentStatus();
+    	if(current.equals(Status.IN_PROGRESS) || current.equals(Status.PENDING)) {
+    		if(dueDate.isBefore(LocalDate.now())) {
+    			this.status.setStatusPending();
+    		} else {
+    			this.status.setStatusInProgress();
+    		}
+    	} 
         this.dueDate = dueDate;
     }
 

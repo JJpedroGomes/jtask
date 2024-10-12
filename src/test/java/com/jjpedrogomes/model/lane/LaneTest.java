@@ -61,8 +61,8 @@ public class LaneTest {
 	@Test
 	void should_add_task_last_in_lane() {
 		Lane newLane = LaneFactory.createLane("Backlog", user);
-		new Task("Do this", null, null, newLane);
-		Task secondTask = new Task("Do that", null, null, newLane);
+		new Task("Do this", null, null);
+		Task secondTask = new Task("Do that", null, null);
 
 		List<Task> tasks = newLane.getTasks();
 		
@@ -72,9 +72,9 @@ public class LaneTest {
 	@Test
 	void should_add_task_in_lane_position() {
 		Lane newLane = LaneFactory.createLane("To Do", user);
-		new Task("Do this", null, null, newLane);
-		new Task("Do that", null, null, newLane);
-		Task thirdTask = new Task("Do it", null, null, newLane);
+		new Task("Do this", null, null);
+		new Task("Do that", null, null);
+		Task thirdTask = new Task("Do it", null, null);
 		
 		int index = 1;
 
@@ -155,7 +155,7 @@ public class LaneTest {
 		Lane secondLane = LaneFactory.createLane("Todo", user);
 		
 		int index = 0;
-		Task task = new Task("Do that", null, null, firstLane);		
+		Task task = new Task("Do that", null, null);		
 		
 		firstLane.removeTaskFromLane(task);
 		secondLane.addTaskIntoLanesPosition(index, task);

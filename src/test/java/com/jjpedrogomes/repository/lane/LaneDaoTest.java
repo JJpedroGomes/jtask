@@ -132,9 +132,9 @@ public class LaneDaoTest {
 			Lane lane = LaneFactory.createLane("Todo", user);
 			saveNewLane(lane);
 			
-			Task task1 = new Task("Task1", null, null, lane);
-			Task task2 = new Task("Task2", null, null, lane);
-			Task task3 = new Task("Task3", null, null, lane);
+			Task task1 = new Task("Task1", null, null);
+			Task task2 = new Task("Task2", null, null);
+			Task task3 = new Task("Task3", null, null);
 			
 			Lane laneFromDb = entityManager.find(Lane.class, lane.getId());
 			

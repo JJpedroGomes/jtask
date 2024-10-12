@@ -44,7 +44,10 @@ public class UserServiceImpl implements UserService{
 		try {
 			Email email = new Email(emailArg);
 			Password password = new Password(passwordArg);
-			User user = new User(name, email, password, birthDate);
+//			User user = new User(name, email, password, birthDate);
+			
+			String encryptUserPassword = encryptUserPassword(password.getContent());			
+			User user = new User(name, email, new Password(encryptUserPassword), birthDate);
 			
 			userDao.save(user);
 			return user;
@@ -91,7 +94,8 @@ public class UserServiceImpl implements UserService{
 					userFromDb.setBirthDate(birthDate);
 				}		
 			} 
-			return userDao.update(userFromDb);
+			userDao.update(userFromDb);
+			return userFromDb;
 		} catch (ModelException e) {
 			String logMessage = e.getErrorCode().getLogMessage();
 			logger.error("Error Updating user: {}", logMessage, e);
