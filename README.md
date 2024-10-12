@@ -65,3 +65,11 @@ mvn clean install -DskipTests
 
 # Run the application using Docker
 docker compose up --build
+```
+**url**: localhost:8080/jtask
+
+This application comes with a default user for testing purposes, or you can create your own user if preferred.
+**You can use the following default user credentials to quickly test the application:**
+
+- **Email:** `email@email.com`
+- **Password:** `123456`
