@@ -83,10 +83,17 @@ html, body {
 }
 
 .major_container .login_container .login_logo_wrapper {
-	background-color: yellow;
-	width: 30%;
+	width: 460px;
 	height: 60px;
 	margin-bottom: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.major_container .login_container .login_logo_wrapper .logo_img {
+	height: auto;
+	width: 200px;
 }
 
 .major_container .login_container .login_form_container .login_form_element {

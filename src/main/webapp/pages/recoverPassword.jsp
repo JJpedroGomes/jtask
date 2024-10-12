@@ -15,7 +15,7 @@
 		<jsp:include page="/pages/banner.jsp" />
 		<div class="login_container">
 			<div class="login_logo_wrapper">
-				<!-- logo above login form -->
+				<img src="${pageContext.request.contextPath}/assets/img/logo.png" alt="" class="logo_img">
 			</div>
 			<div class="login_form_container">
 				<form id="login_form" method="POST">
