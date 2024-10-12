@@ -14,6 +14,10 @@ This project is a **Task Management System** written in **Java 8**, developed pr
 
 During development, I experimented with various approaches, some of which may not adhere to best practices. As such, certain parts of the code could benefit from improvements and refactoring. This project serves as a learning experience and a starting point for exploring more robust solutions and design patterns in Java development.
 
+## Application Overview
+
+![Dashboard](./src/main/webapp/assets/img/board.png)
+
 ## Technologies
 This project utilizes a range of technologies to provide a robust and scalable solution:
 
