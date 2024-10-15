@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    image: postgres
+    hostname: postgresql
+    volumes:
+      - ./docker/migrations:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "jtask"
+    ports:
+      - "5432:5432"
+    networks:
+      - jtask_network
+
+  wildfly:
+    build:
+      context: .
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+      - "8787:8787"
+    networks:
+      - jtask_network
+
+networks:
+  jtask_network:
+    external:
+      name: jtask_network
+
+#cd .
+#docker compose up --force-recreate
+#mvn clean install wildfly:redeploy -Dmaven.test.skip
+
+#for debug: localhost:8787 -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8787

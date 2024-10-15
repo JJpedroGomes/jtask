@@ -1,11 +1,25 @@
 package com.jjpedrogomes.model.task;
 
 
-import com.jjpedrogomes.model.shared.Entity;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.jjpedrogomes.model.lane.Lane;
+import com.jjpedrogomes.model.shared.Entity;
 
 /**
  * Represents a task in the system.
@@ -31,6 +45,11 @@ public class Task implements Entity<Task> {
     @Embedded
     @AttributeOverride(name = "current", column = @Column(name = "status", nullable = false))
     private Status status;
+    @ManyToOne
+    @JoinColumn(name = "lane_id", nullable = false)
+    private Lane lane;
+    @Column(nullable = false)
+	private Integer position;
 
     @Transient
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -55,6 +74,9 @@ public class Task implements Entity<Task> {
         this.creationDate = LocalDate.now();
         this.dueDate = dueDate;
         this.status = (dueDate == null ? new Status() : new Status(dueDate));
+        this.position = 0;
+        //this.lane = lane;
+        //lane.addTaskLastToLane(this);
     }
 
     /**
@@ -96,8 +118,15 @@ public class Task implements Entity<Task> {
      * @param dueDate The due date to be set for the task.
      */
     public void setDueDate(LocalDate dueDate) {
+    	String current = this.status.getCurrentStatus();
+    	if(current.equals(Status.IN_PROGRESS) || current.equals(Status.PENDING)) {
+    		if(dueDate.isBefore(LocalDate.now())) {
+    			this.status.setStatusPending();
+    		} else {
+    			this.status.setStatusInProgress();
+    		}
+    	} 
         this.dueDate = dueDate;
-        setTaskInProgress();
     }
 
     public LocalDate getDueDate() {
@@ -127,6 +156,30 @@ public class Task implements Entity<Task> {
 
     public Long getId() {
         return id;
+    }
+    
+    public void setLane(Lane lane) {
+    	this.lane = lane;
+    }
+    
+    public Lane getLane() {
+    	return this.lane;
+    }
+    
+    public boolean isCompleted() {
+        return this.getStatus().equals(Status.COMPLETED);
+    }
+    
+    public boolean hasDueDate() {
+    	return this.dueDate != null;
+    }
+    
+    public void setPosition(int position) {
+    	this.position = position;
+    }
+    
+    public Integer getPosition() {
+    	return this.position;
     }
 
     @Override

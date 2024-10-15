@@ -8,92 +8,27 @@
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
     list-style: none;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    scrollbar-width: auto;
 }
 
-*::-webkit-scrollbar {
+/* *::-webkit-scrollbar {
     display: none;
-}
+} */
 
 /* Side navigation bar styles */
 body {
     display: flex;
-    background-color: #5D6770;
-}
-
-.sidebar_container .column_wrapper {
-    display: flex;
-    position: relative;
-    width: 15vw;
-    height: 100vh;
-}
-
-.sidebar_container .column_wrapper .sidebar {
-    width: 100%;
-    height: 100%;
-    padding: 30px 0px;
-    background-color: #7286A0;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-}
-
-
-.sidebar_container .column_wrapper .sidebar ul li {
-    padding: 15px;
-    border-bottom: 1px solid #7286A0;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    border-top: 1px solid rgba(255,255,255,0.05);
-}
-
-.sidebar_container .column_wrapper .sidebar ul .logo_container{
-    border: none;
-    pointer-events: none;
-}
-
-.sidebar_container .column_wrapper .sidebar ul li .logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-}
-
-.sidebar_container .column_wrapper .sidebar ul li .logo img {
-    width: 3vw;
-    height: auto;
-}
-
-.sidebar_container .column_wrapper .sidebar ul li .logo span {
-    color: #FFFFFF;
-    font-size: 24px;
-}
-
-.sidebar_container .column_wrapper .sidebar ul li a {
-    color: #FFFFFF;
-    display: block;
-}
-
-.sidebar_container .column_wrapper .sidebar ul li a .fas{
-    width: 25px;
-}
-
-.sidebar_container .column_wrapper .sidebar ul li:hover {
-    background-color: #5d6770;
-}
-
-.sidebar_container .column_wrapper .sidebar ul .bottom_links_container {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
+    background-color: #f7fcfa;
+    overflow-y: hidden;
 }
 
 /* Board form styles */
 .board_container {
-    width: 85vw;
+    width: 100%;
     height: 100vh;
-    overflow: scroll;
+    overflow-x: auto;
+    white-space: nowrap;
+    overflow-y: hidden;
 }
 
 
@@ -106,46 +41,106 @@ body {
     position: absolute;
     top: 0;
     display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}    
+
+.board_container .modal_background .modal_wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .board_container .modal_background .modal_container {
     width: 500px;
-    height: 400px;
-    position: fixed;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    /* height: 400px; */
     background-color: #FFFFFF;
-    box-shadow: 0px 5px 15px rgba(255,255,255,0.15);
     border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -275px;
+    margin-left: -200px;
 }
 
-.board_container .modal_background .modal_container .close-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 20px;
-    height: 20px;
-    background: #888;
-    color: #eee;
-    text-align: center;
-    line-height: 20px;
-    border-radius: 20px;
-    cursor: pointer;
+.board_container .modal_background .modal_extra_options {
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    border-left: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 0 10px 10px 0;
 }
 
-.board_container .modal_background .modal_container .modal_form_element {
-    margin: 15px 0;
-    padding: 0 15px;
+
+.board_container .modal_background .modal_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-right: 20px;
+    padding-left: 10px;
 }
 
-.board_container .modal_background .modal_container .modal_form_element input[type="text"] {
+.board_container .modal_background .modal_header .modal_header_content input[type="text"] {
     display: block;
     width: 100%;
     padding: 10px;
     outline: none;
     border: none;
     font-size: 25px;
+}
+
+/* Drop down inside modal datails */
+
+.board_container .modal_background .modal_header .dropdown {
+    position: relative;
+    display: inline-block;
+
+}
+
+.board_container .modal_background .modal_header .dropdown .fas{
+    cursor: pointer;
+}
+
+.dropdown_options {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    z-index: 1;
+}
+
+.dropdown_options a {
+    color: black;
+    padding: 12px 44px;
+    text-decoration: none;
+}
+
+.dropdown_options a:hover {
+    background-color: #ddd;
+}
+
+.dropdown_options a i {
+    margin-top: 4px;
+}
+
+
+.board_container .modal_background .modal_container .modal_form_element {
+    margin: 15px 0;
+    padding: 0 15px;
 }
 
 .board_container .modal_background .modal_container .modal_form_element textarea {
@@ -170,64 +165,115 @@ body {
 }
 
 .board_container .modal_background .modal_container .modal_form_element input[type="date"] {
-    width: 150px;
-    height: 30px;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    padding: 5px;
-    font-size: 14px;
-    color: #333333;
-}
-
-.board_container .modal_background .modal_container .modal_form_element input[type="date"] {
     padding: 8px 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
     outline: none;
+    height: 40px;
 }
 
 .board_container .modal_background .modal_container .modal_form_element button{
-    position: absolute;
-    bottom: 38px;
-    right: 30px;
+    /* position: absolute; */
+    /* bottom: 38px; */
+    /* right: 30px; */
     width: 75px;
     height: 42px;
     border-radius: 25px;
     outline: none;
-    background: #7286A0;
-    color: #FFFFFF;
+    background: #121902;
+		color: #a2ff00;
     border: none;
     cursor: pointer;
 }
 
-.board_container #modal_button {
-    display: block;
-    height: 100px;
-    padding: 50px 50px;
-    color: #FFFFFF;
-    font-size: 22px;
-    cursor: pointer;
+.drag_modal_container {
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transform: translateY(-10px);
+	transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s, pointer-events 0s 0.3s;
+	
+	
+	bottom: 0;
+	width: 85%;
+	height: 20%;
+	position: fixed;
+	background-color:#d6e5de;
+	justify-content: center;
+	align-items: center;
+	display: none;
 }
 
-.board_container #modal_button .fas {
+.drag_modal_container.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0); 
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s, pointer-events 0s;
+} 
+
+.trash_icon {
+	font-size: 3rem;
+	cursor: pointer;
+	color: #E4003A;
+}
+
+.board_container #modal_button_lane {
+	display: flex;
+	height: 100px;
+	padding: 50px 50px;
+	color: #121902;
+	font-size: 22px;
+	cursor: pointer;
+	width: 230px;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 20px;
+}
+
+.board_container .background_plus_button {
+	display: inline-block; 
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 50%; 
+}
+
+.modal_button_lane {
+	height: 28px;
+	width: 28px;
+	margin-right: 10px;
+}
+
+.board_container #modal_button_lane .fas {
     width: 30px;
+    color: #a2ff00
+}
+
+.new_task {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+
+.modal_button {
+	cursor: pointer;
+	margin-right: 6px;
 }
 
 /* Board lanes styles */
 .lane_wrapper {
-    display: flex;
-    gap: 16px;
-    padding: 35px 50px;
-    align-items: flex-start;
-    justify-content: start;
-    overflow: scroll;
-    height: 100%;
+	display: flex;
+	gap: 16px;
+	padding: 15px 50px;
+	align-items: flex-start;
+	justify-content: start;
+	height: 100%;
 }
 
 .lane_wrapper .lane {
-    background: #F4F4F4;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
+    background: #d6e5de;
+    box-shadow: 0px 5px 5px rgba(0,0,0,0.25);
     padding: 16px;
     border-radius: 4px;
     display: flex;
@@ -236,29 +282,205 @@ body {
     flex-shrink: 0;
     min-height: 120px;
     width: 275px;
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+    border-radius: 10px;
 }
 
+.lane_wrapper .lane:active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+/*
 .lane_wrapper .lane .lane_heading {
     font-size: 22px;
     font-weight: bold;
     margin-bottom: 8px;
 }
+*/
+
+.lane_wrapper .lane .lane_heading[contenteditable="true"] {
+    border-bottom: 1px solid #121902;
+    padding: 5px;
+    cursor: text;
+    white-space: nowrap; /* Prevent line breaks */
+    overflow: hidden;    /* Hide overflowed content */
+    text-overflow: ellipsis; /* Show ellipsis for overflowed content */
+}
+
+.modal_button {
+	height: 22px;
+	width: 22px;
+}
 
 .lane_wrapper .lane .task {
-    background: white;
-    color: black;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
-    padding: 12px;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
+    background: #f4f9f7;
+	box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
+	border-radius: 6px;
+	font-size: 16px;
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 12px 20px;
+	position: relative;
 }
 
-.lane_wrapper .lane .task.is_dragging {
+.lane_wrapper .lane .task:hover {
+	opacity: 0.7;
+}
+
+.lane_wrapper .lane .task .title_wrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 200px;
+}
+
+.lane_wrapper .lane .task .due_date {
+	font-size: 12px;
+	color: gray;
+}
+
+.lane_wrapper .lane .task p {
+    white-space: normal;
+	flex-grow: 1;
+	overflow-wrap: break-word;
+	max-width: 150px;
+}
+
+.lane_wrapper .lane .task .title_wrapper .hidden {
+    position: absolute;
+	right: 20;
+	height: 21px;
+	width: 21px;
+	opacity: 0;
+	z-index: 3;
+}
+
+.lane_wrapper .lane .task .title_wrapper .button_checkmark {
+	height: 23px;
+	width: 23px;
+	border-radius: 50%;
+	border:1px solid black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1px 1px 0 0;
+	transition: all 0.3s ease-in-out;
+  	cursor: pointer;
+  	flex-shrink: 0;
+}
+
+.lane_wrapper .lane .task .title_wrapper .button_checkmark img {
+	height: 11px;
+	width: 11px;
+	z-index: 2;
+	position: absolute;
+	opacity: 0;
+}
+
+.lane_wrapper .lane .task .title_wrapper .circle {
+	height: 26px;
+	width: 26px;
+	z-index: 2;
+	pointer-events: none;
+	right: 20;
+	position: absolute;
+	fill: none;
+	stroke: black;
+	stroke-linecap: round;
+	stroke-dasharray: 183 183;
+  	stroke-dashoffset: 183;
+	transform: rotate(-90deg);
+}
+
+.button_checkmark.animated {
+  animation: button 0.5s ease both, fill 0.5s ease-out 1.5s forwards;
+}
+
+.button_checkmark img.animated {
+  animation: check 0.5s ease-out 1.5s both;
+}
+
+.circle.animated {
+  animation: circle 2s ease-out 0.5s both;
+}
+
+.lane_wrapper .lane .task .button_checkmark.completed {
+  border-color: #fff;
+  background: #a2ff00;
+  color: transparent;
+}
+
+.lane_wrapper .lane .task .button_checkmark img.completed {
+  opacity: 1;
+}
+
+.lane_wrapper .lane .task .circle.completed {
+   stroke-dasharray: 500 500;
+   transform: rotate(-90deg) scale(2);
+   opacity: 0;
+}
+
+@keyframes button {
+  0% {
+    border-color: #fff;
+    color: #fff;
+  }
+  50% {
+    color: transparent;
+    }
+  100% {
+    border-color: #fff;
+    background: transparent;
+    color: transparent;
+  }
+}
+
+@keyframes fill {
+  0% {
+    background: transparent;
+    border-color: #fff;
+  }
+  100% {
+    background: #a2ff00;
+  }
+}
+
+@keyframes check {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes circle {
+  0% {
+    stroke-dashoffset: 183;
+  }
+  50% {
+    stroke-dashoffset: 0;
+    stroke-dasharray: 183;
+    transform: rotate(-90deg) scale(1);
+  }
+  90%,
+  100% {
+    stroke-dasharray: 500 500;
+    transform: rotate(-90deg) scale(2);
+    opacity: 0;
+  }
+}
+
+.lane_wrapper .lane.is_dragging_lane, .lane_wrapper .lane .task.is_dragging {
     scale: 1.05;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
-    background: #7286A0;
-    color: white;
+    background: #99b3a4;
+    color: #121902;
 }
-
-

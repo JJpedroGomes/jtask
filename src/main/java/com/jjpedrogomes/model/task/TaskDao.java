@@ -1,79 +1,23 @@
 package com.jjpedrogomes.model.task;
 
-import com.jjpedrogomes.model.shared.Dao;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-// This class represents a Data Access Object (DAO) responsible for managing Task entities in the database.
-public class TaskDao implements Dao<Task> {
+// This interface represents a Data Access Object (DAO) contract for managing entities in the database.
+public interface TaskDao<T> {
 
-    private final EntityManager entityManager;
-    private static final Logger logger = LogManager.getLogger(TaskDao.class);
-    public TaskDao(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    // Retrieves an entity by its ID from the database.
+    Optional<T> get(long id);
 
-    /**
-     * Saves a task to the database.
-     *
-     * @param task The task to be saved.
-     */
-    @Override
-    public void save(Task task) {
-        entityManager.persist(task);
-        logger.info("Task created successfully.");
-    }
+    // Retrieves all entities from the database.
+    List<T> getAll();
 
-    @Override
-    public Task update(Task task) {
-        Task taskAfterMerge = entityManager.merge(task);
-        logger.info("Task updated successfully.");
-        return taskAfterMerge;
-    }
+    // Saves a new entity to the database.
+    void save(T t);
 
-    @Override
-    public Optional<Task> get(long id) {
-        try {
-            Task task = this.entityManager.find(Task.class, id);
-            return Optional.ofNullable(task);
-        } catch (Exception exception) {
-            logger.error("Error while retrieving task with id: " + id, exception);
-            return Optional.empty();
-        }
-    }
+    // Updates an existing entity in the database based on the provided parameters.
+    T update(T t);
 
-    /**
-     * @return List of all tasks
-     * @throws IllegalStateException if the task list is empty.
-     */
-    @Override
-    public List<Task> getAll() {
-        String query = "SELECT t from Task t";
-        try {
-            logger.info("Selecting all Tasks");
-            List<Task> list = this.entityManager.createQuery(query, Task.class).getResultList();
-            if (list.isEmpty()) logger.info("Task List is current empty");
-            return list;
-        } catch (Exception exception) {
-            logger.error("Error while retrieving all tasks", exception);
-            return Collections.emptyList();
-        }
-    }
-
-    /**
-     * Delete the given task from the database
-     * @param task
-     */
-    @Override
-    public void delete(Task task) {
-        task = entityManager.merge(task);
-        this.entityManager.remove(task);
-        logger.info("Task deleted successfully.");
-    }
-
+    // Deletes an entity from the database.
+    void delete(T t);
 }

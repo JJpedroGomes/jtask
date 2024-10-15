@@ -1,0 +1,103 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    margin:0 ;
+    padding: 0;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    list-style: none;
+}
+
+/* Side navigation bar styles */
+body {
+    display: flex;
+    background-color: #f7fcfa;
+}
+
+.sidebar_container .column_wrapper {
+    display: flex;
+    position: relative;
+    width: 15vw;
+    height: 100vh;
+}
+
+.sidebar_container .column_wrapper .sidebar {
+    width: 15%;
+	height: 100vh;
+	padding: 30px 0px;
+	background-color: #99b3a4;
+	box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+	position: fixed;
+	z-index: 1000;
+}
+
+
+.sidebar_container .column_wrapper .sidebar ul li {
+    padding: 15px;
+    border-bottom: 1px solid #7286A0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.sidebar_container .column_wrapper .sidebar ul .logo_container{
+    border: none;
+    pointer-events: none;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li .logo {
+    display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+	margin-bottom: 20px;
+	height: 50px;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li .logo img {
+    width: 150px;
+    height: auto;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li .logo span {
+    color: #FFFFFF;
+    font-size: 24px;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li a {
+    color: #FFFFFF;
+    display: block;
+}
+
+.sidebar_container .column_wrapper .sidebar ul li a .fas {
+    width: 25px;
+    color: #121902;
+}
+
+.sidebar_container .column_wrapper .sidebar ul .menu-button.selected {
+    background-color:#f7fcfa;
+}
+
+.menu-button.selected span, .menu-button.selected i {
+    color: #121902;;
+}
+
+
+.sidebar_container .column_wrapper .sidebar ul .menu-button:hover {
+    background-color: #f7fcfa;
+}
+
+.menu-button span {
+	color: #121902;
+}
+
+.menu-button:hover span, .menu-button:hover i {
+    color: #121902;
+}
+
+.sidebar_container .column_wrapper .sidebar ul .bottom_links_container {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}

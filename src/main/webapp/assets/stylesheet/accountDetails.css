@@ -1,0 +1,141 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    margin:0 ;
+    padding: 0;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    list-style: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+    display: none;
+}
+
+.account_details_section {
+	width: 50%;
+	padding: 3% 0 0 3%;
+}
+
+.account_details_title {
+	padding: 0 0 5% 0;
+}
+
+.account_details_title span {
+	color: #121902;
+	font-size: 25px;
+}
+
+.account_details_container {
+	display: flex;
+    width: 100%;
+    padding: 0 20px 0 0;
+    background: #F4F4F4;
+	box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
+	border-radius: 4px;
+	align-items: flex-start;
+}
+
+.account_details_container .account_details .account_form_element {
+	margin: 15px 0;
+  	padding: 0 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.account_details_container .account_details .form_password {
+	display: none;
+}
+
+.account_details_container .account_details .account_form_element label {
+  white-space: nowrap;
+  margin: 0 10px 0 0;
+}
+
+.account_details_container .account_details .account_form_element input {
+	height: 32px;
+	width: 70%;
+	border: 2px solid rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
+	padding: 5px;
+	flex: 1;
+}
+
+.account_form_buttons {
+	display: flex;
+}
+
+.account_details_container .account_details .account_form_buttons .account_form_element {
+    padding: 0 0 0 10px;
+}
+
+#change_password_btn {
+	display: flex;
+	margin: 15px 0 0 15px;
+	padding: 7.5px;
+	align-items: center;
+	cursor: pointer;
+}
+
+#change_password_btn span {
+	margin: 0 0 0 5px;
+}
+
+#change_password_btn i, #change_password_btn span {
+	color: green;
+}
+
+#save_button {
+	width: 150px;
+	height: 40px;
+	border-radius: 8px;
+	outline: none;
+	border: none;
+	cursor: pointer;
+	background: #121902;
+	color: #a2ff00;
+}
+
+#cancel_button {
+	width: 75px;
+	height: 40px;
+	border-radius: 8px;
+	outline: none;
+	background: lightgray;
+	border: none;
+	cursor: pointer;
+}
+
+.account_details_container .account_details_final {
+	display: flex;
+	margin: 15px 0 0 0;
+    background: #F4F4F4;
+	border-radius: 4px;
+	border: 2px solid #d3d3d3;
+	flex-direction: column;
+	flex: 1;
+}
+
+.account_details_container .account_details_final .final_header {
+	background-color: lightgray;
+	margin: 0 0 5px 0;
+	padding: 0 15px;
+}
+
+.account_details_container .account_details_final .final_data {
+	margin: 2px 0;
+  	padding: 0 15px;
+}
+
+.account_details_container .account_details .response_container {
+	padding: 10px 15px;
+	height: 20px;
+	display: none;
+	margin-bottom: 30px;
+}
+

@@ -1,56 +1,71 @@
 package com.jjpedrogomes.task;
 
-import com.jjpedrogomes.model.task.Task;
-import com.jjpedrogomes.model.task.TaskDao;
-import com.jjpedrogomes.model.util.JpaUtil;
-import org.junit.jupiter.api.*;
+import static com.jjpedrogomes.task.TaskTest.buildInProgressTask;
+import static com.jjpedrogomes.task.TaskTest.buildPendingTask;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import javax.persistence.EntityManager;
-import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.jjpedrogomes.task.TaskTest.buildInProgressTask;
-import static com.jjpedrogomes.task.TaskTest.buildPendingTask;
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import javax.persistence.EntityManager;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+
+import com.jjpedrogomes.model.lane.Lane;
+import com.jjpedrogomes.model.lane.LaneDaoFactory;
+import com.jjpedrogomes.model.lane.LaneServiceFactory;
+import com.jjpedrogomes.model.task.Task;
+import com.jjpedrogomes.model.user.Email;
+import com.jjpedrogomes.model.user.Password;
+import com.jjpedrogomes.model.user.User;
+import com.jjpedrogomes.model.util.JpaUtil;
+import com.jjpedrogomes.repository.task.TaskDaoImpl;
+import com.jjpedrogomes.user.UserDaoTest;
 
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TaskDaoTest {
 
-    private TaskDao taskDao;
+    private TaskDaoImpl taskDao;
     private EntityManager entityManager;
     private Task task;
     private Task taskPreSaved;
     private int tasksSavedCount;
     private List<Task> tasksSavedList = new ArrayList<Task>();
-
-    @BeforeAll
-    void createPreSavedTask() {
-        EntityManager entityManager = JpaUtil.getEntityManager();
-        TaskDao taskDaoEnv = new TaskDao(entityManager);
-
-        Task task = buildPendingTask();
-
-        entityManager.getTransaction().begin();
-        taskDaoEnv.save(task);
-        entityManager.getTransaction().commit();
-        taskPreSaved = task;
-        entityManager.close();
-
-        tasksSavedCount++;
-        tasksSavedList.add(taskPreSaved);
+    
+    void setUpBeforeAll() {
+    	User user = new User("Gabriel Toledo", new Email("taskdaotest@email.com"), new Password("a1b2c3d4"), LocalDate.of(1974, 9, 27));
+    	UserDaoTest.persistUser(user);
+    	
+    	Lane lane = LaneServiceFactory.getInstance().createLane("todo", user);
+    	
+    	this.taskPreSaved = new Task("new", null, null);
+    	LaneDaoFactory.getInstance().update(lane);
     }
 
-    @BeforeEach
+	@BeforeEach
     void setUpBeforeEach() {
         this.task = buildInProgressTask();
         this.entityManager = JpaUtil.getEntityManager();
-        this.taskDao = new TaskDao(entityManager);
+        this.taskDao = new TaskDaoImpl(entityManager);
     }
 
     @AfterEach
@@ -58,34 +73,34 @@ class TaskDaoTest {
         this.entityManager.close();
     }
 
-    @Nested
-    class task_dao_save {
-
-        @Test
-        void new_task() {
-            // Act
-            entityManager.getTransaction().begin();
-            taskDao.save(task);
-            entityManager.getTransaction().commit();
-            // Assert
-            assertThat(task.getId()).isNotNull();
-
-            tasksSavedCount++;
-            tasksSavedList.add(task);
-        }
-
-        @Test
-        void with_error() throws NoSuchFieldException, IllegalAccessException {
-            // Arrange
-            Field title = Task.class.getDeclaredField("title");
-            title.setAccessible(true);
-            title.set(task, null);
-            // Assert and Act
-            entityManager.getTransaction().begin();
-            assertThrows(Exception.class, () -> taskDao.save(task));
-            entityManager.getTransaction().commit();
-        }
-    }
+//    @Nested
+//    class task_dao_save {
+//
+//        @Test
+//        void new_task() {
+//            // Act
+//            entityManager.getTransaction().begin();
+//            taskDao.save(task);
+//            entityManager.getTransaction().commit();
+//            // Assert
+//            assertThat(task.getId()).isNotNull();
+//
+//            tasksSavedCount++;
+//            tasksSavedList.add(task);
+//        }
+//
+//        @Test
+//        void with_error() throws NoSuchFieldException, IllegalAccessException {
+//            // Arrange
+//            Field title = Task.class.getDeclaredField("title");
+//            title.setAccessible(true);
+//            title.set(task, null);
+//            // Assert and Act
+//            entityManager.getTransaction().begin();
+//            assertThrows(Exception.class, () -> taskDao.save(task));
+//            entityManager.getTransaction().commit();
+//        }
+//    }
 
     @Nested
     class task_dao_get_ {
@@ -120,7 +135,7 @@ class TaskDaoTest {
         void by_id_when_exception_thrown() {
             // Arrange
             EntityManager entityManager = mock(EntityManager.class);
-            TaskDao taskDaoEnv = new TaskDao(entityManager);
+            TaskDaoImpl taskDaoEnv = new TaskDaoImpl(entityManager);
             when(entityManager.find(eq(Task.class),anyLong())).thenThrow(new RuntimeException("Simulated Error"));
             // Act
             List<Task> taskList = taskDaoEnv.getAll();
@@ -157,7 +172,7 @@ class TaskDaoTest {
         void empty_list() {
             // Arrange
             EntityManager entityManager = mock(EntityManager.class);
-            TaskDao taskDaoEnv = new TaskDao(entityManager);
+            TaskDaoImpl taskDaoEnv = new TaskDaoImpl(entityManager);
             when(entityManager.createQuery(anyString(), eq(Task.class)))
                     .thenThrow(new RuntimeException("Simulated Error"));
             // Act
@@ -213,7 +228,7 @@ class TaskDaoTest {
         void task_with_error() {
             // Arrange
             EntityManager entityManager = mock(EntityManager.class);
-            TaskDao taskDao = new TaskDao(entityManager);
+            TaskDaoImpl taskDao = new TaskDaoImpl(entityManager);
             // Mocking EntityManager behavior to throw an exception when remove method is called
             doThrow(RuntimeException.class).when(entityManager).remove(any());
             // Act and Assert

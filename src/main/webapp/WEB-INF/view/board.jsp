@@ -8,128 +8,129 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheet/styles.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/stylesheet/all.css">
-        <script src="${pageContext.request.contextPath}/js/drag.js" defer></script>
-        <script src="${pageContext.request.contextPath}/js/todo.js" defer></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <title>My Board</title>
     </head>
     <body>
-        <!--Start: side navigation bar -->
-        <section class="sidebar_container">
-            <div class="column_wrapper">
-                <div class="sidebar">
-                    <ul>
-                        <!--Start: navigation bar logo -->
-                        <li class="logo_container">
-                            <!--Todo Change logo-->
-                            <div class="logo">
-                                <img src="${pageContext.request.contextPath}/assets/img/logo.png" alt="">
-                                <span>Jtask</span>
-                            </div>
-                        </li>
-                        <!--End: navigation bar logo -->
-                        <!--Start:  navigation bar main links-->
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-home"></i>
-                                <span>Home</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-calendar-day"></i>
-                                <span>Today</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-calendar"></i>
-                                <span>Upcoming</span>
-                            </a>
-                        </li>
-                        <!--End:  navigation bar main links-->
-                        <!--Start:  navigation bar bottom links-->
-                        <div class="bottom_links_container">
-                            <li>
-                                <a href="#">
-                                    <i class="fas fa-user-circle"></i>
-                                    <span>User name</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    <span>Log Out</span>
-                                </a>
-                            </li>
-                        </div>
-                        <!--End:  navigation bar bottom links-->
-                    </ul>
-                </div>
-            </div>
-        </section>
-        <!--End: side navigation bar -->
+        <%@ include file="commonSideBarMenu.jsp" %>
 
         <!--Start: Board -->
         <section>
             <div class="board_container">
-                <!--Start: New task modal form section -->
-                <a id="modal_button">
-                    <i class="fas fa-plus-circle"></i>Add task
-                </a>
+                <!--Start: New task modal form section -->              
+                <a id="modal_button_lane">
+                    <!-- <i class="fas fa-plus-circle"></i> -->
+                    <img
+					src="${pageContext.request.contextPath}/assets/img/plus-circle.png"
+					alt="" class="modal_button_lane"/>
+                    <span>Add lane</span>
+                </a>                
                 <div class="modal_background">
                     <form id="modal_form">
-                        <div class="modal_container">
-                            <div class="close-btn">&times;</div>
-                            <div class="modal_form_element">
-                                <input type="text" id="task_title" name="title" placeholder="Task name" required>
-                            </div>
-                            <div class="modal_form_element" id="description_details">
-                                <textarea id="task_description" name="description" placeholder="Description"></textarea>
-                            </div>
-                            <div class="modal_form_element">
-                                <label class="date_label" for="task_due_date">Due Date:</label>
-                                <input type="date" id="task_due_date" name="dueDate">
-                            </div>
-                            <div class="modal_form_element">
-                                <button type="submit" id="modal_submit_btn">Add task</button>
+                        <div class="modal_wrapper">
+                            <div class="modal_container">
+                                <div class="modal_header">
+                                    <div class="modal_header_content">
+                                        <input type="text" id="task_title" name="title" placeholder="Task name" required maxlength="50">
+                                    </div>
+                                    <div class="dropdown">
+                                        <i onclick="openDropDown()" class="fas fa-ellipsis-v" id="openDropDownBtn"></i>
+                                        <div id="myDropdown" class="dropdown_options">
+                                            <a id="myDropdownDelete" href="#">
+                                                <i class="fas fa-trash"></i>
+                                                <span>Delete</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal_form_element" id="description_details">
+                                    <textarea id="task_description" name="description" placeholder="Description"></textarea>
+                                </div>
+                                <div class="modal_form_element">
+                                    <label class="date_label" for="task_due_date">Due Date:</label>
+                                    <input type="date" id="task_due_date" name="dueDate">
+                                </div>
+                                <div class="modal_form_element">
+                                    <button type="submit" id="modal_submit_btn">Add task</button>
+                                </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <!--End: New task modal form section -->
-
-                <!--Start: Lanes section -->
-                <c:set var="taskList" value="${sessionScope.taskList}" scope="session"/>
+                <!--Start: Lanes section -->              
+                <c:set var="taskList" value="${sessionScope.taskList}" scope="session"/>            
                 <div class="lane_wrapper">
-                    <div class="lane" id="todo_lane">
-                        <h3 class="lane_heading">Todo</h3>
-                        <c:if test="${not empty taskList}">
-                            <c:forEach items="${taskList}" var="task">
-                                <p class="task" id="task-${task.id}" draggable="true"
-                                   data-task-id="${task.id}"
-                                   data-task-title="${task.title}"
-                                   data-task-description="${task.description}"
-                                   data-task-dueDate="${task.dueDate}"
-                                   data-task-conclusionDate="${task.conclusionDate}">
-                                        ${task.title}
-                                </p>
-                            </c:forEach>
-                        </c:if>
-                    </div>
-                    <div class="lane">
-                        <h3 class="lane_heading">Doing</h3>
-                        <!--TODO: Load Tasks from Database-->
-                    </div>
-                    <div class="lane">
-                        <h3 class="lane_heading">Done</h3>
-                        <!--TODO: Load Tasks from Database-->
-                    </div>
-                </div>
+	                <c:forEach items="${lanes}" var="lane">
+	                	<div class="lane" id="${lane.getId()}" draggable="true">
+	                		<h3 class="lane_heading" contenteditable="true">
+	                			${lane.getName()}
+	                		</h3>
+						<a class="new_task" id="new_task_for_lane_${lane.getId()}"> <!-- <i class="fas fa-plus-circle modal_button"></i> -->
+							<img
+							src="${pageContext.request.contextPath}/assets/img/plus-circle.png"
+							alt="" class="modal_button"/>
+							<span>add task</span>
+						</a>
+						<c:if test="${not empty lane.getTasks()}">
+							<c:forEach items="${lane.getTasksInOrder()}" var="task">
+								<div class="task" draggable="true" id="task-${task.id}"
+									data-task-id="${task.id}" data-task-title="${task.title}"
+									data-task-description="${task.description}"
+									data-task-duedate="${task.dueDate}">
+									<c:choose>
+									    <c:when test="${task.completed}">
+											<div class="title_wrapper">
+												<p>${task.title}</p>
+												<input type="checkbox" id="conclude_button"
+													class="conclude_button hidden" checked />
+												<div class="button_checkmark completed">
+													<img
+														src="${pageContext.request.contextPath}/assets/img/checkmark.png"
+														alt="" class="check_img completed" />
+												</div>
+												<svg class="circle completed">
+													<circle cx="12" cy="12" r="10" />
+												</svg>
+											</div>
+									    </c:when>
+										<c:otherwise>
+											<div class="title_wrapper">
+												<p>${task.title}</p>
+												<input type="checkbox" id="conclude_button"
+													class="conclude_button hidden" />
+												<div class="button_checkmark">
+													<img
+														src="${pageContext.request.contextPath}/assets/img/checkmark.png"
+														alt="" class="check_img" />
+												</div>
+												<svg class="circle">
+												<circle cx="12" cy="12" r="10" />
+											</svg>
+											</div>
+										</c:otherwise>
+									</c:choose>
+									<span class="due_date">${task.dueDate != null ? task.dueDate : ''}</span>
+								</div>
+							</c:forEach>
+						</c:if>
+	                	</div>
+	                </c:forEach>
+	                </div>
                 <!--End: Lanes section -->
+                <!--Start: Drag modal section --> 
+	                <div class="drag_modal_container" id="droptarget">
+	                	<div class="trash_icon">
+	                		<i class="fas fa-trash"></i>
+	                	</div>
+	                </div>
+	            <!--End: Drag modal section --> 
             </div>
         </section>
         <!--End: Board -->
         <footer></footer>
+        <script src="${pageContext.request.contextPath}/js/drag.js" defer></script>
+        <script src="${pageContext.request.contextPath}/js/todo.js" defer></script>
+        <script src="${pageContext.request.contextPath}/js/dragLane.js" defer></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     </body>
 </html>
