@@ -18,8 +18,6 @@ During development, I experimented with various approaches, some of which may no
 
 ![Screencast from 2025-03-18 02-45-09](https://github.com/user-attachments/assets/0965fc76-a9e0-4819-855e-ae3ee6622901)
 
-![Dashboard](./src/main/webapp/assets/img/board.png)
-
 ## Technologies
 This project utilizes a range of technologies to provide a robust and scalable solution:
 
